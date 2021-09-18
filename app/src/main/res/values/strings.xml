@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">RSSOcto</string>
+
+    <!-- TextView -->
+    <string name="no_feed_message">You are not subscribe to any feed.</string>
+
+    <!-- Button -->
+    <string name="btn_add_feed">Add Feed</string>
+    <string name="btn_add">Add</string>
+
+    <!-- EditText -->
+    <string name="et_feed_url_hint">Feed URL</string>
 </resources>
