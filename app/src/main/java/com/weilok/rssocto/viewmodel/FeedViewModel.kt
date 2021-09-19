@@ -15,6 +15,7 @@ class FeedViewModel(private val repo: AppRepository) : ViewModel(), Observable {
     @Bindable
     val inputUrl = MutableLiveData<String>()
 
+    // Get user input Feed URL and request for XML data
     fun getFeed() {
         val url = inputUrl.value!!
 

@@ -17,11 +17,13 @@ class AddFeedFragment : Fragment(R.layout.fragment_add_feed) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Initialize binding for current view
         binding = FragmentAddFeedBinding.bind(view)
 
         val repo = AppRepository()
         val factory = FeedViewModelFactory(repo)
 
+        // Initialize FeedViewModel
         feedViewModel = ViewModelProvider(this, factory)
             .get(FeedViewModel::class.java)
 
@@ -31,6 +33,7 @@ class AddFeedFragment : Fragment(R.layout.fragment_add_feed) {
     }
 
     private fun initFeedObserver() {
+        // Observe fetched data from Logcat for now
         feedViewModel.remoteAtomFeed.observe(viewLifecycleOwner) {
             Log.i("RemoteFeed", it.toString())
         }
