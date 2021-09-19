@@ -1,4 +1,4 @@
-package com.weilok.rssocto.data
+package com.weilok.rssocto.data.remote
 
 import org.simpleframework.xml.Element
 import org.simpleframework.xml.ElementList
@@ -19,10 +19,10 @@ data class AtomFeed @JvmOverloads constructor(
     @param:ElementList(name = "entry", inline = true, required = false)
     var entryList: List<AtomEntry>? = null
 ) {
-    @Root(name = "entry")
+    @Root(name = "entry", strict = false)
     data class AtomEntry @JvmOverloads constructor(
-        @field:Element(name = "url")
-        @param:Element(name = "url")
+        @field:Element(name = "id")
+        @param:Element(name = "id")
         var url: String? = null,
 
         @field:Element(name = "title")
