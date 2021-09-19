@@ -12,8 +12,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Initialize binding for current view
         binding = FragmentHomeBinding.bind(view)
         binding.btnAddFeed.setOnClickListener {
+            // Navigate to next fragment
             val action = HomeFragmentDirections.actionHomeFragmentToAddFeedFragment()
             findNavController().navigate(action)
         }

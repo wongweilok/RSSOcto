@@ -13,6 +13,7 @@ interface Fetcher {
     companion object {
         private const val BASE_URL = "https://blog.jetbrains.com/kotlin/"
 
+        // Create Retrofit instance with SimpleXml converter
         fun getInstance(): Fetcher {
             return Retrofit
                 .Builder()
