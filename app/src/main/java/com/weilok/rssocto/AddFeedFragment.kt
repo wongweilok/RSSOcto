@@ -25,6 +25,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.weilok.rssocto.data.AppRepository
+import com.weilok.rssocto.data.local.AppDatabase
 import com.weilok.rssocto.databinding.FragmentAddFeedBinding
 import com.weilok.rssocto.viewmodel.FeedViewModel
 import com.weilok.rssocto.viewmodel.FeedViewModelFactory
@@ -39,7 +40,11 @@ class AddFeedFragment : Fragment(R.layout.fragment_add_feed) {
         // Initialize binding for current view
         binding = FragmentAddFeedBinding.bind(view)
 
-        val repo = AppRepository()
+        // Initialize database
+        val feedDao = AppDatabase.getInstance(requireContext()).feedDao
+        val entryDao = AppDatabase.getInstance(requireContext()).entryDao
+
+        val repo = AppRepository(feedDao, entryDao)
         val factory = FeedViewModelFactory(repo)
 
         // Initialize FeedViewModel
@@ -55,6 +60,14 @@ class AddFeedFragment : Fragment(R.layout.fragment_add_feed) {
         // Observe fetched data from Logcat for now
         feedViewModel.remoteAtomFeed.observe(viewLifecycleOwner) {
             Log.i("RemoteFeed", it.toString())
+        }
+
+        feedViewModel.feeds.observe(viewLifecycleOwner) {
+            Log.i("LocalFeed", it.toString())
+        }
+
+        feedViewModel.entries.observe(viewLifecycleOwner) {
+            Log.i("LocalEntry", it.toString())
         }
     }
 }
