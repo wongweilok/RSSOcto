@@ -30,6 +30,8 @@ import kotlinx.coroutines.launch
 
 class FeedViewModel(private val repo: AppRepository) : ViewModel(), Observable {
     val remoteAtomFeed = repo.atomFeedLiveData
+    val feeds = repo.localFeeds
+    val entries = repo.localEntries
 
     @Bindable
     val inputUrl = MutableLiveData<String>()
@@ -43,7 +45,7 @@ class FeedViewModel(private val repo: AppRepository) : ViewModel(), Observable {
         inputUrl.value = ""
     }
 
-    fun fetchAtomFeed(url: String) {
+    private fun fetchAtomFeed(url: String) {
         viewModelScope.launch(Dispatchers.IO) {
             repo.fetchAtomFeed(url)
         }
