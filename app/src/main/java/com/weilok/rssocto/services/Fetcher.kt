@@ -20,6 +20,7 @@
 package com.weilok.rssocto.services
 
 import com.weilok.rssocto.data.remote.AtomFeed
+import com.weilok.rssocto.data.remote.RssFeed
 import retrofit2.Retrofit
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory
 import retrofit2.http.GET
@@ -28,6 +29,9 @@ import retrofit2.http.Url
 interface Fetcher {
     @GET
     suspend fun getAtomFeed(@Url url: String): AtomFeed
+
+    @GET
+    suspend fun getRssFeed(@Url url: String): RssFeed
 
     companion object {
         private const val BASE_URL = "https://blog.jetbrains.com/kotlin/"

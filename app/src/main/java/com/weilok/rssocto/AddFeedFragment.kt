@@ -59,7 +59,11 @@ class AddFeedFragment : Fragment(R.layout.fragment_add_feed) {
     private fun initFeedObserver() {
         // Observe fetched data from Logcat for now
         feedViewModel.remoteAtomFeed.observe(viewLifecycleOwner) {
-            Log.i("RemoteFeed", it.toString())
+            Log.i("AtomFeed", it.toString())
+        }
+
+        feedViewModel.remoteRssFeed.observe(viewLifecycleOwner) {
+            Log.i("RssFeed", it.toString())
         }
 
         feedViewModel.feeds.observe(viewLifecycleOwner) {

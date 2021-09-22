@@ -25,6 +25,7 @@ import com.weilok.rssocto.data.local.dao.FeedDao
 import com.weilok.rssocto.data.local.entities.Entry
 import com.weilok.rssocto.data.local.entities.Feed
 import com.weilok.rssocto.data.remote.AtomFeed
+import com.weilok.rssocto.data.remote.RssFeed
 import com.weilok.rssocto.services.Fetcher
 
 class AppRepository(
@@ -47,6 +48,7 @@ class AppRepository(
 
     // Remote data
     val atomFeedLiveData: MutableLiveData<AtomFeed> = MutableLiveData()
+    val rssFeedLiveData: MutableLiveData<RssFeed> = MutableLiveData()
 
     suspend fun fetchAtomFeed(url: String) {
         // Fetch Atom Feed from web
@@ -73,5 +75,32 @@ class AppRepository(
         }
 
         atomFeedLiveData.postValue(response)
+    }
+
+    suspend fun fetchRssAtom(url: String) {
+        // Fetch RSS Feed from web
+        val response = Fetcher
+            .getInstance()
+            .getRssFeed(url)
+
+        val entryList: List<RssFeed.RssEntry> = response.entryList!!
+
+        // Add Feed and Entry data into local database
+        insertFeed(Feed(response.urlList?.get(0)!!.url!!, response.title!!))
+        for (i in entryList.indices) {
+            insertEntry(
+                Entry(
+                    entryList[i].url!!,
+                    entryList[i].title!!,
+                    entryList[i].date!!,
+                    entryList[i].author!!,
+                    entryList[i].content!!,
+                    false,
+                    response.urlList?.get(0)!!.url!!
+                )
+            )
+        }
+
+        rssFeedLiveData.postValue(response)
     }
 }
