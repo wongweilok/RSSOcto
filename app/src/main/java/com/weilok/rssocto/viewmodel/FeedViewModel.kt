@@ -27,6 +27,8 @@ import androidx.lifecycle.viewModelScope
 import com.weilok.rssocto.data.AppRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.OkHttpClient
+import java.util.*
 
 class FeedViewModel(private val repo: AppRepository) : ViewModel(), Observable {
     val remoteAtomFeed = repo.atomFeedLiveData
@@ -36,6 +38,10 @@ class FeedViewModel(private val repo: AppRepository) : ViewModel(), Observable {
 
     @Bindable
     val inputUrl = MutableLiveData<String>()
+    @Bindable
+    val urlValidation = MutableLiveData<String>()
+    @Bindable
+    val feedType = MutableLiveData<String>()
 
     // Get user input Feed URL and request for XML data
     fun getFeed() {
@@ -55,7 +61,7 @@ class FeedViewModel(private val repo: AppRepository) : ViewModel(), Observable {
 
     private fun fetchRssFeed(url: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            repo.fetchRssAtom(url)
+            repo.fetchRssFeed(url)
         }
     }
 
@@ -63,5 +69,28 @@ class FeedViewModel(private val repo: AppRepository) : ViewModel(), Observable {
     }
 
     override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
+    }
+
+    // Fetch Feed format for URL validation
+    private var timer = Timer()
+    private val delay: Long = 1000
+    private val client = OkHttpClient()
+
+    fun onTextChanged() {
+        timer.cancel()
+    }
+
+    fun afterTextChanged() {
+        timer = Timer()
+        timer.schedule(object: TimerTask() {
+            override fun run() {
+                repo.fetchFeedType(
+                    inputUrl.value!!,
+                    client,
+                    urlValidation,
+                    feedType
+                )
+            }
+        }, delay)
     }
 }

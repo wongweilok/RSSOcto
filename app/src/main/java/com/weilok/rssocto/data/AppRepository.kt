@@ -27,6 +27,8 @@ import com.weilok.rssocto.data.local.entities.Feed
 import com.weilok.rssocto.data.remote.AtomFeed
 import com.weilok.rssocto.data.remote.RssFeed
 import com.weilok.rssocto.services.Fetcher
+import com.weilok.rssocto.services.Validator
+import okhttp3.OkHttpClient
 
 class AppRepository(
     private val feedDao: FeedDao,
@@ -77,7 +79,7 @@ class AppRepository(
         atomFeedLiveData.postValue(response)
     }
 
-    suspend fun fetchRssAtom(url: String) {
+    suspend fun fetchRssFeed(url: String) {
         // Fetch RSS Feed from web
         val response = Fetcher
             .getInstance()
@@ -102,5 +104,20 @@ class AppRepository(
         }
 
         rssFeedLiveData.postValue(response)
+    }
+
+    // Validate URL and get feed type
+    fun fetchFeedType(
+        url: String,
+        client: OkHttpClient,
+        urlValid: MutableLiveData<String>,
+        feedType: MutableLiveData<String>
+    ) {
+        Validator().validate(
+            url,
+            client,
+            urlValid,
+            feedType
+        )
     }
 }
