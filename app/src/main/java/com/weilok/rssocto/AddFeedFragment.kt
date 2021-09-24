@@ -52,6 +52,7 @@ class AddFeedFragment : Fragment(R.layout.fragment_add_feed) {
             .get(FeedViewModel::class.java)
 
         binding.feedVM = feedViewModel
+        binding.lifecycleOwner = this
 
         initFeedObserver()
     }
@@ -72,6 +73,10 @@ class AddFeedFragment : Fragment(R.layout.fragment_add_feed) {
 
         feedViewModel.entries.observe(viewLifecycleOwner) {
             Log.i("LocalEntry", it.toString())
+        }
+
+        feedViewModel.feedType.observe(viewLifecycleOwner) {
+            Log.i("UrlValid", it.toString())
         }
     }
 }

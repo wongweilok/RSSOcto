@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="feedVM"
             type="com.weilok.rssocto.viewmodel.FeedViewModel" />
@@ -16,18 +17,52 @@
 
         <EditText
             android:id="@+id/etFeedUrl"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="250dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
+            android:afterTextChanged="@{()->feedVM.afterTextChanged()}"
             android:ems="10"
             android:hint="@string/et_feed_url_hint"
             android:inputType="textPersonName"
-            android:textSize="20sp"
+            android:onTextChanged="@{()->feedVM.onTextChanged()}"
             android:text="@={feedVM.inputUrl}"
-            app:layout_constraintBottom_toTopOf="@+id/btnAdd"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/tvUrlValidation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/tvUrlValidation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:text="@={feedVM.urlValidation}"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/btnAdd"
+            app:layout_constraintEnd_toStartOf="@+id/tvFeedType"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintHorizontal_weight="5"
+            app:layout_constraintStart_toStartOf="@+id/etFeedUrl"
+            app:layout_constraintTop_toBottomOf="@+id/etFeedUrl" />
+
+        <TextView
+            android:id="@+id/tvFeedType"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@={feedVM.feedType}"
+            android:textSize="16sp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@+id/btnAdd"
+            app:layout_constraintEnd_toEndOf="@+id/etFeedUrl"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/tvUrlValidation"
+            app:layout_constraintTop_toBottomOf="@+id/etFeedUrl"
+            app:layout_constraintVertical_bias="0.0" />
 
         <Button
             android:id="@+id/btnAdd"
@@ -35,13 +70,13 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
-            android:layout_marginBottom="330dp"
-            android:text="@string/btn_add"
+            android:layout_marginBottom="75dp"
             android:onClick="@{()->feedVM.getFeed()}"
+            android:text="@string/btn_add"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/etFeedUrl"
             app:layout_constraintStart_toStartOf="@+id/etFeedUrl"
-            app:layout_constraintTop_toBottomOf="@+id/etFeedUrl" />
+            app:layout_constraintTop_toBottomOf="@+id/tvUrlValidation" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
