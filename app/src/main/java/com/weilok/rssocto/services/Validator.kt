@@ -20,6 +20,7 @@
 package com.weilok.rssocto.services
 
 import android.util.Xml
+import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.MutableLiveData
 import okhttp3.*
 import org.xmlpull.v1.XmlPullParser
@@ -31,7 +32,8 @@ class Validator {
         url: String,
         client: OkHttpClient,
         urlValid: MutableLiveData<String>,
-        feedType: MutableLiveData<String>
+        feedType: MutableLiveData<String>,
+        isUrlValid: ObservableBoolean
     ) {
         val parser: XmlPullParser = Xml.newPullParser()
         parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false)
@@ -50,6 +52,7 @@ class Validator {
                         feedType.postValue("")
                         urlValid.postValue("")
                         urlValid.postValue("Invalid URL.")
+                        isUrlValid.set(false)
                         response.close()
                         throw IOException("Unexpected code $response")
                     }
@@ -64,10 +67,12 @@ class Validator {
                         feedType.postValue("")
                         feedType.postValue(fType)
                         urlValid.postValue("")
+                        isUrlValid.set(true)
                     } else {
                         feedType.postValue("")
                         urlValid.postValue("")
                         urlValid.postValue("Invalid feed format.")
+                        isUrlValid.set(false)
                     }
                 }
 
@@ -75,12 +80,14 @@ class Validator {
                     feedType.postValue("")
                     urlValid.postValue("")
                     urlValid.postValue("Invalid URL.")
+                    isUrlValid.set(false)
                 }
             })
         } catch (e: IllegalArgumentException) {
             feedType.postValue("")
             urlValid.postValue("")
             urlValid.postValue("Invalid URL.")
+            isUrlValid.set(false)
         }
     }
 }

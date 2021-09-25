@@ -73,6 +73,7 @@
             android:layout_marginBottom="75dp"
             android:onClick="@{()->feedVM.getFeed()}"
             android:text="@string/btn_add"
+            android:enabled="@{feedVM.isUrlValid()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/etFeedUrl"
             app:layout_constraintStart_toStartOf="@+id/etFeedUrl"
