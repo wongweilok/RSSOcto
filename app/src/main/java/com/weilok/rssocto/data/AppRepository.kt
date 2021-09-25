@@ -19,6 +19,7 @@
 
 package com.weilok.rssocto.data
 
+import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.MutableLiveData
 import com.weilok.rssocto.data.local.dao.EntryDao
 import com.weilok.rssocto.data.local.dao.FeedDao
@@ -111,13 +112,15 @@ class AppRepository(
         url: String,
         client: OkHttpClient,
         urlValid: MutableLiveData<String>,
-        feedType: MutableLiveData<String>
+        feedType: MutableLiveData<String>,
+        isUrlValid: ObservableBoolean
     ) {
         Validator().validate(
             url,
             client,
             urlValid,
-            feedType
+            feedType,
+            isUrlValid
         )
     }
 }

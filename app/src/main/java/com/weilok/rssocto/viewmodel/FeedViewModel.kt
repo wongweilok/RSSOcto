@@ -21,6 +21,7 @@ package com.weilok.rssocto.viewmodel
 
 import androidx.databinding.Bindable
 import androidx.databinding.Observable
+import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -47,8 +48,10 @@ class FeedViewModel(private val repo: AppRepository) : ViewModel(), Observable {
     fun getFeed() {
         val url = inputUrl.value!!
 
-        //fetchAtomFeed(url)
-        fetchRssFeed(url)
+        when (feedType.value!!) {
+            "RSS" -> fetchRssFeed(url)
+            "ATOM" -> fetchAtomFeed(url)
+        }
 
         inputUrl.value = ""
     }
@@ -76,8 +79,11 @@ class FeedViewModel(private val repo: AppRepository) : ViewModel(), Observable {
     private val delay: Long = 1000
     private val client = OkHttpClient()
 
+    val isUrlValid = ObservableBoolean(false)
+
     fun onTextChanged() {
         timer.cancel()
+        isUrlValid.set(false)
     }
 
     fun afterTextChanged() {
@@ -88,7 +94,8 @@ class FeedViewModel(private val repo: AppRepository) : ViewModel(), Observable {
                     inputUrl.value!!,
                     client,
                     urlValidation,
-                    feedType
+                    feedType,
+                    isUrlValid
                 )
             }
         }, delay)
