@@ -53,6 +53,8 @@ class FeedViewModel(private val repo: AppRepository) : ViewModel(), Observable {
             "ATOM" -> fetchAtomFeed(url)
         }
 
+        // continue here need to add xml link as well, not just source website
+
         inputUrl.value = ""
     }
 
@@ -80,6 +82,7 @@ class FeedViewModel(private val repo: AppRepository) : ViewModel(), Observable {
     private val client = OkHttpClient()
 
     val isUrlValid = ObservableBoolean(false)
+    val isFeedExist = ObservableBoolean(false)
 
     fun onTextChanged() {
         timer.cancel()
@@ -90,13 +93,16 @@ class FeedViewModel(private val repo: AppRepository) : ViewModel(), Observable {
         timer = Timer()
         timer.schedule(object: TimerTask() {
             override fun run() {
-                repo.fetchFeedType(
-                    inputUrl.value!!,
-                    client,
-                    urlValidation,
-                    feedType,
-                    isUrlValid
-                )
+                viewModelScope.launch(Dispatchers.IO) {
+                    repo.fetchFeedType(
+                        inputUrl.value!!,
+                        client,
+                        urlValidation,
+                        feedType,
+                        isUrlValid,
+                        isFeedExist
+                    )
+                }
             }
         }, delay)
     }
