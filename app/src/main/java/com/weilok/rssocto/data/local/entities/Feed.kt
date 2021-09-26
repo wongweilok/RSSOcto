@@ -28,6 +28,8 @@ data class Feed(
     @PrimaryKey
     @ColumnInfo(name = "feed_url")
     val url: String,
+    @ColumnInfo(name = "feed_source_url")
+    val source_url: String,
     @ColumnInfo(name = "feed_title")
     val title: String
 )

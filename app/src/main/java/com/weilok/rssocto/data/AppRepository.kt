@@ -44,6 +44,10 @@ class AppRepository(
         feedDao.insertFeed(feed)
     }
 
+    suspend fun checkFeedExist(id: String): Boolean {
+        return feedDao.checkFeedExist(id)
+    }
+
     // Entry
     suspend fun insertEntry(entry: Entry) {
         entryDao.insertEntry(entry)
@@ -62,7 +66,7 @@ class AppRepository(
         val entryList: List<AtomFeed.AtomEntry> = response.entryList!!
 
         // Add Feed and Entry data into local database
-        insertFeed(Feed(response.url!!, response.title!!))
+        insertFeed(Feed(url, response.url!!, response.title!!))
         for (i in entryList.indices) {
             insertEntry(
                 Entry(
@@ -72,7 +76,7 @@ class AppRepository(
                     entryList[i].author!!,
                     entryList[i].content!!,
                     false,
-                    response.url!!
+                    url
                 )
             )
         }
@@ -89,7 +93,7 @@ class AppRepository(
         val entryList: List<RssFeed.RssEntry> = response.entryList!!
 
         // Add Feed and Entry data into local database
-        insertFeed(Feed(response.urlList?.get(0)!!.url!!, response.title!!))
+        insertFeed(Feed(url, response.urlList?.get(0)!!.url!!, response.title!!))
         for (i in entryList.indices) {
             insertEntry(
                 Entry(
@@ -99,7 +103,7 @@ class AppRepository(
                     entryList[i].author!!,
                     entryList[i].content!!,
                     false,
-                    response.urlList?.get(0)!!.url!!
+                    url
                 )
             )
         }
@@ -108,19 +112,28 @@ class AppRepository(
     }
 
     // Validate URL and get feed type
-    fun fetchFeedType(
+    suspend fun fetchFeedType(
         url: String,
         client: OkHttpClient,
         urlValid: MutableLiveData<String>,
         feedType: MutableLiveData<String>,
-        isUrlValid: ObservableBoolean
+        isUrlValid: ObservableBoolean,
+        isFeedExist: ObservableBoolean
     ) {
-        Validator().validate(
-            url,
-            client,
-            urlValid,
-            feedType,
-            isUrlValid
-        )
+        if (!checkFeedExist(url)) {
+            isFeedExist.set(false)
+            Validator().validate(
+                url,
+                client,
+                urlValid,
+                feedType,
+                isUrlValid
+            )
+        } else {
+            urlValid.postValue("")
+            urlValid.postValue("Feed already exist.")
+            feedType.postValue("")
+            isFeedExist.set(true)
+        }
     }
 }

@@ -38,6 +38,9 @@ interface FeedDao {
     @Query("DELETE FROM feed_table")
     suspend fun deteleAllFeed()
 
+    @Query("SELECT EXISTS(SELECT * FROM feed_table WHERE feed_url = :id)")
+    suspend fun checkFeedExist(id: String): Boolean
+
     @Query("SELECT * FROM feed_table WHERE feed_url = :id")
     suspend fun getFeedWithEntry(id: String): List<FeedWithEntry>
 
