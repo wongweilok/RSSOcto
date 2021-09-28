@@ -24,15 +24,18 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.weilok.rssocto.data.AppRepository
 import com.weilok.rssocto.data.local.AppDatabase
 import com.weilok.rssocto.databinding.FragmentAddFeedBinding
+import com.weilok.rssocto.viewmodel.FeedListViewModel
 import com.weilok.rssocto.viewmodel.FeedViewModel
 import com.weilok.rssocto.viewmodel.FeedViewModelFactory
 
 class AddFeedFragment : Fragment(R.layout.fragment_add_feed) {
     private lateinit var binding: FragmentAddFeedBinding
     private lateinit var feedViewModel: FeedViewModel
+    private lateinit var feedListViewModel: FeedListViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -45,14 +48,24 @@ class AddFeedFragment : Fragment(R.layout.fragment_add_feed) {
         val entryDao = AppDatabase.getInstance(requireContext()).entryDao
 
         val repo = AppRepository(feedDao, entryDao)
-        val factory = FeedViewModelFactory(repo)
+        val fvmFactory = FeedViewModelFactory(repo)
 
         // Initialize FeedViewModel
-        feedViewModel = ViewModelProvider(this, factory)
+        feedViewModel = ViewModelProvider(this, fvmFactory)
             .get(FeedViewModel::class.java)
 
+        feedListViewModel = ViewModelProvider(requireActivity())
+            .get(FeedListViewModel::class.java)
+
         binding.feedVM = feedViewModel
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = activity
+
+        binding.btnAdd.setOnClickListener {
+            feedViewModel.getFeed()
+
+            val action = AddFeedFragmentDirections.actionAddFeedFragmentToFeedListFragment()
+            findNavController().navigate(action)
+        }
 
         initFeedObserver()
     }
@@ -67,11 +80,12 @@ class AddFeedFragment : Fragment(R.layout.fragment_add_feed) {
             Log.i("RssFeed", it.toString())
         }
 
-        feedViewModel.feeds.observe(viewLifecycleOwner) {
+        feedViewModel.feeds.observe(binding.lifecycleOwner!!) {
             Log.i("LocalFeed", it.toString())
+            feedListViewModel.setFeedList(it)
         }
 
-        feedViewModel.entries.observe(viewLifecycleOwner) {
+        feedViewModel.entries.observe(binding.lifecycleOwner!!) {
             Log.i("LocalEntry", it.toString())
         }
 
