@@ -53,8 +53,6 @@ class FeedViewModel(private val repo: AppRepository) : ViewModel(), Observable {
             "ATOM" -> fetchAtomFeed(url)
         }
 
-        // continue here need to add xml link as well, not just source website
-
         inputUrl.value = ""
     }
 
