@@ -24,14 +24,18 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.weilok.rssocto.adapter.FeedAdapter
+import com.weilok.rssocto.data.AppRepository
+import com.weilok.rssocto.data.local.AppDatabase
 import com.weilok.rssocto.databinding.FragmentFeedListBinding
-import com.weilok.rssocto.viewmodel.FeedListViewModel
+import com.weilok.rssocto.viewmodel.FeedViewModel
+import com.weilok.rssocto.viewmodel.FeedViewModelFactory
 
 class FeedListFragment : Fragment(R.layout.fragment_feed_list) {
     private lateinit var binding: FragmentFeedListBinding
-    private lateinit var feedListViewModel: FeedListViewModel
+    private lateinit var feedViewModel: FeedViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -39,22 +43,51 @@ class FeedListFragment : Fragment(R.layout.fragment_feed_list) {
         // Initialize binding for current view
         binding = FragmentFeedListBinding.bind(view)
 
+        // Initialize database
+        val feedDao = AppDatabase.getInstance(requireContext()).feedDao
+        val entryDao = AppDatabase.getInstance(requireContext()).entryDao
+
+        val repo = AppRepository(feedDao, entryDao)
+        val factory = FeedViewModelFactory(repo)
+
         // Initialize FeedListViewModel
-        feedListViewModel = ViewModelProvider(requireActivity())
-            .get(FeedListViewModel::class.java)
+        feedViewModel = ViewModelProvider(requireActivity(), factory)
+            .get(FeedViewModel::class.java)
 
         initRecyclerView()
+        initEmptyLayoutBtn()
     }
 
     private fun initRecyclerView() {
         binding.rvFeedList.layoutManager = LinearLayoutManager(requireContext())
-        initObserver()
+
+        feedViewModel.feeds.observe(viewLifecycleOwner, {
+            Log.i("LocalFeeds", it.toString())
+            binding.rvFeedList.adapter = FeedAdapter(it)
+
+            // Display different layout when data is empty
+            if (it.isEmpty()) {
+                binding.rvFeedList.visibility = View.GONE
+                binding.emptyDataLayout.root.visibility = View.VISIBLE
+            } else {
+                binding.rvFeedList.visibility = View.VISIBLE
+                binding.emptyDataLayout.root.visibility = View.GONE
+            }
+        })
     }
 
-    private fun initObserver() {
-        feedListViewModel.getFeedList().observe(viewLifecycleOwner) {
-            Log.i("ListLocalFeed", it.toString())
-            binding.rvFeedList.adapter = FeedAdapter(it)
+    private fun initEmptyLayoutBtn() {
+        // Navigate to AddFeedFragment
+        binding.emptyDataLayout.btnAddFeed.setOnClickListener {
+            val action = FeedListFragmentDirections.actionFeedListFragmentToAddFeedFragment()
+            findNavController().navigate(action)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        binding.rvFeedList.visibility = View.VISIBLE
+        binding.emptyDataLayout.root.visibility = View.GONE
     }
 }

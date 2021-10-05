@@ -28,14 +28,14 @@ import androidx.navigation.fragment.findNavController
 import com.weilok.rssocto.data.AppRepository
 import com.weilok.rssocto.data.local.AppDatabase
 import com.weilok.rssocto.databinding.FragmentAddFeedBinding
-import com.weilok.rssocto.viewmodel.FeedListViewModel
 import com.weilok.rssocto.viewmodel.FeedViewModel
 import com.weilok.rssocto.viewmodel.FeedViewModelFactory
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class AddFeedFragment : Fragment(R.layout.fragment_add_feed) {
     private lateinit var binding: FragmentAddFeedBinding
     private lateinit var feedViewModel: FeedViewModel
-    private lateinit var feedListViewModel: FeedListViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -48,26 +48,30 @@ class AddFeedFragment : Fragment(R.layout.fragment_add_feed) {
         val entryDao = AppDatabase.getInstance(requireContext()).entryDao
 
         val repo = AppRepository(feedDao, entryDao)
-        val fvmFactory = FeedViewModelFactory(repo)
+        val factory = FeedViewModelFactory(repo)
 
         // Initialize FeedViewModel
-        feedViewModel = ViewModelProvider(this, fvmFactory)
+        feedViewModel = ViewModelProvider(requireActivity(), factory)
             .get(FeedViewModel::class.java)
-
-        feedListViewModel = ViewModelProvider(requireActivity())
-            .get(FeedListViewModel::class.java)
 
         binding.feedVM = feedViewModel
         binding.lifecycleOwner = activity
 
+        initButtons()
+        initFeedObserver()
+    }
+
+    private fun initButtons() {
         binding.btnAdd.setOnClickListener {
             feedViewModel.getFeed()
 
-            val action = AddFeedFragmentDirections.actionAddFeedFragmentToFeedListFragment()
-            findNavController().navigate(action)
+            runBlocking {
+                launch {
+                    val action = AddFeedFragmentDirections.actionAddFeedFragmentToFeedListFragment()
+                    findNavController().navigate(action)
+                }
+            }
         }
-
-        initFeedObserver()
     }
 
     private fun initFeedObserver() {
@@ -80,12 +84,11 @@ class AddFeedFragment : Fragment(R.layout.fragment_add_feed) {
             Log.i("RssFeed", it.toString())
         }
 
-        feedViewModel.feeds.observe(binding.lifecycleOwner!!) {
+        feedViewModel.feeds.observe(viewLifecycleOwner) {
             Log.i("LocalFeed", it.toString())
-            feedListViewModel.setFeedList(it)
         }
 
-        feedViewModel.entries.observe(binding.lifecycleOwner!!) {
+        feedViewModel.entries.observe(viewLifecycleOwner) {
             Log.i("LocalEntry", it.toString())
         }
 
