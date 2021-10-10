@@ -19,45 +19,20 @@
 
 package com.weilok.rssocto.di
 
-import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-import com.weilok.rssocto.data.AppRepository
-import com.weilok.rssocto.data.local.AppDatabase
-import com.weilok.rssocto.data.local.dao.EntryDao
-import com.weilok.rssocto.data.local.dao.FeedDao
 import com.weilok.rssocto.services.Fetcher
 
 @Module
 @InstallIn(SingletonComponent::class)
-object DatabaseModule {
+object NetworkModule {
     @Singleton
     @Provides
-    fun provideDatabase(
-        @ApplicationContext context: Context
-    ): AppDatabase {
-        return AppDatabase.getInstance(context)
-    }
-
-    @Provides
-    fun provideFeedDao(db: AppDatabase): FeedDao {
-        return db.feedDao()
-    }
-
-    @Provides
-    fun provideEntryDao(db: AppDatabase): EntryDao {
-        return db.entryDao()
-    }
-
-    @Provides
-    fun provideRepository(
-        feedDao: FeedDao, entryDao: EntryDao, fetcher: Fetcher
-    ): AppRepository {
-        return AppRepository(feedDao, entryDao, fetcher)
+    fun provideFetcher() : Fetcher {
+        return Fetcher.getInstance()
     }
 }
