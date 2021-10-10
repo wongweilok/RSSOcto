@@ -30,8 +30,8 @@ import com.weilok.rssocto.data.local.entities.Feed
 
 @Database(entities = [Feed::class, Entry::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
-    abstract val feedDao: FeedDao
-    abstract val entryDao: EntryDao
+    abstract fun feedDao(): FeedDao
+    abstract fun entryDao(): EntryDao
 
     companion object {
         private const val DB_NAME = "RSSOctoDB"
