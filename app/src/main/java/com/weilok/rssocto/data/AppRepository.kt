@@ -22,6 +22,9 @@ package com.weilok.rssocto.data
 import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
+import okhttp3.OkHttpClient
+import javax.inject.Inject
+
 import com.weilok.rssocto.data.local.dao.EntryDao
 import com.weilok.rssocto.data.local.dao.FeedDao
 import com.weilok.rssocto.data.local.entities.Entry
@@ -30,8 +33,6 @@ import com.weilok.rssocto.data.remote.AtomFeed
 import com.weilok.rssocto.data.remote.RssFeed
 import com.weilok.rssocto.services.Fetcher
 import com.weilok.rssocto.services.Validator
-import okhttp3.OkHttpClient
-import javax.inject.Inject
 
 class AppRepository @Inject constructor(
     private val feedDao: FeedDao,

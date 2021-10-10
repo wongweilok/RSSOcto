@@ -19,11 +19,11 @@
 
 package com.weilok.rssocto.data.local.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
+import kotlinx.coroutines.flow.Flow
+
 import com.weilok.rssocto.data.local.entities.Feed
 import com.weilok.rssocto.data.local.entities.FeedWithEntry
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FeedDao {
@@ -37,7 +37,7 @@ interface FeedDao {
     suspend fun deleteFeed(feed: Feed)
 
     @Query("DELETE FROM feed_table")
-    suspend fun deteleAllFeed()
+    suspend fun deleteAllFeed()
 
     @Query("SELECT EXISTS(SELECT * FROM feed_table WHERE feed_url = :id)")
     suspend fun checkFeedExist(id: String): Boolean

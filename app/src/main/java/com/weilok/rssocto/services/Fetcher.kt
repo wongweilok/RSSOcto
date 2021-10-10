@@ -19,12 +19,13 @@
 
 package com.weilok.rssocto.services
 
-import com.weilok.rssocto.data.remote.AtomFeed
-import com.weilok.rssocto.data.remote.RssFeed
 import retrofit2.Retrofit
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Url
+
+import com.weilok.rssocto.data.remote.AtomFeed
+import com.weilok.rssocto.data.remote.RssFeed
 
 interface Fetcher {
     @GET

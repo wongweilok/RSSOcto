@@ -21,6 +21,7 @@ package com.weilok.rssocto.data.local.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+
 import com.weilok.rssocto.data.local.entities.Entry
 
 @Dao

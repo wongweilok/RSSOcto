@@ -26,10 +26,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import dagger.hilt.android.AndroidEntryPoint
+
 import com.weilok.rssocto.adapter.FeedAdapter
 import com.weilok.rssocto.databinding.FragmentFeedListBinding
 import com.weilok.rssocto.viewmodel.FeedViewModel
-import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class FeedListFragment : Fragment(R.layout.fragment_feed_list) {

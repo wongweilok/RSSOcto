@@ -20,16 +20,17 @@
 package com.weilok.rssocto.di
 
 import android.content.Context
-import com.weilok.rssocto.data.AppRepository
-import com.weilok.rssocto.data.local.AppDatabase
-import com.weilok.rssocto.data.local.dao.EntryDao
-import com.weilok.rssocto.data.local.dao.FeedDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
+
+import com.weilok.rssocto.data.AppRepository
+import com.weilok.rssocto.data.local.AppDatabase
+import com.weilok.rssocto.data.local.dao.EntryDao
+import com.weilok.rssocto.data.local.dao.FeedDao
 
 @Module
 @InstallIn(SingletonComponent::class)

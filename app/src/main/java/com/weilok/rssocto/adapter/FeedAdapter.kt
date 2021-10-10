@@ -22,6 +22,7 @@ package com.weilok.rssocto.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+
 import com.weilok.rssocto.data.local.entities.Feed
 import com.weilok.rssocto.databinding.FeedItemListBinding
 
