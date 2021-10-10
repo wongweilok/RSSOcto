@@ -24,17 +24,14 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.weilok.rssocto.data.AppRepository
-import com.weilok.rssocto.data.local.AppDatabase
-import com.weilok.rssocto.databinding.FragmentAddFeedBinding
-import com.weilok.rssocto.viewmodel.FeedViewModel
-import com.weilok.rssocto.viewmodel.FeedViewModelFactory
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+
+import com.weilok.rssocto.databinding.FragmentAddFeedBinding
+import com.weilok.rssocto.viewmodel.FeedViewModel
 
 @AndroidEntryPoint
 class AddFeedFragment : Fragment(R.layout.fragment_add_feed) {

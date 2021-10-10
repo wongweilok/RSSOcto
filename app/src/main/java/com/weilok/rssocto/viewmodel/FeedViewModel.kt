@@ -25,13 +25,14 @@ import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.weilok.rssocto.data.AppRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import java.util.*
 import javax.inject.Inject
+
+import com.weilok.rssocto.data.AppRepository
 
 @HiltViewModel
 class FeedViewModel @Inject constructor(
@@ -44,8 +45,10 @@ class FeedViewModel @Inject constructor(
 
     @Bindable
     val inputUrl = MutableLiveData<String>()
+
     @Bindable
     val urlValidation = MutableLiveData<String>()
+
     @Bindable
     val feedType = MutableLiveData<String>()
 
@@ -94,7 +97,7 @@ class FeedViewModel @Inject constructor(
 
     fun afterTextChanged() {
         timer = Timer()
-        timer.schedule(object: TimerTask() {
+        timer.schedule(object : TimerTask() {
             override fun run() {
                 viewModelScope.launch(Dispatchers.IO) {
                     repo.fetchFeedType(
