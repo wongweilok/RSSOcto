@@ -26,12 +26,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.weilok.rssocto.data.AppRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import java.util.*
+import javax.inject.Inject
 
-class FeedViewModel(private val repo: AppRepository) : ViewModel(), Observable {
+@HiltViewModel
+class FeedViewModel @Inject constructor(
+    private val repo: AppRepository
+) : ViewModel(), Observable {
     val remoteAtomFeed = repo.atomFeedLiveData
     val remoteRssFeed = repo.rssFeedLiveData
     val feeds = repo.localFeeds

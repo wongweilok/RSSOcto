@@ -23,6 +23,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.weilok.rssocto.data.local.entities.Feed
 import com.weilok.rssocto.data.local.entities.FeedWithEntry
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FeedDao {
@@ -45,5 +46,5 @@ interface FeedDao {
     suspend fun getFeedWithEntry(id: String): List<FeedWithEntry>
 
     @Query("SELECT * FROM feed_table")
-    fun getAllFeed(): LiveData<List<Feed>>
+    fun getAllFeed(): Flow<List<Feed>>
 }

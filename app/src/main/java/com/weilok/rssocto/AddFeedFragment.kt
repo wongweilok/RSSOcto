@@ -23,6 +23,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.weilok.rssocto.data.AppRepository
@@ -30,29 +31,22 @@ import com.weilok.rssocto.data.local.AppDatabase
 import com.weilok.rssocto.databinding.FragmentAddFeedBinding
 import com.weilok.rssocto.viewmodel.FeedViewModel
 import com.weilok.rssocto.viewmodel.FeedViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
+@AndroidEntryPoint
 class AddFeedFragment : Fragment(R.layout.fragment_add_feed) {
     private lateinit var binding: FragmentAddFeedBinding
-    private lateinit var feedViewModel: FeedViewModel
+
+    private val feedViewModel: FeedViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         // Initialize binding for current view
         binding = FragmentAddFeedBinding.bind(view)
-
-        // Initialize database
-        val feedDao = AppDatabase.getInstance(requireContext()).feedDao
-        val entryDao = AppDatabase.getInstance(requireContext()).entryDao
-
-        val repo = AppRepository(feedDao, entryDao)
-        val factory = FeedViewModelFactory(repo)
-
-        // Initialize FeedViewModel
-        feedViewModel = ViewModelProvider(requireActivity(), factory)
-            .get(FeedViewModel::class.java)
 
         binding.feedVM = feedViewModel
         binding.lifecycleOwner = activity
@@ -67,6 +61,7 @@ class AddFeedFragment : Fragment(R.layout.fragment_add_feed) {
 
             runBlocking {
                 launch {
+                    delay(1000L)
                     val action = AddFeedFragmentDirections.actionAddFeedFragmentToFeedListFragment()
                     findNavController().navigate(action)
                 }

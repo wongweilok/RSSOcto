@@ -23,36 +23,25 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.weilok.rssocto.adapter.FeedAdapter
-import com.weilok.rssocto.data.AppRepository
-import com.weilok.rssocto.data.local.AppDatabase
 import com.weilok.rssocto.databinding.FragmentFeedListBinding
 import com.weilok.rssocto.viewmodel.FeedViewModel
-import com.weilok.rssocto.viewmodel.FeedViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class FeedListFragment : Fragment(R.layout.fragment_feed_list) {
     private lateinit var binding: FragmentFeedListBinding
-    private lateinit var feedViewModel: FeedViewModel
+
+    private val feedViewModel: FeedViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         // Initialize binding for current view
         binding = FragmentFeedListBinding.bind(view)
-
-        // Initialize database
-        val feedDao = AppDatabase.getInstance(requireContext()).feedDao
-        val entryDao = AppDatabase.getInstance(requireContext()).entryDao
-
-        val repo = AppRepository(feedDao, entryDao)
-        val factory = FeedViewModelFactory(repo)
-
-        // Initialize FeedListViewModel
-        feedViewModel = ViewModelProvider(requireActivity(), factory)
-            .get(FeedViewModel::class.java)
 
         initRecyclerView()
         initEmptyLayoutBtn()
@@ -82,12 +71,5 @@ class FeedListFragment : Fragment(R.layout.fragment_feed_list) {
             val action = FeedListFragmentDirections.actionFeedListFragmentToAddFeedFragment()
             findNavController().navigate(action)
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        binding.rvFeedList.visibility = View.VISIBLE
-        binding.emptyDataLayout.root.visibility = View.GONE
     }
 }
