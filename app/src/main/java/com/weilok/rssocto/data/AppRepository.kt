@@ -36,7 +36,8 @@ import com.weilok.rssocto.services.Validator
 
 class AppRepository @Inject constructor(
     private val feedDao: FeedDao,
-    private val entryDao: EntryDao
+    private val entryDao: EntryDao,
+    private val fetcher: Fetcher
 ) {
     // Local data
     val localFeeds = feedDao.getAllFeed().asLiveData()
@@ -62,9 +63,7 @@ class AppRepository @Inject constructor(
 
     suspend fun fetchAtomFeed(url: String) {
         // Fetch Atom Feed from web
-        val response = Fetcher
-            .getInstance()
-            .getAtomFeed(url)
+        val response = fetcher.getAtomFeed(url)
 
         val entryList: List<AtomFeed.AtomEntry> = response.entryList!!
 
@@ -89,9 +88,7 @@ class AppRepository @Inject constructor(
 
     suspend fun fetchRssFeed(url: String) {
         // Fetch RSS Feed from web
-        val response = Fetcher
-            .getInstance()
-            .getRssFeed(url)
+        val response = fetcher.getRssFeed(url)
 
         val entryList: List<RssFeed.RssEntry> = response.entryList!!
 
