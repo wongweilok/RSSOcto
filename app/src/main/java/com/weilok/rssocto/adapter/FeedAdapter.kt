@@ -21,18 +21,14 @@ package com.weilok.rssocto.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
 import com.weilok.rssocto.data.local.entities.Feed
 import com.weilok.rssocto.databinding.FeedItemListBinding
 
-class FeedAdapter(private val feedList: List<Feed>) : RecyclerView.Adapter<FeedAdapter.FeedViewHolder>() {
-    class FeedViewHolder(private val binding: FeedItemListBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(feed: Feed) {
-            binding.tvFeedTitle.text = feed.title
-        }
-    }
-
+class FeedAdapter : ListAdapter<Feed, FeedAdapter.FeedViewHolder>(DiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = FeedItemListBinding
@@ -42,10 +38,22 @@ class FeedAdapter(private val feedList: List<Feed>) : RecyclerView.Adapter<FeedA
     }
 
     override fun onBindViewHolder(holder: FeedViewHolder, position: Int) {
-        holder.bind(feedList[position])
+        holder.bind(getItem(position))
     }
 
-    override fun getItemCount(): Int {
-        return feedList.size
+    class FeedViewHolder(private val binding: FeedItemListBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(feed: Feed) {
+            binding.tvFeedTitle.text = feed.title
+        }
+    }
+
+    class DiffCallback : DiffUtil.ItemCallback<Feed>() {
+        override fun areItemsTheSame(oldItem: Feed, newItem: Feed): Boolean {
+            return oldItem.url == newItem.url
+        }
+
+        override fun areContentsTheSame(oldItem: Feed, newItem: Feed): Boolean {
+            return oldItem == newItem
+        }
     }
 }
