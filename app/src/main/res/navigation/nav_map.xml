@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/addFeedFragment"
-        android:name="com.weilok.rssocto.AddFeedFragment"
+        android:name="com.weilok.rssocto.ui.AddFeedFragment"
         android:label="fragment_add_feed"
         tools:layout="@layout/fragment_add_feed" >
         <action
@@ -18,7 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/feedListFragment"
-        android:name="com.weilok.rssocto.FeedListFragment"
+        android:name="com.weilok.rssocto.ui.FeedListFragment"
         android:label="fragment_feed_list"
         tools:layout="@layout/fragment_feed_list" >
         <action

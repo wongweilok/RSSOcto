@@ -17,10 +17,11 @@
     along with this RSSOcto.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-package com.weilok.rssocto
+package com.weilok.rssocto.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.weilok.rssocto.R
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
