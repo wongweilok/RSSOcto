@@ -17,7 +17,7 @@
     along with this RSSOcto.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-package com.weilok.rssocto
+package com.weilok.rssocto.ui
 
 import android.os.Bundle
 import android.util.Log
@@ -30,6 +30,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
+import com.weilok.rssocto.R
 import com.weilok.rssocto.databinding.FragmentAddFeedBinding
 import com.weilok.rssocto.viewmodel.FeedViewModel
 

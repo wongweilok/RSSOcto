@@ -17,7 +17,7 @@
     along with this RSSOcto.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-package com.weilok.rssocto
+package com.weilok.rssocto.ui
 
 import android.os.Bundle
 import android.util.Log
@@ -28,6 +28,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 
+import com.weilok.rssocto.R
 import com.weilok.rssocto.adapter.FeedAdapter
 import com.weilok.rssocto.databinding.FragmentFeedListBinding
 import com.weilok.rssocto.viewmodel.FeedViewModel
