@@ -50,11 +50,14 @@ class FeedListFragment : Fragment(R.layout.fragment_feed_list) {
     }
 
     private fun initRecyclerView() {
+        val feedAdapter = FeedAdapter()
+
+        binding.rvFeedList.adapter = feedAdapter
         binding.rvFeedList.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvFeedList.setHasFixedSize(true)
 
         feedViewModel.feeds.observe(viewLifecycleOwner, {
             Log.i("LocalFeeds", it.toString())
-            binding.rvFeedList.adapter = FeedAdapter(it)
 
             // Display different layout when data is empty
             if (it.isEmpty()) {
@@ -64,6 +67,8 @@ class FeedListFragment : Fragment(R.layout.fragment_feed_list) {
                 binding.rvFeedList.visibility = View.VISIBLE
                 binding.emptyDataLayout.root.visibility = View.GONE
             }
+
+            feedAdapter.submitList(it)
         })
     }
 
