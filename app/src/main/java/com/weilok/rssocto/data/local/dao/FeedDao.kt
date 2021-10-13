@@ -45,6 +45,6 @@ interface FeedDao {
     @Query("SELECT * FROM feed_table WHERE feed_url = :id")
     suspend fun getFeedWithEntry(id: String): List<FeedWithEntry>
 
-    @Query("SELECT * FROM feed_table")
+    @Query("SELECT * FROM feed_table ORDER BY feed_title ASC")
     fun getAllFeed(): Flow<List<Feed>>
 }

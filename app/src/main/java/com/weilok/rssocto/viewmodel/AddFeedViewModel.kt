@@ -1,3 +1,22 @@
+/*
+    Copyright (C) 2021 Wong Wei Lok <wongweilok@disroot.org>
+
+    This file is part of RSSOcto
+
+    RSSOcto is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    RSSOcto is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this RSSOcto.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
 package com.weilok.rssocto.viewmodel
 
 import androidx.databinding.Bindable
@@ -6,13 +25,17 @@ import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.weilok.rssocto.data.AppRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import java.util.*
 import javax.inject.Inject
+
+import com.weilok.rssocto.data.AppRepository
+import com.weilok.rssocto.ui.ADD_FEED_RESULT_OK
 
 @HiltViewModel
 class AddFeedViewModel @Inject constructor(
@@ -42,14 +65,16 @@ class AddFeedViewModel @Inject constructor(
     }
 
     private fun fetchAtomFeed(url: String) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             repo.fetchAtomFeed(url)
+            addFeedEventChannel.send(AddFeedEvent.AddAndNavigateBack(ADD_FEED_RESULT_OK))
         }
     }
 
     private fun fetchRssFeed(url: String) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             repo.fetchRssFeed(url)
+            addFeedEventChannel.send(AddFeedEvent.AddAndNavigateBack(ADD_FEED_RESULT_OK))
         }
     }
 
@@ -88,5 +113,13 @@ class AddFeedViewModel @Inject constructor(
                 }
             }
         }, delay)
+    }
+
+    // Channel & Events
+    private val addFeedEventChannel = Channel<AddFeedEvent>()
+    val addFeedEvent = addFeedEventChannel.receiveAsFlow()
+
+    sealed class AddFeedEvent {
+        data class AddAndNavigateBack(val result: Int) : AddFeedEvent()
     }
 }
