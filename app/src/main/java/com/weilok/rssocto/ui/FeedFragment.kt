@@ -45,8 +45,15 @@ class FeedFragment : Fragment(R.layout.fragment_feed) {
         // Initialize binding for current view
         binding = FragmentFeedBinding.bind(view)
 
+        initButton()
         initRecyclerView()
-        initEmptyLayoutBtn()
+    }
+
+    private fun initButton() {
+        binding.fabAddFeed.setOnClickListener {
+            val action = FeedFragmentDirections.actionFeedFragmentToAddFeedFragment()
+            findNavController().navigate(action)
+        }
     }
 
     private fun initRecyclerView() {
@@ -62,21 +69,13 @@ class FeedFragment : Fragment(R.layout.fragment_feed) {
             // Display different layout when data is empty
             if (it.isEmpty()) {
                 binding.rvFeedList.visibility = View.GONE
-                binding.emptyDataLayout.root.visibility = View.VISIBLE
+                binding.tvNoFeed.visibility = View.VISIBLE
             } else {
                 binding.rvFeedList.visibility = View.VISIBLE
-                binding.emptyDataLayout.root.visibility = View.GONE
+                binding.tvNoFeed.visibility = View.GONE
             }
 
             feedAdapter.submitList(it)
         })
-    }
-
-    private fun initEmptyLayoutBtn() {
-        // Navigate to AddFeedFragment
-        binding.emptyDataLayout.btnAddFeed.setOnClickListener {
-            val action = FeedFragmentDirections.actionFeedFragmentToAddFeedFragment()
-            findNavController().navigate(action)
-        }
     }
 }

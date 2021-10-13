@@ -2,7 +2,7 @@
     <string name="app_name">RSSOcto</string>
 
     <!-- TextView -->
-    <string name="no_feed_message">You are not subscribe to any feed.</string>
+    <string name="no_feed_message">Your feed subscription is empty.</string>
 
     <!-- Button -->
     <string name="btn_add_feed">Add Feed</string>
