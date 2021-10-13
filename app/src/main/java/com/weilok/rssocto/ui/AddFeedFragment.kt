@@ -60,7 +60,7 @@ class AddFeedFragment : Fragment(R.layout.fragment_add_feed) {
             runBlocking {
                 launch {
                     delay(1000L)
-                    val action = AddFeedFragmentDirections.actionAddFeedFragmentToFeedListFragment()
+                    val action = AddFeedFragmentDirections.actionAddFeedFragmentToFeedFragment()
                     findNavController().navigate(action)
                 }
             }
