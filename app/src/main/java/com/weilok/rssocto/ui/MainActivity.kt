@@ -19,6 +19,7 @@
 
 package com.weilok.rssocto.ui
 
+import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.weilok.rssocto.R
@@ -31,3 +32,5 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
     }
 }
+
+const val ADD_FEED_RESULT_OK = Activity.RESULT_FIRST_USER

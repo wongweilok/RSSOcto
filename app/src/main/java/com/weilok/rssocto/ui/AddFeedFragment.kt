@@ -22,10 +22,14 @@ package com.weilok.rssocto.ui
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 
 import com.weilok.rssocto.R
 import com.weilok.rssocto.databinding.FragmentAddFeedBinding
@@ -48,6 +52,23 @@ class AddFeedFragment : Fragment(R.layout.fragment_add_feed) {
 
         initButtons()
         initFeedObserver()
+
+        // Collect Signal from Event Channel
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            addFeedViewModel.addFeedEvent.collect { event ->
+                when (event) {
+                    is AddFeedViewModel.AddFeedEvent.AddAndNavigateBack -> {
+                        binding.etFeedUrl.clearFocus()
+                        // Send request to other fragment
+                        setFragmentResult(
+                            "add_feed_request",
+                            bundleOf("add_feed_result" to event.result)
+                        )
+                        findNavController().popBackStack()
+                    }
+                }
+            }
+        }
     }
 
     private fun initButtons() {

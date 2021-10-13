@@ -23,10 +23,14 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 
 import com.weilok.rssocto.R
 import com.weilok.rssocto.adapter.FeedAdapter
@@ -47,6 +51,27 @@ class FeedFragment : Fragment(R.layout.fragment_feed) {
 
         initButton()
         initRecyclerView()
+
+        // Receive request from other fragment
+        setFragmentResultListener("add_feed_request") { _, bundle ->
+            val result = bundle.getInt("add_feed_result")
+            feedViewModel.onAddFeedResult(result)
+        }
+
+        // Collect Signal from Event Channel
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            feedViewModel.feedEvent.collect { event ->
+                when (event) {
+                    is FeedViewModel.FeedEvent.ShowFeedAddedMessage -> {
+                        Snackbar.make(requireView(), event.message, Snackbar.LENGTH_SHORT).show()
+                        if (binding.tvNoFeed.visibility == View.VISIBLE) {
+                            binding.rvFeedList.visibility = View.VISIBLE
+                            binding.tvNoFeed.visibility = View.GONE
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun initButton() {
@@ -63,19 +88,16 @@ class FeedFragment : Fragment(R.layout.fragment_feed) {
         binding.rvFeedList.layoutManager = LinearLayoutManager(requireContext())
         binding.rvFeedList.setHasFixedSize(true)
 
-        feedViewModel.feeds.observe(viewLifecycleOwner, {
-            Log.i("LocalFeeds", it.toString())
+        feedViewModel.feeds.observe(viewLifecycleOwner) { list ->
+            Log.i("LocalFeeds", list.toString())
 
             // Display different layout when data is empty
-            if (it.isEmpty()) {
+            if (list.isEmpty()) {
                 binding.rvFeedList.visibility = View.GONE
                 binding.tvNoFeed.visibility = View.VISIBLE
-            } else {
-                binding.rvFeedList.visibility = View.VISIBLE
-                binding.tvNoFeed.visibility = View.GONE
             }
 
-            feedAdapter.submitList(it)
-        })
+            feedAdapter.submitList(list)
+        }
     }
 }

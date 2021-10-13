@@ -19,33 +19,47 @@
 
 package com.weilok.rssocto.viewmodel
 
-import androidx.databinding.Bindable
 import androidx.databinding.Observable
-import androidx.databinding.ObservableBoolean
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.OkHttpClient
-import java.util.*
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 import javax.inject.Inject
 
 import com.weilok.rssocto.data.AppRepository
+import com.weilok.rssocto.ui.ADD_FEED_RESULT_OK
 
 @HiltViewModel
 class FeedViewModel @Inject constructor(
     private val repo: AppRepository
 ) : ViewModel(), Observable {
-    val remoteAtomFeed = repo.atomFeedLiveData
-    val remoteRssFeed = repo.rssFeedLiveData
     val feeds = repo.localFeeds
-    val entries = repo.localEntries
 
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
     }
 
     override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
+    }
+
+    fun onAddFeedResult(result: Int) {
+        when (result) {
+            ADD_FEED_RESULT_OK -> showFeedAddedMessage("Feed Added Successfully.")
+        }
+    }
+
+    private fun showFeedAddedMessage(message: String) {
+        viewModelScope.launch {
+            feedEventChannel.send(FeedEvent.ShowFeedAddedMessage(message))
+        }
+    }
+
+    // Channel & Events
+    private val feedEventChannel = Channel<FeedEvent>()
+    val feedEvent = feedEventChannel.receiveAsFlow()
+
+    sealed class FeedEvent {
+        data class ShowFeedAddedMessage(val message: String) : FeedEvent()
     }
 }
