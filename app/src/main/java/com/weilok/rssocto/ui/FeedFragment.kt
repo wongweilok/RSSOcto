@@ -30,12 +30,12 @@ import dagger.hilt.android.AndroidEntryPoint
 
 import com.weilok.rssocto.R
 import com.weilok.rssocto.adapter.FeedAdapter
-import com.weilok.rssocto.databinding.FragmentFeedListBinding
+import com.weilok.rssocto.databinding.FragmentFeedBinding
 import com.weilok.rssocto.viewmodel.FeedViewModel
 
 @AndroidEntryPoint
-class FeedListFragment : Fragment(R.layout.fragment_feed_list) {
-    private lateinit var binding: FragmentFeedListBinding
+class FeedFragment : Fragment(R.layout.fragment_feed) {
+    private lateinit var binding: FragmentFeedBinding
 
     private val feedViewModel: FeedViewModel by viewModels()
 
@@ -43,7 +43,7 @@ class FeedListFragment : Fragment(R.layout.fragment_feed_list) {
         super.onViewCreated(view, savedInstanceState)
 
         // Initialize binding for current view
-        binding = FragmentFeedListBinding.bind(view)
+        binding = FragmentFeedBinding.bind(view)
 
         initRecyclerView()
         initEmptyLayoutBtn()
@@ -75,7 +75,7 @@ class FeedListFragment : Fragment(R.layout.fragment_feed_list) {
     private fun initEmptyLayoutBtn() {
         // Navigate to AddFeedFragment
         binding.emptyDataLayout.btnAddFeed.setOnClickListener {
-            val action = FeedListFragmentDirections.actionFeedListFragmentToAddFeedFragment()
+            val action = FeedFragmentDirections.actionFeedFragmentToAddFeedFragment()
             findNavController().navigate(action)
         }
     }
