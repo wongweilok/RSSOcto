@@ -26,19 +26,16 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 import com.weilok.rssocto.R
 import com.weilok.rssocto.databinding.FragmentAddFeedBinding
-import com.weilok.rssocto.viewmodel.FeedViewModel
+import com.weilok.rssocto.viewmodel.AddFeedViewModel
 
 @AndroidEntryPoint
 class AddFeedFragment : Fragment(R.layout.fragment_add_feed) {
     private lateinit var binding: FragmentAddFeedBinding
 
-    private val feedViewModel: FeedViewModel by viewModels()
+    private val addFeedViewModel: AddFeedViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -46,7 +43,7 @@ class AddFeedFragment : Fragment(R.layout.fragment_add_feed) {
         // Initialize binding for current view
         binding = FragmentAddFeedBinding.bind(view)
 
-        binding.feedVM = feedViewModel
+        binding.addFeedVM = addFeedViewModel
         binding.lifecycleOwner = activity
 
         initButtons()
@@ -55,37 +52,17 @@ class AddFeedFragment : Fragment(R.layout.fragment_add_feed) {
 
     private fun initButtons() {
         binding.btnAdd.setOnClickListener {
-            feedViewModel.getFeed()
-
-            runBlocking {
-                launch {
-                    delay(1000L)
-                    val action = AddFeedFragmentDirections.actionAddFeedFragmentToFeedFragment()
-                    findNavController().navigate(action)
-                }
-            }
+            addFeedViewModel.getFeed()
         }
     }
 
     private fun initFeedObserver() {
         // Observe fetched data from Logcat for now
-        feedViewModel.remoteAtomFeed.observe(viewLifecycleOwner) {
-            Log.i("AtomFeed", it.toString())
-        }
-
-        feedViewModel.remoteRssFeed.observe(viewLifecycleOwner) {
-            Log.i("RssFeed", it.toString())
-        }
-
-        feedViewModel.feeds.observe(viewLifecycleOwner) {
+        addFeedViewModel.feeds.observe(viewLifecycleOwner) {
             Log.i("LocalFeed", it.toString())
         }
 
-        feedViewModel.entries.observe(viewLifecycleOwner) {
-            Log.i("LocalEntry", it.toString())
-        }
-
-        feedViewModel.feedType.observe(viewLifecycleOwner) {
+        addFeedViewModel.feedType.observe(viewLifecycleOwner) {
             Log.i("UrlValid", it.toString())
         }
     }

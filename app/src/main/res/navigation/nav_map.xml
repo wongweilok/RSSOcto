@@ -9,11 +9,7 @@
         android:id="@+id/addFeedFragment"
         android:name="com.weilok.rssocto.ui.AddFeedFragment"
         android:label="fragment_add_feed"
-        tools:layout="@layout/fragment_add_feed" >
-        <action
-            android:id="@+id/action_addFeedFragment_to_feedFragment"
-            app:destination="@id/feedFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_add_feed" />
     <fragment
         android:id="@+id/feedFragment"
         android:name="com.weilok.rssocto.ui.FeedFragment"

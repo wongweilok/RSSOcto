@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="feedVM"
-            type="com.weilok.rssocto.viewmodel.FeedViewModel" />
+            name="addFeedVM"
+            type="com.weilok.rssocto.viewmodel.AddFeedViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,12 +21,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
             android:layout_marginEnd="25dp"
-            android:afterTextChanged="@{()->feedVM.afterTextChanged()}"
+            android:afterTextChanged="@{()->addFeedVM.afterTextChanged()}"
             android:ems="10"
             android:hint="@string/et_feed_url_hint"
             android:inputType="textPersonName"
-            android:onTextChanged="@{()->feedVM.onTextChanged()}"
-            android:text="@={feedVM.inputUrl}"
+            android:onTextChanged="@{()->addFeedVM.onTextChanged()}"
+            android:text="@={addFeedVM.inputUrl}"
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@+id/tvUrlValidation"
             app:layout_constraintEnd_toEndOf="parent"
@@ -39,7 +39,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="32dp"
-            android:text="@={feedVM.urlValidation}"
+            android:text="@={addFeedVM.urlValidation}"
             android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@+id/btnAdd"
             app:layout_constraintEnd_toEndOf="@+id/etFeedUrl"
@@ -55,7 +55,7 @@
             android:layout_marginEnd="32dp"
             android:layout_marginBottom="75dp"
             android:text="@string/btn_add"
-            android:enabled="@{feedVM.isUrlValid() &amp;&amp; !feedVM.isFeedExist()}"
+            android:enabled="@{addFeedVM.isUrlValid() &amp;&amp; !addFeedVM.isFeedExist()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/etFeedUrl"
             app:layout_constraintStart_toStartOf="@+id/etFeedUrl"
