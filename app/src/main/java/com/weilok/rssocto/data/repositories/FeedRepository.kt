@@ -17,7 +17,7 @@
     along with this RSSOcto.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-package com.weilok.rssocto.data
+package com.weilok.rssocto.data.repositories
 
 import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.MutableLiveData
@@ -34,7 +34,7 @@ import com.weilok.rssocto.data.remote.RssFeed
 import com.weilok.rssocto.services.Fetcher
 import com.weilok.rssocto.services.Validator
 
-class AppRepository @Inject constructor(
+class FeedRepository @Inject constructor(
     private val feedDao: FeedDao,
     private val entryDao: EntryDao,
     private val fetcher: Fetcher

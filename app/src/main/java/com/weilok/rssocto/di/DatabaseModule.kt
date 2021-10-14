@@ -27,8 +27,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-import com.weilok.rssocto.data.AppRepository
-import com.weilok.rssocto.data.local.AppDatabase
+import com.weilok.rssocto.data.repositories.FeedRepository
+import com.weilok.rssocto.data.AppDatabase
 import com.weilok.rssocto.data.local.dao.EntryDao
 import com.weilok.rssocto.data.local.dao.FeedDao
 import com.weilok.rssocto.services.Fetcher
@@ -55,9 +55,9 @@ object DatabaseModule {
     }
 
     @Provides
-    fun provideRepository(
+    fun provideFeedRepository(
         feedDao: FeedDao, entryDao: EntryDao, fetcher: Fetcher
-    ): AppRepository {
-        return AppRepository(feedDao, entryDao, fetcher)
+    ): FeedRepository {
+        return FeedRepository(feedDao, entryDao, fetcher)
     }
 }

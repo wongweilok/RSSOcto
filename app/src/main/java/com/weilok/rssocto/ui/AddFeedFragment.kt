@@ -20,7 +20,6 @@
 package com.weilok.rssocto.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -33,7 +32,7 @@ import kotlinx.coroutines.flow.collect
 
 import com.weilok.rssocto.R
 import com.weilok.rssocto.databinding.FragmentAddFeedBinding
-import com.weilok.rssocto.viewmodel.AddFeedViewModel
+import com.weilok.rssocto.viewmodels.AddFeedViewModel
 
 @AndroidEntryPoint
 class AddFeedFragment : Fragment(R.layout.fragment_add_feed) {

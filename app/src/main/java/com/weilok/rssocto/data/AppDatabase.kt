@@ -17,7 +17,7 @@
     along with this RSSOcto.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-package com.weilok.rssocto.data.local
+package com.weilok.rssocto.data
 
 import android.content.Context
 import androidx.room.Database
