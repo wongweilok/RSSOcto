@@ -7,7 +7,7 @@
 
         <variable
             name="addFeedVM"
-            type="com.weilok.rssocto.viewmodel.AddFeedViewModel" />
+            type="com.weilok.rssocto.viewmodels.AddFeedViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

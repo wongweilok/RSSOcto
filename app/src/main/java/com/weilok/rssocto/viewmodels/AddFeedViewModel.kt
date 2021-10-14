@@ -17,7 +17,7 @@
     along with this RSSOcto.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-package com.weilok.rssocto.viewmodel
+package com.weilok.rssocto.viewmodels
 
 import androidx.databinding.Bindable
 import androidx.databinding.Observable
@@ -34,12 +34,12 @@ import okhttp3.OkHttpClient
 import java.util.*
 import javax.inject.Inject
 
-import com.weilok.rssocto.data.AppRepository
+import com.weilok.rssocto.data.repositories.FeedRepository
 import com.weilok.rssocto.ui.ADD_FEED_RESULT_OK
 
 @HiltViewModel
 class AddFeedViewModel @Inject constructor(
-    private val repo: AppRepository
+    private val repo: FeedRepository
 ) : ViewModel(), Observable {
     val feeds = repo.localFeeds
 
