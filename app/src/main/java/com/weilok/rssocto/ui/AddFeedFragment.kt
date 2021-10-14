@@ -51,7 +51,6 @@ class AddFeedFragment : Fragment(R.layout.fragment_add_feed) {
         binding.lifecycleOwner = activity
 
         initButtons()
-        initFeedObserver()
 
         // Collect Signal from Event Channel
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
@@ -74,17 +73,6 @@ class AddFeedFragment : Fragment(R.layout.fragment_add_feed) {
     private fun initButtons() {
         binding.btnAdd.setOnClickListener {
             addFeedViewModel.getFeed()
-        }
-    }
-
-    private fun initFeedObserver() {
-        // Observe fetched data from Logcat for now
-        addFeedViewModel.feeds.observe(viewLifecycleOwner) {
-            Log.i("LocalFeed", it.toString())
-        }
-
-        addFeedViewModel.feedType.observe(viewLifecycleOwner) {
-            Log.i("UrlValid", it.toString())
         }
     }
 }

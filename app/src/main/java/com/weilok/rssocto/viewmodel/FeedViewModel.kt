@@ -19,7 +19,6 @@
 
 package com.weilok.rssocto.viewmodel
 
-import androidx.databinding.Observable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,14 +33,8 @@ import com.weilok.rssocto.ui.ADD_FEED_RESULT_OK
 @HiltViewModel
 class FeedViewModel @Inject constructor(
     private val repo: AppRepository
-) : ViewModel(), Observable {
+) : ViewModel() {
     val feeds = repo.localFeeds
-
-    override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
-    }
-
-    override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
-    }
 
     fun onAddFeedResult(result: Int) {
         when (result) {

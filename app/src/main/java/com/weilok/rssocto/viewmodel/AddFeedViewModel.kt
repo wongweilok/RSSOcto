@@ -45,10 +45,8 @@ class AddFeedViewModel @Inject constructor(
 
     @Bindable
     val inputUrl = MutableLiveData<String>()
-
     @Bindable
     val urlValidation = MutableLiveData<String>()
-
     @Bindable
     val feedType = MutableLiveData<String>()
 
@@ -61,7 +59,7 @@ class AddFeedViewModel @Inject constructor(
             "ATOM" -> fetchAtomFeed(url)
         }
 
-        inputUrl.value = ""
+        isFeedExist.set(true)
     }
 
     private fun fetchAtomFeed(url: String) {
