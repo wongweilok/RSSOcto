@@ -31,6 +31,7 @@ import com.weilok.rssocto.data.repositories.FeedRepository
 import com.weilok.rssocto.data.AppDatabase
 import com.weilok.rssocto.data.local.dao.EntryDao
 import com.weilok.rssocto.data.local.dao.FeedDao
+import com.weilok.rssocto.data.repositories.EntryRepository
 import com.weilok.rssocto.services.Fetcher
 
 @Module
@@ -56,8 +57,15 @@ object DatabaseModule {
 
     @Provides
     fun provideFeedRepository(
-        feedDao: FeedDao, entryDao: EntryDao, fetcher: Fetcher
+        feedDao: FeedDao, fetcher: Fetcher
     ): FeedRepository {
-        return FeedRepository(feedDao, entryDao, fetcher)
+        return FeedRepository(feedDao, fetcher)
+    }
+
+    @Provides
+    fun provideEntryRepository(
+        entryDao: EntryDao
+    ): EntryRepository {
+        return EntryRepository(entryDao)
     }
 }

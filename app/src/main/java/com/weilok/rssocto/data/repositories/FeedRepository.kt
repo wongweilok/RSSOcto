@@ -25,9 +25,7 @@ import androidx.lifecycle.asLiveData
 import okhttp3.OkHttpClient
 import javax.inject.Inject
 
-import com.weilok.rssocto.data.local.dao.EntryDao
 import com.weilok.rssocto.data.local.dao.FeedDao
-import com.weilok.rssocto.data.local.entities.Entry
 import com.weilok.rssocto.data.local.entities.Feed
 import com.weilok.rssocto.data.remote.AtomFeed
 import com.weilok.rssocto.data.remote.RssFeed
@@ -36,12 +34,10 @@ import com.weilok.rssocto.services.Validator
 
 class FeedRepository @Inject constructor(
     private val feedDao: FeedDao,
-    private val entryDao: EntryDao,
     private val fetcher: Fetcher
 ) {
     // Local data
     val localFeeds = feedDao.getAllFeed().asLiveData()
-    val localEntries = entryDao.getAllEntry()
 
     // Feed
     suspend fun insertFeed(feed: Feed) {
@@ -52,63 +48,13 @@ class FeedRepository @Inject constructor(
         return feedDao.checkFeedExist(id)
     }
 
-    // Entry
-    suspend fun insertEntry(entry: Entry) {
-        entryDao.insertEntry(entry)
+    // Get remote data
+    suspend fun fetchAtomFeed(url: String) : AtomFeed {
+        return fetcher.getAtomFeed(url)
     }
 
-    // Remote data
-    val atomFeedLiveData: MutableLiveData<AtomFeed> = MutableLiveData()
-    val rssFeedLiveData: MutableLiveData<RssFeed> = MutableLiveData()
-
-    suspend fun fetchAtomFeed(url: String) {
-        // Fetch Atom Feed from web
-        val response = fetcher.getAtomFeed(url)
-
-        val entryList: List<AtomFeed.AtomEntry> = response.entryList!!
-
-        // Add Feed and Entry data into local database
-        insertFeed(Feed(url, response.url!!, response.title!!))
-        for (i in entryList.indices) {
-            insertEntry(
-                Entry(
-                    entryList[i].url!!,
-                    entryList[i].title!!,
-                    entryList[i].date!!,
-                    entryList[i].author!!,
-                    entryList[i].content!!,
-                    false,
-                    url
-                )
-            )
-        }
-
-        atomFeedLiveData.postValue(response)
-    }
-
-    suspend fun fetchRssFeed(url: String) {
-        // Fetch RSS Feed from web
-        val response = fetcher.getRssFeed(url)
-
-        val entryList: List<RssFeed.RssEntry> = response.entryList!!
-
-        // Add Feed and Entry data into local database
-        insertFeed(Feed(url, response.urlList?.get(0)!!.url!!, response.title!!))
-        for (i in entryList.indices) {
-            insertEntry(
-                Entry(
-                    entryList[i].url!!,
-                    entryList[i].title!!,
-                    entryList[i].date!!,
-                    entryList[i].author!!,
-                    entryList[i].content!!,
-                    false,
-                    url
-                )
-            )
-        }
-
-        rssFeedLiveData.postValue(response)
+    suspend fun fetchRssFeed(url: String) : RssFeed {
+        return fetcher.getRssFeed(url)
     }
 
     // Validate URL and get feed type
