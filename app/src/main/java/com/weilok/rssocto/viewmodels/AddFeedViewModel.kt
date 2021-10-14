@@ -25,6 +25,11 @@ import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.weilok.rssocto.data.local.entities.Entry
+import com.weilok.rssocto.data.local.entities.Feed
+import com.weilok.rssocto.data.remote.AtomFeed
+import com.weilok.rssocto.data.remote.RssFeed
+import com.weilok.rssocto.data.repositories.EntryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
@@ -39,10 +44,9 @@ import com.weilok.rssocto.ui.ADD_FEED_RESULT_OK
 
 @HiltViewModel
 class AddFeedViewModel @Inject constructor(
-    private val repo: FeedRepository
+    private val feedRepo: FeedRepository,
+    private val entryRepo: EntryRepository
 ) : ViewModel(), Observable {
-    val feeds = repo.localFeeds
-
     @Bindable
     val inputUrl = MutableLiveData<String>()
     @Bindable
@@ -64,14 +68,54 @@ class AddFeedViewModel @Inject constructor(
 
     private fun fetchAtomFeed(url: String) {
         viewModelScope.launch {
-            repo.fetchAtomFeed(url)
+            // Fetch Atom Feed from web
+            val response = feedRepo.fetchAtomFeed(url)
+
+            val entryList: List<AtomFeed.AtomEntry> = response.entryList!!
+
+            // Add Feed and Entry data into local database
+            feedRepo.insertFeed(Feed(url, response.url!!, response.title!!))
+            for (i in entryList.indices) {
+                entryRepo.insertEntry(
+                    Entry(
+                        entryList[i].url!!,
+                        entryList[i].title!!,
+                        entryList[i].date!!,
+                        entryList[i].author!!,
+                        entryList[i].content!!,
+                        false,
+                        url
+                    )
+                )
+            }
+
             addFeedEventChannel.send(AddFeedEvent.AddAndNavigateBack(ADD_FEED_RESULT_OK))
         }
     }
 
     private fun fetchRssFeed(url: String) {
         viewModelScope.launch {
-            repo.fetchRssFeed(url)
+            // Fetch RSS Feed from web
+            val response = feedRepo.fetchRssFeed(url)
+
+            val entryList: List<RssFeed.RssEntry> = response.entryList!!
+
+            // Add Feed and Entry data into local database
+            feedRepo.insertFeed(Feed(url, response.urlList?.get(0)!!.url!!, response.title!!))
+            for (i in entryList.indices) {
+                entryRepo.insertEntry(
+                    Entry(
+                        entryList[i].url!!,
+                        entryList[i].title!!,
+                        entryList[i].date!!,
+                        entryList[i].author!!,
+                        entryList[i].content!!,
+                        false,
+                        url
+                    )
+                )
+            }
+
             addFeedEventChannel.send(AddFeedEvent.AddAndNavigateBack(ADD_FEED_RESULT_OK))
         }
     }
@@ -100,7 +144,7 @@ class AddFeedViewModel @Inject constructor(
         timer.schedule(object : TimerTask() {
             override fun run() {
                 viewModelScope.launch(Dispatchers.IO) {
-                    repo.fetchFeedType(
+                    feedRepo.fetchFeedType(
                         inputUrl.value!!,
                         client,
                         urlValidation,
