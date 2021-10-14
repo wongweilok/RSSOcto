@@ -89,8 +89,6 @@ class FeedFragment : Fragment(R.layout.fragment_feed) {
         binding.rvFeedList.setHasFixedSize(true)
 
         feedViewModel.feeds.observe(viewLifecycleOwner) { list ->
-            Log.i("LocalFeeds", list.toString())
-
             // Display different layout when data is empty
             if (list.isEmpty()) {
                 binding.rvFeedList.visibility = View.GONE
