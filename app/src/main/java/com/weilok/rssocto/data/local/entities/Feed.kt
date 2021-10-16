@@ -19,10 +19,13 @@
 
 package com.weilok.rssocto.data.local.entities
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @Entity(tableName = "feed_table")
 data class Feed(
     @PrimaryKey
@@ -32,4 +35,4 @@ data class Feed(
     val source_url: String,
     @ColumnInfo(name = "feed_title")
     val title: String
-)
+) : Parcelable

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/ivEntryImage"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="8dp"
+            android:src="@android:drawable/ic_menu_gallery" />
+
+        <TextView
+            android:id="@+id/tvEntryTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:layout_toEndOf="@id/ivEntryImage"
+            android:text="Title"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvPubDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvEntryTitle"
+            android:layout_toEndOf="@id/ivEntryImage"
+            android:text="Published date" />
+
+        <TextView
+            android:id="@+id/tvFeedId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvEntryTitle"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp"
+            android:text="Feed ID" />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

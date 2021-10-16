@@ -21,6 +21,7 @@ package com.weilok.rssocto.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.weilok.rssocto.data.local.entities.Feed
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.channels.Channel
@@ -35,6 +36,10 @@ class FeedViewModel @Inject constructor(
     private val repo: FeedRepository
 ) : ViewModel() {
     val feeds = repo.localFeeds
+
+    fun onFeedClicked(feed: Feed) {
+        // Continue here
+    }
 
     fun onAddFeedResult(result: Int) {
         when (result) {

@@ -28,7 +28,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.weilok.rssocto.data.local.entities.Feed
 import com.weilok.rssocto.databinding.FeedItemListBinding
 
-class FeedAdapter : ListAdapter<Feed, FeedAdapter.FeedViewHolder>(DiffCallback()) {
+class FeedAdapter(
+    private val listener: OnFeedItemClickListener
+) : ListAdapter<Feed, FeedAdapter.FeedViewHolder>(DiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = FeedItemListBinding
@@ -41,10 +43,26 @@ class FeedAdapter : ListAdapter<Feed, FeedAdapter.FeedViewHolder>(DiffCallback()
         holder.bind(getItem(position))
     }
 
-    class FeedViewHolder(private val binding: FeedItemListBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class FeedViewHolder(private val binding: FeedItemListBinding) : RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.apply {
+                root.setOnClickListener {
+                    val position = adapterPosition
+                    if (position != RecyclerView.NO_POSITION) {
+                        val feed = getItem(position)
+                        listener.onFeedItemClick(feed)
+                    }
+                }
+            }
+        }
+
         fun bind(feed: Feed) {
             binding.tvFeedTitle.text = feed.title
         }
+    }
+
+    interface OnFeedItemClickListener {
+        fun onFeedItemClick(feed: Feed)
     }
 
     class DiffCallback : DiffUtil.ItemCallback<Feed>() {
