@@ -33,11 +33,12 @@ import kotlinx.coroutines.flow.collect
 
 import com.weilok.rssocto.R
 import com.weilok.rssocto.adapter.FeedAdapter
+import com.weilok.rssocto.data.local.entities.Feed
 import com.weilok.rssocto.databinding.FragmentFeedBinding
 import com.weilok.rssocto.viewmodels.FeedViewModel
 
 @AndroidEntryPoint
-class FeedFragment : Fragment(R.layout.fragment_feed) {
+class FeedFragment : Fragment(R.layout.fragment_feed), FeedAdapter.OnFeedItemClickListener {
     private lateinit var binding: FragmentFeedBinding
 
     private val feedViewModel: FeedViewModel by viewModels()
@@ -81,7 +82,7 @@ class FeedFragment : Fragment(R.layout.fragment_feed) {
     }
 
     private fun initRecyclerView() {
-        val feedAdapter = FeedAdapter()
+        val feedAdapter = FeedAdapter(this)
 
         binding.rvFeedList.adapter = feedAdapter
         binding.rvFeedList.layoutManager = LinearLayoutManager(requireContext())
@@ -96,5 +97,9 @@ class FeedFragment : Fragment(R.layout.fragment_feed) {
 
             feedAdapter.submitList(list)
         }
+    }
+
+    override fun onFeedItemClick(feed: Feed) {
+        feedViewModel.onFeedClicked(feed)
     }
 }

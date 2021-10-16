@@ -17,27 +17,13 @@
     along with this RSSOcto.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-package com.weilok.rssocto.data.local.dao
+package com.weilok.rssocto.ui
 
-import androidx.room.*
-import kotlinx.coroutines.flow.Flow
+import androidx.fragment.app.Fragment
+import dagger.hilt.android.AndroidEntryPoint
 
-import com.weilok.rssocto.data.local.entities.Entry
+import com.weilok.rssocto.R
 
-@Dao
-interface EntryDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertEntry(entry: Entry)
-
-    @Update
-    suspend fun updateEntry(entry: Entry)
-
-    @Delete
-    suspend fun deleteEntry(entry: Entry)
-
-    @Query("DELETE FROM entry_table")
-    suspend fun deleteAllEntry()
-
-    @Query("SELECT * FROM entry_table ORDER BY entry_pub_date")
-    fun getAllEntry(): Flow<List<Entry>>
+@AndroidEntryPoint
+class EntryFragment : Fragment(R.layout.fragment_entry) {
 }

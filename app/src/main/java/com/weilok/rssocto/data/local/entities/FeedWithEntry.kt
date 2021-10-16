@@ -19,9 +19,12 @@
 
 package com.weilok.rssocto.data.local.entities
 
+import android.os.Parcelable
 import androidx.room.Embedded
 import androidx.room.Relation
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class FeedWithEntry(
     @Embedded
     val feed: Feed,
@@ -30,4 +33,4 @@ data class FeedWithEntry(
         entityColumn = "feed_id"
     )
     val entries: List<Entry>
-)
+) : Parcelable
