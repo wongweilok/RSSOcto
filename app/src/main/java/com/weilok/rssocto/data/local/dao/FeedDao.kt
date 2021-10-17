@@ -43,7 +43,7 @@ interface FeedDao {
     suspend fun checkFeedExist(id: String): Boolean
 
     @Query("SELECT * FROM feed_table WHERE feed_url = :id")
-    suspend fun getFeedWithEntry(id: String): List<FeedWithEntry>
+    suspend fun getFeedWithEntry(id: String): FeedWithEntry
 
     @Query("SELECT * FROM feed_table ORDER BY feed_title ASC")
     fun getAllFeed(): Flow<List<Feed>>

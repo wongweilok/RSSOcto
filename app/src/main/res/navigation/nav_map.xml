@@ -26,5 +26,9 @@
         android:id="@+id/entryFragment"
         android:name="com.weilok.rssocto.ui.EntryFragment"
         android:label="fragment_entry"
-        tools:layout="@layout/fragment_entry" />
+        tools:layout="@layout/fragment_entry" >
+        <argument
+            android:name="feed"
+            app:argType="com.weilok.rssocto.data.local.entities.Feed" />
+    </fragment>
 </navigation>
