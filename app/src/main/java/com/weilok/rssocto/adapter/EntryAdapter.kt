@@ -5,10 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+
 import com.weilok.rssocto.data.local.entities.Entry
 import com.weilok.rssocto.databinding.EntryItemListBinding
 
-class EntryAdapter : ListAdapter<Entry, EntryAdapter.EntryViewHolder>(DiffCallback()) {
+class EntryAdapter(
+    private val feedSource: String
+) : ListAdapter<Entry, EntryAdapter.EntryViewHolder>(DiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EntryViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = EntryItemListBinding
@@ -21,12 +24,12 @@ class EntryAdapter : ListAdapter<Entry, EntryAdapter.EntryViewHolder>(DiffCallba
         holder.bind(getItem(position))
     }
 
-    class EntryViewHolder(private val binding: EntryItemListBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class EntryViewHolder(private val binding: EntryItemListBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(entry: Entry) {
             binding.apply {
                 tvEntryTitle.text = entry.title
                 tvPubDate.text = entry.date
-                //tvFeedId.text = entry.feedId
+                tvFeedSource.text = feedSource
             }
         }
     }
