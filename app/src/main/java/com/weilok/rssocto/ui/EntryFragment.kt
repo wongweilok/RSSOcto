@@ -26,12 +26,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 
 import com.weilok.rssocto.R
 import com.weilok.rssocto.adapter.EntryAdapter
 import com.weilok.rssocto.databinding.FragmentEntryBinding
 import com.weilok.rssocto.viewmodels.EntryViewModel
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class EntryFragment : Fragment(R.layout.fragment_entry) {
@@ -45,7 +45,7 @@ class EntryFragment : Fragment(R.layout.fragment_entry) {
         binding = FragmentEntryBinding.bind(view)
 
         // Initialize binding for current view
-        val entryAdapter = EntryAdapter()
+        val entryAdapter = EntryAdapter(entryViewModel.feedTitle!!)
 
         // Initialize RecyclerView
         binding.apply {

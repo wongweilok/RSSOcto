@@ -22,12 +22,12 @@ class EntryViewModel @Inject constructor(
 
     val feed = state.get<Feed>("feed")
     val feedId = feed?.url
+    val feedTitle = feed?.title
 
     // Feed with entries
     fun getFeedWithEntries(id: String) {
         viewModelScope.launch {
             val response = entryRepo.getFeedWithEntries(id)
-            response.entries
             entryEventChannel.send(EntryEvent.ListOfEntries(response.entries))
         }
     }
