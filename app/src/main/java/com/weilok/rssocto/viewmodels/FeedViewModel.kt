@@ -38,7 +38,9 @@ class FeedViewModel @Inject constructor(
     val feeds = repo.localFeeds
 
     fun onFeedClicked(feed: Feed) {
-        // Continue here
+        viewModelScope.launch {
+            feedEventChannel.send(FeedEvent.NavigateToEntryFragment(feed))
+        }
     }
 
     fun onAddFeedResult(result: Int) {
@@ -59,5 +61,6 @@ class FeedViewModel @Inject constructor(
 
     sealed class FeedEvent {
         data class ShowFeedAddedMessage(val message: String) : FeedEvent()
+        data class NavigateToEntryFragment(val feed: Feed) : FeedEvent()
     }
 }

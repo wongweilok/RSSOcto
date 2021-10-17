@@ -19,11 +19,55 @@
 
 package com.weilok.rssocto.ui
 
+import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 
 import com.weilok.rssocto.R
+import com.weilok.rssocto.adapter.EntryAdapter
+import com.weilok.rssocto.databinding.FragmentEntryBinding
+import com.weilok.rssocto.viewmodels.EntryViewModel
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class EntryFragment : Fragment(R.layout.fragment_entry) {
+    private lateinit var binding: FragmentEntryBinding
+
+    private val entryViewModel: EntryViewModel by viewModels()
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding = FragmentEntryBinding.bind(view)
+
+        // Initialize binding for current view
+        val entryAdapter = EntryAdapter()
+
+        // Initialize RecyclerView
+        binding.apply {
+            rvEntryList.apply {
+                adapter = entryAdapter
+                layoutManager = LinearLayoutManager(requireContext())
+                setHasFixedSize(true)
+            }
+        }
+
+        // Get entries with corresponding feed
+        entryViewModel.getFeedWithEntries(entryViewModel.feedId!!)
+
+        // Collect Signal from Event Channel
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            entryViewModel.entryEvent.collect { event ->
+                when (event) {
+                    is EntryViewModel.EntryEvent.ListOfEntries -> {
+                        entryAdapter.submitList(event.list)
+                    }
+                }
+            }
+        }
+    }
 }

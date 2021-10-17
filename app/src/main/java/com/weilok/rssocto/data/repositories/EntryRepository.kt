@@ -19,18 +19,27 @@
 
 package com.weilok.rssocto.data.repositories
 
+import androidx.lifecycle.asLiveData
 import javax.inject.Inject
 
 import com.weilok.rssocto.data.local.dao.EntryDao
+import com.weilok.rssocto.data.local.dao.FeedDao
 import com.weilok.rssocto.data.local.entities.Entry
+import com.weilok.rssocto.data.local.entities.FeedWithEntry
 
 class EntryRepository @Inject constructor(
+    private val feedDao: FeedDao,
     private val entryDao: EntryDao
 ) {
-    val localEntries = entryDao.getAllEntry()
+    val localEntries = entryDao.getAllEntry().asLiveData()
 
     // Entry
     suspend fun insertEntry(entry: Entry) {
         entryDao.insertEntry(entry)
+    }
+
+    // Feed With Entries
+    suspend fun getFeedWithEntries(id: String) : FeedWithEntry {
+        return feedDao.getFeedWithEntry(id)
     }
 }

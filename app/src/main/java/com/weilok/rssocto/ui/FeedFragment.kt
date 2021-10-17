@@ -69,6 +69,10 @@ class FeedFragment : Fragment(R.layout.fragment_feed), FeedAdapter.OnFeedItemCli
                             binding.tvNoFeed.visibility = View.GONE
                         }
                     }
+                    is FeedViewModel.FeedEvent.NavigateToEntryFragment -> {
+                        val action = FeedFragmentDirections.actionFeedFragmentToEntryFragment(event.feed)
+                        findNavController().navigate(action)
+                    }
                 }
             }
         }
