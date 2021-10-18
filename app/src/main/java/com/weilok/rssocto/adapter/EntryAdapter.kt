@@ -10,7 +10,8 @@ import com.weilok.rssocto.data.local.entities.Entry
 import com.weilok.rssocto.databinding.EntryItemListBinding
 
 class EntryAdapter(
-    private val feedSource: String
+    private val feedSource: String,
+    private val listener: OnEntryItemClickListener
 ) : ListAdapter<Entry, EntryAdapter.EntryViewHolder>(DiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EntryViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -25,6 +26,18 @@ class EntryAdapter(
     }
 
     inner class EntryViewHolder(private val binding: EntryItemListBinding) : RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.apply {
+                root.setOnClickListener {
+                    val position = adapterPosition
+                    if (position != RecyclerView.NO_POSITION) {
+                        val entry = getItem(position)
+                        listener.onEntryItemClick(entry)
+                    }
+                }
+            }
+        }
+
         fun bind(entry: Entry) {
             binding.apply {
                 tvEntryTitle.text = entry.title
@@ -32,6 +45,10 @@ class EntryAdapter(
                 tvFeedSource.text = feedSource
             }
         }
+    }
+
+    interface OnEntryItemClickListener {
+        fun onEntryItemClick(entry: Entry)
     }
 
     class DiffCallback : DiffUtil.ItemCallback<Entry>() {

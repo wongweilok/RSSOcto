@@ -30,5 +30,13 @@
         <argument
             android:name="feed"
             app:argType="com.weilok.rssocto.data.local.entities.Feed" />
+        <action
+            android:id="@+id/action_entryFragment_to_entryContentFragment"
+            app:destination="@id/entryContentFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/entryContentFragment"
+        android:name="com.weilok.rssocto.ui.EntryContentFragment"
+        android:label="fragment_entry_content"
+        tools:layout="@layout/fragment_entry_content" />
 </navigation>

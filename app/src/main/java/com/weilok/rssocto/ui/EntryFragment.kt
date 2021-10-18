@@ -30,11 +30,12 @@ import kotlinx.coroutines.flow.collect
 
 import com.weilok.rssocto.R
 import com.weilok.rssocto.adapter.EntryAdapter
+import com.weilok.rssocto.data.local.entities.Entry
 import com.weilok.rssocto.databinding.FragmentEntryBinding
 import com.weilok.rssocto.viewmodels.EntryViewModel
 
 @AndroidEntryPoint
-class EntryFragment : Fragment(R.layout.fragment_entry) {
+class EntryFragment : Fragment(R.layout.fragment_entry), EntryAdapter.OnEntryItemClickListener {
     private lateinit var binding: FragmentEntryBinding
 
     private val entryViewModel: EntryViewModel by viewModels()
@@ -45,7 +46,7 @@ class EntryFragment : Fragment(R.layout.fragment_entry) {
         binding = FragmentEntryBinding.bind(view)
 
         // Initialize binding for current view
-        val entryAdapter = EntryAdapter(entryViewModel.feedTitle!!)
+        val entryAdapter = EntryAdapter(entryViewModel.feedTitle!!, this)
 
         // Initialize RecyclerView
         binding.apply {
@@ -69,5 +70,9 @@ class EntryFragment : Fragment(R.layout.fragment_entry) {
                 }
             }
         }
+    }
+
+    override fun onEntryItemClick(entry: Entry) {
+        TODO("Not yet implemented")
     }
 }
