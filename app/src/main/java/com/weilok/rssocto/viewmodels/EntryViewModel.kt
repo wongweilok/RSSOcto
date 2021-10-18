@@ -3,15 +3,15 @@ package com.weilok.rssocto.viewmodels
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.weilok.rssocto.data.local.entities.Entry
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.launch
-
-import com.weilok.rssocto.data.local.entities.Feed
-import com.weilok.rssocto.data.repositories.EntryRepository
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
+
+import com.weilok.rssocto.data.local.entities.Entry
+import com.weilok.rssocto.data.local.entities.Feed
+import com.weilok.rssocto.data.repositories.EntryRepository
 
 @HiltViewModel
 class EntryViewModel @Inject constructor(
@@ -23,6 +23,12 @@ class EntryViewModel @Inject constructor(
     val feed = state.get<Feed>("feed")
     val feedId = feed?.url
     val feedTitle = feed?.title
+
+    fun onEntryClicked(entry: Entry) {
+        viewModelScope.launch {
+            entryEventChannel.send(EntryEvent.NavigateToContentFragment(entry))
+        }
+    }
 
     // Feed with entries
     fun getFeedWithEntries(id: String) {
@@ -38,5 +44,6 @@ class EntryViewModel @Inject constructor(
 
     sealed class EntryEvent {
         data class ListOfEntries(val list: List<Entry>) : EntryEvent()
+        data class NavigateToContentFragment(val entry: Entry) : EntryEvent()
     }
 }
