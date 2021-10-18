@@ -24,6 +24,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -67,12 +68,16 @@ class EntryFragment : Fragment(R.layout.fragment_entry), EntryAdapter.OnEntryIte
                     is EntryViewModel.EntryEvent.ListOfEntries -> {
                         entryAdapter.submitList(event.list)
                     }
+                    is EntryViewModel.EntryEvent.NavigateToContentFragment -> {
+                        val action = EntryFragmentDirections.actionEntryFragmentToEntryContentFragment(event.entry)
+                        findNavController().navigate(action)
+                    }
                 }
             }
         }
     }
 
     override fun onEntryItemClick(entry: Entry) {
-        TODO("Not yet implemented")
+        entryViewModel.onEntryClicked(entry)
     }
 }
