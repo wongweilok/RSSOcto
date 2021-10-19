@@ -8,12 +8,12 @@
     <fragment
         android:id="@+id/addFeedFragment"
         android:name="com.weilok.rssocto.ui.AddFeedFragment"
-        android:label="fragment_add_feed"
+        android:label="@string/lbl_add_feed_fragment"
         tools:layout="@layout/fragment_add_feed" />
     <fragment
         android:id="@+id/feedFragment"
         android:name="com.weilok.rssocto.ui.FeedFragment"
-        android:label="fragment_feed"
+        android:label="@string/lbl_feed_fragment"
         tools:layout="@layout/fragment_feed">
         <action
             android:id="@+id/action_feedFragment_to_addFeedFragment"
@@ -25,7 +25,7 @@
     <fragment
         android:id="@+id/entryFragment"
         android:name="com.weilok.rssocto.ui.EntryFragment"
-        android:label="fragment_entry"
+        android:label="{title}"
         tools:layout="@layout/fragment_entry" >
         <argument
             android:name="feed"
@@ -33,12 +33,15 @@
         <action
             android:id="@+id/action_entryFragment_to_entryContentFragment"
             app:destination="@id/entryContentFragment" />
+        <argument
+            android:name="title"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/entryContentFragment"
         android:name="com.weilok.rssocto.ui.EntryContentFragment"
-        android:label="fragment_entry_content"
-        tools:layout="@layout/fragment_entry_content" >
+        android:label="@string/lbl_entry_content_fragment"
+        tools:layout="@layout/fragment_entry_content">
         <argument
             android:name="entry"
             app:argType="com.weilok.rssocto.data.local.entities.Entry" />

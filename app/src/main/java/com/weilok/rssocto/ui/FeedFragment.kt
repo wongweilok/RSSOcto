@@ -70,7 +70,8 @@ class FeedFragment : Fragment(R.layout.fragment_feed), FeedAdapter.OnFeedItemCli
                         }
                     }
                     is FeedViewModel.FeedEvent.NavigateToEntryFragment -> {
-                        val action = FeedFragmentDirections.actionFeedFragmentToEntryFragment(event.feed)
+                        val action = FeedFragmentDirections
+                            .actionFeedFragmentToEntryFragment(event.feed, event.feed.title)
                         findNavController().navigate(action)
                     }
                 }
