@@ -61,6 +61,10 @@ data class RssFeed @JvmOverloads constructor(
 
         @field:Element(name = "description")
         @param:Element(name = "description")
+        var description: String? = null,
+
+        @field:Element(name = "encoded", required = false)
+        @param:Element(name = "encoded", required = false)
         var content: String? = null
     )
 
