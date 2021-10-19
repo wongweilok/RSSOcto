@@ -103,13 +103,17 @@ class AddFeedViewModel @Inject constructor(
             // Add Feed and Entry data into local database
             feedRepo.insertFeed(Feed(url, response.urlList?.get(0)!!.url!!, response.title!!))
             for (i in entryList.indices) {
+                var content = entryList[i].description!!
+                if (entryList[i].content != null) {
+                    content = entryList[i].content!!
+                }
                 entryRepo.insertEntry(
                     Entry(
                         entryList[i].url!!,
                         entryList[i].title!!,
                         entryList[i].date!!,
                         entryList[i].author!!,
-                        entryList[i].content!!,
+                        content,
                         false,
                         url
                     )
