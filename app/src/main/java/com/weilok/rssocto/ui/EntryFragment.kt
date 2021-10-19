@@ -47,7 +47,7 @@ class EntryFragment : Fragment(R.layout.fragment_entry), EntryAdapter.OnEntryIte
         binding = FragmentEntryBinding.bind(view)
 
         // Initialize binding for current view
-        val entryAdapter = EntryAdapter(entryViewModel.feedTitle!!, this)
+        val entryAdapter = EntryAdapter(this)
 
         // Initialize RecyclerView
         binding.apply {

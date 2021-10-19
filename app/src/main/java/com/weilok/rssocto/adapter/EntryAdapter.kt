@@ -10,7 +10,6 @@ import com.weilok.rssocto.data.local.entities.Entry
 import com.weilok.rssocto.databinding.EntryItemListBinding
 
 class EntryAdapter(
-    private val feedSource: String,
     private val listener: OnEntryItemClickListener
 ) : ListAdapter<Entry, EntryAdapter.EntryViewHolder>(DiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EntryViewHolder {
@@ -42,7 +41,6 @@ class EntryAdapter(
             binding.apply {
                 tvEntryTitle.text = entry.title
                 tvPubDate.text = entry.date
-                tvFeedSource.text = feedSource
             }
         }
     }

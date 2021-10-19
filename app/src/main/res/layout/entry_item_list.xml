@@ -34,15 +34,6 @@
             android:layout_toEndOf="@id/ivEntryImage"
             android:text="Published date" />
 
-        <TextView
-            android:id="@+id/tvFeedSource"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvEntryTitle"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="20dp"
-            android:text="Feed ID" />
-
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>
