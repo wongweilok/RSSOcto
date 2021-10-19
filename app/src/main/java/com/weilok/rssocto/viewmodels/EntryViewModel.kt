@@ -39,7 +39,6 @@ class EntryViewModel @Inject constructor(
 ) : ViewModel() {
     val feed = state.get<Feed>("feed")
     val feedId = feed?.url
-    val feedTitle = feed?.title
 
     fun onEntryClicked(entry: Entry) {
         viewModelScope.launch {
