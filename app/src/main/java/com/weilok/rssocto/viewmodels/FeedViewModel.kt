@@ -21,13 +21,13 @@ package com.weilok.rssocto.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.weilok.rssocto.data.local.entities.Feed
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import javax.inject.Inject
 
+import com.weilok.rssocto.data.local.entities.Feed
 import com.weilok.rssocto.data.repositories.FeedRepository
 import com.weilok.rssocto.ui.ADD_FEED_RESULT_OK
 
