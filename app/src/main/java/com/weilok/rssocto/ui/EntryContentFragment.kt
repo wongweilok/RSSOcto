@@ -33,18 +33,38 @@ class EntryContentFragment : Fragment(R.layout.fragment_entry_content) {
 
     private val viewModel: EntryContentViewModel by viewModels()
 
+    // Html settings and CSS
+    private val css = "<head>" +
+            "<style type='text/css'>" +
+            "* {word-break: break-word; max-width: 100%;}" +
+            "pre {white-space: pre-wrap;}" +
+            "figure {width: auto !important;}" +
+            "img {height: auto !important;}" +
+            "</style>" +
+            "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">" +
+            "</head>"
+    private val bodyStart = "<body>"
+    private val bodyEnd = "</body>"
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         // Initialize binding for current view
         binding = FragmentEntryContentBinding.bind(view)
 
+        // Combine into one string
+        val html = StringBuilder(css)
+            .append(bodyStart)
+            .append(viewModel.entryContent!!)
+            .append(bodyEnd)
+            .toString()
+
         // Display feed entry content with WebView
         binding.wvEntryContent.apply {
             isHorizontalScrollBarEnabled = false
             loadDataWithBaseURL(
                 "",
-                viewModel.entryContent!!,
+                html,
                 "text/html",
                 null,
                 null
