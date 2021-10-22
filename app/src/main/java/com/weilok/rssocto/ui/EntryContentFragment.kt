@@ -45,6 +45,7 @@ class EntryContentFragment : Fragment(R.layout.fragment_entry_content) {
             "</head>"
     private val bodyStart = "<body>"
     private val bodyEnd = "</body>"
+    private val horizontalRule = "<hr>"
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -52,9 +53,25 @@ class EntryContentFragment : Fragment(R.layout.fragment_entry_content) {
         // Initialize binding for current view
         binding = FragmentEntryContentBinding.bind(view)
 
+        // Entry details use for displaying above content
+        val entry = viewModel.entry!!
+        val entryTitle = "<h2>${entry.title}</h2><br>"
+        val entryDateWithAuthor = StringBuilder(entry.date)
+
+        if (entry.author.isNotEmpty()) {
+            entryDateWithAuthor.apply {
+                append("<br>Author - ")
+                append(entry.author)
+            }
+        }
+
+
         // Combine into one string
         val html = StringBuilder(css)
             .append(bodyStart)
+            .append(entryTitle)
+            .append(entryDateWithAuthor)
+            .append(horizontalRule)
             .append(viewModel.entryContent!!)
             .append(bodyEnd)
             .toString()
