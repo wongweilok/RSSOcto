@@ -56,7 +56,7 @@ class EntryContentFragment : Fragment(R.layout.fragment_entry_content) {
         // Entry details use for displaying above content
         val entry = viewModel.entry!!
         val entryTitle = "<h2>${entry.title}</h2><br>"
-        val entryDateWithAuthor = StringBuilder(entry.date)
+        val entryDateWithAuthor = StringBuilder(entry.date.toString())
 
         if (entry.author.isNotEmpty()) {
             entryDateWithAuthor.apply {

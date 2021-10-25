@@ -23,6 +23,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 
 import com.weilok.rssocto.data.local.dao.EntryDao
 import com.weilok.rssocto.data.local.dao.FeedDao
@@ -30,6 +31,7 @@ import com.weilok.rssocto.data.local.entities.Entry
 import com.weilok.rssocto.data.local.entities.Feed
 
 @Database(entities = [Feed::class, Entry::class], version = 1)
+@TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun feedDao(): FeedDao
     abstract fun entryDao(): EntryDao

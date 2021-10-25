@@ -41,6 +41,8 @@ import javax.inject.Inject
 
 import com.weilok.rssocto.data.repositories.FeedRepository
 import com.weilok.rssocto.ui.ADD_FEED_RESULT_OK
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
 
 @HiltViewModel
 class AddFeedViewModel @Inject constructor(
@@ -70,17 +72,21 @@ class AddFeedViewModel @Inject constructor(
         viewModelScope.launch {
             // Fetch Atom Feed from web
             val response = feedRepo.fetchAtomFeed(url)
-
             val entryList: List<AtomFeed.AtomEntry> = response.entryList!!
+
+            // Date format
+            val dtFormatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.ENGLISH)
 
             // Add Feed and Entry data into local database
             feedRepo.insertFeed(Feed(url, response.url!!, response.title!!))
             for (i in entryList.indices) {
+                val date: Date? = dtFormatter.parse(entryList[i].date!!)
+
                 entryRepo.insertEntry(
                     Entry(
                         entryList[i].url!!,
                         entryList[i].title!!,
-                        entryList[i].date!!,
+                        date!!,
                         entryList[i].author!!,
                         entryList[i].content!!,
                         false,
@@ -97,12 +103,16 @@ class AddFeedViewModel @Inject constructor(
         viewModelScope.launch {
             // Fetch RSS Feed from web
             val response = feedRepo.fetchRssFeed(url)
-
             val entryList: List<RssFeed.RssEntry> = response.entryList!!
+
+            // Date format
+            val dtFormatter = SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH)
 
             // Add Feed and Entry data into local database
             feedRepo.insertFeed(Feed(url, response.urlList?.get(0)!!.url!!, response.title!!))
             for (i in entryList.indices) {
+                val date: Date? = dtFormatter.parse(entryList[i].date!!)
+
                 var content = entryList[i].description!!
                 if (entryList[i].content != null) {
                     content = entryList[i].content!!
@@ -111,7 +121,7 @@ class AddFeedViewModel @Inject constructor(
                     Entry(
                         entryList[i].url!!,
                         entryList[i].title!!,
-                        entryList[i].date!!,
+                        date!!,
                         entryList[i].author!!,
                         content,
                         false,

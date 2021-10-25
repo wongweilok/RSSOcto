@@ -40,7 +40,7 @@ class EntryAdapter(
         fun bind(entry: Entry) {
             binding.apply {
                 tvEntryTitle.text = entry.title
-                tvPubDate.text = entry.date
+                tvPubDate.text = entry.date.toString()
             }
         }
     }
