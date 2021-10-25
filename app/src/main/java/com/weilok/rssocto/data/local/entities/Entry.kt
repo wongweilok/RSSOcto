@@ -26,6 +26,7 @@ import androidx.room.ForeignKey
 import androidx.room.ForeignKey.CASCADE
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
+import java.util.*
 
 @Parcelize
 @Entity(
@@ -44,7 +45,7 @@ data class Entry(
     @ColumnInfo(name = "entry_title")
     val title: String,
     @ColumnInfo(name = "entry_pub_date")
-    val date: String,
+    val date: Date,
     @ColumnInfo(name = "entry_author")
     val author: String,
     @ColumnInfo(name = "entry_content")
