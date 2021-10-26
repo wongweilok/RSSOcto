@@ -56,7 +56,7 @@ class EntryContentFragment : Fragment(R.layout.fragment_entry_content) {
         // Entry details use for displaying above content
         val entry = viewModel.entry!!
         val entryTitle = "<h2>${entry.title}</h2><br>"
-        val entryDateWithAuthor = StringBuilder(entry.date.toString())
+        val entryDateWithAuthor = StringBuilder(entry.formattedDate)
 
         if (entry.author.isNotEmpty()) {
             entryDateWithAuthor.apply {
@@ -64,7 +64,6 @@ class EntryContentFragment : Fragment(R.layout.fragment_entry_content) {
                 append(entry.author)
             }
         }
-
 
         // Combine into one string
         val html = StringBuilder(css)

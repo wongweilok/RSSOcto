@@ -26,6 +26,7 @@ import androidx.room.ForeignKey
 import androidx.room.ForeignKey.CASCADE
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
+import java.text.SimpleDateFormat
 import java.util.*
 
 @Parcelize
@@ -54,4 +55,9 @@ data class Entry(
     val read: Boolean,
     @ColumnInfo(name = "feed_id")
     val feedId: String
-) : Parcelable
+) : Parcelable {
+    val formattedDate: String
+        get() = SimpleDateFormat("EEE, dd MMM yyyy hh:mm aaa", Locale.ENGLISH)
+            .format(date)
+            .toString()
+}
