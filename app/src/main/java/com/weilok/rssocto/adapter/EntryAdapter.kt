@@ -1,5 +1,6 @@
 package com.weilok.rssocto.adapter
 
+import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -40,7 +41,7 @@ class EntryAdapter(
         fun bind(entry: Entry) {
             binding.apply {
                 tvEntryTitle.text = entry.title
-                tvPubDate.text = entry.date.toString()
+                tvPubDate.text = DateUtils.getRelativeTimeSpanString(entry.date.time)
             }
         }
     }
