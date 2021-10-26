@@ -47,7 +47,7 @@ class FeedAdapter(
         init {
             binding.apply {
                 root.setOnClickListener {
-                    val position = adapterPosition
+                    val position = bindingAdapterPosition
                     if (position != RecyclerView.NO_POSITION) {
                         val feed = getItem(position)
                         listener.onFeedItemClick(feed)
