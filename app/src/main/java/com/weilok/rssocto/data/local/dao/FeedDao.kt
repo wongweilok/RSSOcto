@@ -23,7 +23,6 @@ import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 
 import com.weilok.rssocto.data.local.entities.Feed
-import com.weilok.rssocto.data.local.entities.FeedWithEntry
 
 @Dao
 interface FeedDao {
@@ -41,9 +40,6 @@ interface FeedDao {
 
     @Query("SELECT EXISTS(SELECT * FROM feed_table WHERE feed_url = :id)")
     suspend fun checkFeedExist(id: String): Boolean
-
-    @Query("SELECT * FROM feed_table WHERE feed_url = :id")
-    suspend fun getFeedWithEntry(id: String): FeedWithEntry
 
     @Query("SELECT * FROM feed_table ORDER BY feed_title ASC")
     fun getAllFeed(): Flow<List<Feed>>

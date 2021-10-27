@@ -83,8 +83,8 @@ class EntryFragment : Fragment(R.layout.fragment_entry), EntryAdapter.OnEntryIte
                         findNavController().navigate(action)
                     }
                     is EntryViewModel.EntryEvent.ShowRefreshMessage -> {
-                        entryViewModel.getFeedWithEntries(entryViewModel.feedId!!)
                         Snackbar.make(requireView(), event.message, Snackbar.LENGTH_SHORT).show()
+                        entryViewModel.getFeedWithEntries(entryViewModel.feedId!!)
                     }
                 }
             }

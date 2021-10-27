@@ -64,9 +64,8 @@ object DatabaseModule {
 
     @Provides
     fun provideEntryRepository(
-        feedDao: FeedDao,
         entryDao: EntryDao
     ): EntryRepository {
-        return EntryRepository(feedDao, entryDao)
+        return EntryRepository(entryDao)
     }
 }
