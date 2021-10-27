@@ -51,12 +51,17 @@ class EntryFragment : Fragment(R.layout.fragment_entry), EntryAdapter.OnEntryIte
         val entryAdapter = EntryAdapter(this)
         entryAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
 
-        // Initialize RecyclerView
         binding.apply {
+            // Initialize RecyclerView
             rvEntryList.apply {
                 adapter = entryAdapter
                 layoutManager = LinearLayoutManager(requireContext())
                 setHasFixedSize(true)
+            }
+
+            // Initialize SwipeRefreshLayout action
+            swipeRefresh.setOnRefreshListener {
+                // Refresh RecyclerView
             }
         }
 
