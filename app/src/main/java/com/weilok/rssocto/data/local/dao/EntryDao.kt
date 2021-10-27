@@ -38,6 +38,9 @@ interface EntryDao {
     @Query("DELETE FROM entry_table")
     suspend fun deleteAllEntry()
 
+    @Query("SELECT * FROM entry_table WHERE feed_id = :feedId ORDER BY entry_pub_date DESC")
+    suspend fun getEntryWithFeedId(feedId: String): List<Entry>
+
     @Query("SELECT * FROM entry_table ORDER BY entry_pub_date")
     fun getAllEntry(): Flow<List<Entry>>
 }

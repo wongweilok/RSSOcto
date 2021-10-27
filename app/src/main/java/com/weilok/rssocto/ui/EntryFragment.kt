@@ -63,7 +63,7 @@ class EntryFragment : Fragment(R.layout.fragment_entry), EntryAdapter.OnEntryIte
             // Initialize SwipeRefreshLayout action
             swipeRefresh.setOnRefreshListener {
                 // Refresh RecyclerView
-                Snackbar.make(requireView(), "Refreshing feed...", Snackbar.LENGTH_SHORT).show()
+                entryViewModel.refreshFeedEntries()
                 swipeRefresh.isRefreshing = false
             }
         }
@@ -81,6 +81,10 @@ class EntryFragment : Fragment(R.layout.fragment_entry), EntryAdapter.OnEntryIte
                     is EntryViewModel.EntryEvent.NavigateToContentFragment -> {
                         val action = EntryFragmentDirections.actionEntryFragmentToEntryContentFragment(event.entry)
                         findNavController().navigate(action)
+                    }
+                    is EntryViewModel.EntryEvent.ShowRefreshMessage -> {
+                        entryViewModel.getFeedWithEntries(entryViewModel.feedId!!)
+                        Snackbar.make(requireView(), event.message, Snackbar.LENGTH_SHORT).show()
                     }
                 }
             }

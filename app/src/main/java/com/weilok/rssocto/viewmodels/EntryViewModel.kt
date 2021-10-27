@@ -23,6 +23,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -30,15 +32,20 @@ import kotlinx.coroutines.launch
 
 import com.weilok.rssocto.data.local.entities.Entry
 import com.weilok.rssocto.data.local.entities.Feed
+import com.weilok.rssocto.data.remote.AtomFeed
+import com.weilok.rssocto.data.remote.RssFeed
 import com.weilok.rssocto.data.repositories.EntryRepository
+import com.weilok.rssocto.data.repositories.FeedRepository
 
 @HiltViewModel
 class EntryViewModel @Inject constructor(
     private val entryRepo: EntryRepository,
-    private val state: SavedStateHandle
+    private val feedRepo: FeedRepository,
+    state: SavedStateHandle
 ) : ViewModel() {
     val feed = state.get<Feed>("feed")
     val feedId = feed?.url
+    val feedType = feed?.feedType
 
     fun onEntryClicked(entry: Entry) {
         viewModelScope.launch {
@@ -49,8 +56,80 @@ class EntryViewModel @Inject constructor(
     // Feed with entries
     fun getFeedWithEntries(id: String) {
         viewModelScope.launch {
-            val response = entryRepo.getFeedWithEntries(id)
-            entryEventChannel.send(EntryEvent.ListOfEntries(response.entries))
+            val response = entryRepo.getEntriesWithFeedId(id)
+            entryEventChannel.send(EntryEvent.ListOfEntries(response))
+        }
+    }
+
+    // Refresh feed entries fetching feed again
+    fun refreshFeedEntries() {
+        when (feedType) {
+            "RSS" -> fetchRssFeed(feedId!!)
+            "ATOM" -> fetchAtomFeed(feedId!!)
+        }
+    }
+
+    private fun fetchAtomFeed(url: String) {
+        viewModelScope.launch {
+            // Fetch Atom Feed from web
+            val response = feedRepo.fetchAtomFeed(url)
+            val entryList: List<AtomFeed.AtomEntry> = response.entryList!!
+
+            // Date format
+            val dtFormatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.ENGLISH)
+
+            // Add Entry data into local database
+            for (i in entryList.indices) {
+                val date: Date? = dtFormatter.parse(entryList[i].date!!)
+
+                entryRepo.insertEntry(
+                    Entry(
+                        entryList[i].url!!,
+                        entryList[i].title!!,
+                        date!!,
+                        entryList[i].author!!,
+                        entryList[i].content!!,
+                        false,
+                        url
+                    )
+                )
+            }
+
+            entryEventChannel.send(EntryEvent.ShowRefreshMessage("Refreshing feed entries..."))
+        }
+    }
+
+    private fun fetchRssFeed(url: String) {
+        viewModelScope.launch {
+            // Fetch RSS Feed from web
+            val response = feedRepo.fetchRssFeed(url)
+            val entryList: List<RssFeed.RssEntry> = response.entryList!!
+
+            // Date format
+            val dtFormatter = SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH)
+
+            // Add Entry data into local database
+            for (i in entryList.indices) {
+                val date: Date? = dtFormatter.parse(entryList[i].date!!)
+
+                var content = entryList[i].description!!
+                if (entryList[i].content != null) {
+                    content = entryList[i].content!!
+                }
+                entryRepo.insertEntry(
+                    Entry(
+                        entryList[i].url!!,
+                        entryList[i].title!!,
+                        date!!,
+                        entryList[i].author!!,
+                        content,
+                        false,
+                        url
+                    )
+                )
+            }
+
+            entryEventChannel.send(EntryEvent.ShowRefreshMessage("Refreshing feed entries..."))
         }
     }
 
@@ -61,5 +140,6 @@ class EntryViewModel @Inject constructor(
     sealed class EntryEvent {
         data class ListOfEntries(val list: List<Entry>) : EntryEvent()
         data class NavigateToContentFragment(val entry: Entry) : EntryEvent()
+        data class ShowRefreshMessage(val message: String) : EntryEvent()
     }
 }

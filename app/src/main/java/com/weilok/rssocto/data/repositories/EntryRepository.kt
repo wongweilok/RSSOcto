@@ -42,4 +42,8 @@ class EntryRepository @Inject constructor(
     suspend fun getFeedWithEntries(id: String) : FeedWithEntry {
         return feedDao.getFeedWithEntry(id)
     }
+
+    suspend fun getEntriesWithFeedId(id: String) : List<Entry> {
+        return entryDao.getEntryWithFeedId(id)
+    }
 }
