@@ -78,7 +78,14 @@ class AddFeedViewModel @Inject constructor(
             val dtFormatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.ENGLISH)
 
             // Add Feed and Entry data into local database
-            feedRepo.insertFeed(Feed(url, response.url!!, response.title!!))
+            feedRepo.insertFeed(
+                Feed(
+                    url,
+                    response.url!!,
+                    response.title!!,
+                    feedType.value!!
+                )
+            )
             for (i in entryList.indices) {
                 val date: Date? = dtFormatter.parse(entryList[i].date!!)
 
@@ -109,7 +116,14 @@ class AddFeedViewModel @Inject constructor(
             val dtFormatter = SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH)
 
             // Add Feed and Entry data into local database
-            feedRepo.insertFeed(Feed(url, response.urlList?.get(0)!!.url!!, response.title!!))
+            feedRepo.insertFeed(
+                Feed(
+                    url,
+                    response.urlList?.get(0)!!.url!!,
+                    response.title!!,
+                    feedType.value!!
+                )
+            )
             for (i in entryList.indices) {
                 val date: Date? = dtFormatter.parse(entryList[i].date!!)
 
