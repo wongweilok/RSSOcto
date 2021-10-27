@@ -32,7 +32,9 @@ data class Feed(
     @ColumnInfo(name = "feed_url")
     val url: String,
     @ColumnInfo(name = "feed_source_url")
-    val source_url: String,
+    val sourceUrl: String,
     @ColumnInfo(name = "feed_title")
-    val title: String
+    val title: String,
+    @ColumnInfo(name = "feed_type")
+    val feedType: String
 ) : Parcelable

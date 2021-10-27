@@ -27,6 +27,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
@@ -62,6 +63,8 @@ class EntryFragment : Fragment(R.layout.fragment_entry), EntryAdapter.OnEntryIte
             // Initialize SwipeRefreshLayout action
             swipeRefresh.setOnRefreshListener {
                 // Refresh RecyclerView
+                Snackbar.make(requireView(), "Refreshing feed...", Snackbar.LENGTH_SHORT).show()
+                swipeRefresh.isRefreshing = false
             }
         }
 
