@@ -25,24 +25,23 @@ import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.weilok.rssocto.data.local.entities.Entry
-import com.weilok.rssocto.data.local.entities.Feed
-import com.weilok.rssocto.data.remote.AtomFeed
-import com.weilok.rssocto.data.remote.RssFeed
-import com.weilok.rssocto.data.repositories.EntryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
+import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
 import com.weilok.rssocto.data.repositories.FeedRepository
+import com.weilok.rssocto.data.local.entities.Entry
+import com.weilok.rssocto.data.local.entities.Feed
+import com.weilok.rssocto.data.remote.AtomFeed
+import com.weilok.rssocto.data.remote.RssFeed
+import com.weilok.rssocto.data.repositories.EntryRepository
 import com.weilok.rssocto.ui.ADD_FEED_RESULT_OK
-import java.text.SimpleDateFormat
-import java.time.LocalDateTime
 
 @HiltViewModel
 class AddFeedViewModel @Inject constructor(
