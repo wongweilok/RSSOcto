@@ -46,8 +46,10 @@ class AddFeedFragment : Fragment(R.layout.fragment_add_feed) {
         // Initialize binding for current view
         binding = FragmentAddFeedBinding.bind(view)
 
-        binding.addFeedVM = addFeedViewModel
-        binding.lifecycleOwner = activity
+        binding.apply {
+            addFeedVM = addFeedViewModel
+            lifecycleOwner = activity
+        }
 
         initButtons()
 

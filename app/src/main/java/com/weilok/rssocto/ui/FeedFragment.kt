@@ -65,8 +65,10 @@ class FeedFragment : Fragment(R.layout.fragment_feed), FeedAdapter.OnFeedItemCli
                     is FeedViewModel.FeedEvent.ShowFeedAddedMessage -> {
                         Snackbar.make(requireView(), event.message, Snackbar.LENGTH_SHORT).show()
                         if (binding.tvNoFeed.visibility == View.VISIBLE) {
-                            binding.rvFeedList.visibility = View.VISIBLE
-                            binding.tvNoFeed.visibility = View.GONE
+                            binding.apply {
+                                rvFeedList.visibility = View.VISIBLE
+                                tvNoFeed.visibility = View.GONE
+                            }
                         }
                     }
                     is FeedViewModel.FeedEvent.NavigateToEntryFragment -> {
@@ -89,15 +91,21 @@ class FeedFragment : Fragment(R.layout.fragment_feed), FeedAdapter.OnFeedItemCli
     private fun initRecyclerView() {
         val feedAdapter = FeedAdapter(this)
 
-        binding.rvFeedList.adapter = feedAdapter
-        binding.rvFeedList.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvFeedList.setHasFixedSize(true)
+        binding.apply {
+            rvFeedList.apply {
+                adapter = feedAdapter
+                layoutManager = LinearLayoutManager(requireContext())
+                setHasFixedSize(true)
+            }
+        }
 
         feedViewModel.feeds.observe(viewLifecycleOwner) { list ->
             // Display different layout when data is empty
             if (list.isEmpty()) {
-                binding.rvFeedList.visibility = View.GONE
-                binding.tvNoFeed.visibility = View.VISIBLE
+                binding.apply {
+                    rvFeedList.visibility = View.GONE
+                    tvNoFeed.visibility = View.VISIBLE
+                }
             }
 
             feedAdapter.submitList(list)

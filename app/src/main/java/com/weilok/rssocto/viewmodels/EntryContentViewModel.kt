@@ -28,7 +28,7 @@ import com.weilok.rssocto.data.local.entities.Entry
 
 @HiltViewModel
 class EntryContentViewModel @Inject constructor(
-    private val state: SavedStateHandle
+    state: SavedStateHandle
 ) : ViewModel() {
     val entry = state.get<Entry>("entry")
     val entryContent = entry?.content
