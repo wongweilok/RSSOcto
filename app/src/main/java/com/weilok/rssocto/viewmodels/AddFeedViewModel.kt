@@ -19,6 +19,7 @@
 
 package com.weilok.rssocto.viewmodels
 
+import android.util.Log
 import androidx.databinding.Bindable
 import androidx.databinding.Observable
 import androidx.databinding.ObservableBoolean
@@ -86,13 +87,21 @@ class AddFeedViewModel @Inject constructor(
                 )
             )
             for (i in entryList.indices) {
-                val date: Date? = dtFormatter.parse(entryList[i].date!!)
+                /*
+                 * Trim trailing white spaces from string date.
+                 * Remove milli-seconds from string date using Regex.
+                 * Parse date into date type.
+                 */
+                val date = entryList[i].date!!
+                    .trim()
+                    .replace(Regex("\\.[0-9]+"), "")
+                val parsedDate: Date? = dtFormatter.parse(date)
 
                 entryRepo.insertEntry(
                     Entry(
                         entryList[i].url!!,
                         entryList[i].title!!,
-                        date!!,
+                        parsedDate!!,
                         entryList[i].author!!,
                         entryList[i].content!!,
                         false,
@@ -114,17 +123,25 @@ class AddFeedViewModel @Inject constructor(
             // Date format
             val dtFormatter = SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH)
 
+            // Get source URL from list
+            val sourceUrl = response.urlList?.get(0)!!.url ?: response.urlList?.get(0)!!.href
+
             // Add Feed and Entry data into local database
             feedRepo.insertFeed(
                 Feed(
                     url,
-                    response.urlList?.get(0)!!.url!!,
+                    sourceUrl!!,
                     response.title!!,
                     feedType.value!!
                 )
             )
             for (i in entryList.indices) {
-                val date: Date? = dtFormatter.parse(entryList[i].date!!)
+                /*
+                 * Trim trailing white spaces from string date
+                 * before parsing to date type
+                 */
+                val date = entryList[i].date!!.trim()
+                val parsedDate: Date? = dtFormatter.parse(date)
 
                 var content = entryList[i].description!!
                 if (entryList[i].content != null) {
@@ -134,7 +151,7 @@ class AddFeedViewModel @Inject constructor(
                     Entry(
                         entryList[i].url!!,
                         entryList[i].title!!,
-                        date!!,
+                        parsedDate!!,
                         entryList[i].author!!,
                         content,
                         false,
