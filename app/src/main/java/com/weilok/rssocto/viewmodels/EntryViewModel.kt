@@ -80,13 +80,21 @@ class EntryViewModel @Inject constructor(
 
             // Add Entry data into local database
             for (i in entryList.indices) {
-                val date: Date? = dtFormatter.parse(entryList[i].date!!)
+                /*
+                 * Trim trailing white spaces from string date.
+                 * Remove milli-seconds from string date using Regex.
+                 * Parse date into date type.
+                 */
+                val date = entryList[i].date!!
+                    .trim()
+                    .replace(Regex("\\.[0-9]+"), "")
+                val parsedDate: Date? = dtFormatter.parse(date)
 
                 entryRepo.insertEntry(
                     Entry(
                         entryList[i].url!!,
                         entryList[i].title!!,
-                        date!!,
+                        parsedDate!!,
                         entryList[i].author!!,
                         entryList[i].content!!,
                         false,
@@ -110,7 +118,12 @@ class EntryViewModel @Inject constructor(
 
             // Add Entry data into local database
             for (i in entryList.indices) {
-                val date: Date? = dtFormatter.parse(entryList[i].date!!)
+                /*
+                 * Trim trailing white spaces from string date
+                 * before parsing to date type
+                 */
+                val date = entryList[i].date!!.trim()
+                val parsedDate: Date? = dtFormatter.parse(date)
 
                 var content = entryList[i].description!!
                 if (entryList[i].content != null) {
@@ -120,7 +133,7 @@ class EntryViewModel @Inject constructor(
                     Entry(
                         entryList[i].url!!,
                         entryList[i].title!!,
-                        date!!,
+                        parsedDate!!,
                         entryList[i].author!!,
                         content,
                         false,
