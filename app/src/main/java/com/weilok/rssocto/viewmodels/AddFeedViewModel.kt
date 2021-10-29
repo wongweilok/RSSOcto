@@ -19,7 +19,6 @@
 
 package com.weilok.rssocto.viewmodels
 
-import android.util.Log
 import androidx.databinding.Bindable
 import androidx.databinding.Observable
 import androidx.databinding.ObservableBoolean
