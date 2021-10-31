@@ -21,6 +21,8 @@ package com.weilok.rssocto.ui
 
 import android.os.Bundle
 import android.view.View
+import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -38,7 +40,9 @@ import com.weilok.rssocto.databinding.FragmentFeedBinding
 import com.weilok.rssocto.viewmodels.FeedViewModel
 
 @AndroidEntryPoint
-class FeedFragment : Fragment(R.layout.fragment_feed), FeedAdapter.OnFeedItemClickListener {
+class FeedFragment : Fragment(R.layout.fragment_feed),
+    FeedAdapter.OnFeedItemClickListener,
+    FeedAdapter.OnFeedItemLongClickListener {
     private lateinit var binding: FragmentFeedBinding
 
     private val feedViewModel: FeedViewModel by viewModels()
@@ -89,7 +93,7 @@ class FeedFragment : Fragment(R.layout.fragment_feed), FeedAdapter.OnFeedItemCli
     }
 
     private fun initRecyclerView() {
-        val feedAdapter = FeedAdapter(this)
+        val feedAdapter = FeedAdapter(this, this)
 
         binding.apply {
             rvFeedList.apply {
@@ -114,5 +118,39 @@ class FeedFragment : Fragment(R.layout.fragment_feed), FeedAdapter.OnFeedItemCli
 
     override fun onFeedItemClick(feed: Feed) {
         feedViewModel.onFeedClicked(feed)
+    }
+
+    override fun onFeedItemLongClick(feed: Feed, v: View) {
+        showPopup(v, feed)
+    }
+
+    private fun showPopup(v: View, feed: Feed) {
+        val popupMenu = PopupMenu(requireContext(), v)
+        popupMenu.inflate(R.menu.feed_item_option_menu)
+        popupMenu.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.optDelete -> {
+                    Toast.makeText(
+                        requireContext(),
+                        "Delete ${feed.title}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    return@setOnMenuItemClickListener true
+                }
+
+                R.id.optMarkAllAsRead -> {
+                    Toast.makeText(
+                        requireContext(),
+                        "Mark all ${feed.title} as read",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    return@setOnMenuItemClickListener true
+                }
+                else -> true
+            }
+        }
+        popupMenu.show()
     }
 }

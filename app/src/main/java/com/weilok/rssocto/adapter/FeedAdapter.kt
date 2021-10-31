@@ -20,6 +20,7 @@
 package com.weilok.rssocto.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -29,7 +30,8 @@ import com.weilok.rssocto.data.local.entities.Feed
 import com.weilok.rssocto.databinding.FeedItemListBinding
 
 class FeedAdapter(
-    private val listener: OnFeedItemClickListener
+    private val clickListener: OnFeedItemClickListener,
+    private val longClickListener: OnFeedItemLongClickListener
 ) : ListAdapter<Feed, FeedAdapter.FeedViewHolder>(DiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -46,11 +48,22 @@ class FeedAdapter(
     inner class FeedViewHolder(private val binding: FeedItemListBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.apply {
-                root.setOnClickListener {
-                    val position = bindingAdapterPosition
-                    if (position != RecyclerView.NO_POSITION) {
-                        val feed = getItem(position)
-                        listener.onFeedItemClick(feed)
+                root.apply {
+                    setOnClickListener {
+                        val position = bindingAdapterPosition
+                        if (position != RecyclerView.NO_POSITION) {
+                            val feed = getItem(position)
+                            clickListener.onFeedItemClick(feed)
+                        }
+                    }
+
+                    setOnLongClickListener {
+                        val position = bindingAdapterPosition
+                        if (position != RecyclerView.NO_POSITION) {
+                            val feed = getItem(position)
+                            longClickListener.onFeedItemLongClick(feed, it)
+                        }
+                        return@setOnLongClickListener true
                     }
                 }
             }
@@ -63,6 +76,10 @@ class FeedAdapter(
 
     interface OnFeedItemClickListener {
         fun onFeedItemClick(feed: Feed)
+    }
+
+    interface OnFeedItemLongClickListener {
+        fun onFeedItemLongClick(feed: Feed, v: View)
     }
 
     class DiffCallback : DiffUtil.ItemCallback<Feed>() {
