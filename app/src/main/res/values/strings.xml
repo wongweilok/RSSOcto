@@ -15,4 +15,8 @@
     <string name="lbl_feed_fragment">Feeds</string>
     <string name="lbl_add_feed_fragment">New Feed</string>
     <string name="lbl_entry_content_fragment">Content</string>
+
+    <!-- Option Menu -->
+    <string name="opt_delete">Delete</string>
+    <string name="opt_mark_all_as_read">Mark all as read</string>
 </resources>
