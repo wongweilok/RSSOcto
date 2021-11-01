@@ -31,6 +31,10 @@ import com.weilok.rssocto.data.local.entities.Feed
 import com.weilok.rssocto.data.repositories.FeedRepository
 import com.weilok.rssocto.ui.ADD_FEED_RESULT_OK
 
+// Messages to show when feeds changed
+private const val FEED_ADDED_MSG = "Feed Added Successfully."
+private const val FEED_DELETED_MSG = "Feed Deleted Successfully."
+
 @HiltViewModel
 class FeedViewModel @Inject constructor(
     private val repo: FeedRepository
@@ -47,7 +51,7 @@ class FeedViewModel @Inject constructor(
         viewModelScope.launch {
             repo.deleteFeed(feed)
 
-            feedEventChannel.send(FeedEvent.ShowFeedDeletedMessage("Feed Deleted Successfully."))
+            feedEventChannel.send(FeedEvent.ShowFeedChangedMessage(FEED_DELETED_MSG))
         }
     }
 
@@ -57,13 +61,14 @@ class FeedViewModel @Inject constructor(
 
     fun onAddFeedResult(result: Int) {
         when (result) {
-            ADD_FEED_RESULT_OK -> showFeedAddedMessage("Feed Added Successfully.")
-        }
-    }
-
-    private fun showFeedAddedMessage(message: String) {
-        viewModelScope.launch {
-            feedEventChannel.send(FeedEvent.ShowFeedAddedMessage(message))
+            ADD_FEED_RESULT_OK -> {
+                viewModelScope.launch {
+                    feedEventChannel.apply {
+                        send(FeedEvent.ShowFeedChangedMessage(FEED_ADDED_MSG))
+                        send(FeedEvent.ShowRecyclerView)
+                    }
+                }
+            }
         }
     }
 
@@ -72,8 +77,9 @@ class FeedViewModel @Inject constructor(
     val feedEvent = feedEventChannel.receiveAsFlow()
 
     sealed class FeedEvent {
-        data class ShowFeedAddedMessage(val message: String) : FeedEvent()
-        data class ShowFeedDeletedMessage(val message: String) : FeedEvent()
+        data class ShowFeedChangedMessage(val message: String) : FeedEvent()
         data class NavigateToEntryFragment(val feed: Feed) : FeedEvent()
+
+        object ShowRecyclerView : FeedEvent()
     }
 }
