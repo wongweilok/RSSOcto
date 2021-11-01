@@ -44,6 +44,10 @@ class FeedRepository @Inject constructor(
         feedDao.insertFeed(feed)
     }
 
+    suspend fun deleteFeed(feed: Feed) {
+        feedDao.deleteFeed(feed)
+    }
+
     suspend fun checkFeedExist(id: String): Boolean {
         return feedDao.checkFeedExist(id)
     }

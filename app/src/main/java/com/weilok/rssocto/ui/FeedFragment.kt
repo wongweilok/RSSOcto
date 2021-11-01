@@ -80,6 +80,9 @@ class FeedFragment : Fragment(R.layout.fragment_feed),
                             .actionFeedFragmentToEntryFragment(event.feed, event.feed.title)
                         findNavController().navigate(action)
                     }
+                    is FeedViewModel.FeedEvent.ShowFeedDeletedMessage -> {
+                        Snackbar.make(requireView(), event.message, Snackbar.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
@@ -125,26 +128,19 @@ class FeedFragment : Fragment(R.layout.fragment_feed),
     }
 
     private fun showPopup(v: View, feed: Feed) {
+        // Create popup menu
         val popupMenu = PopupMenu(requireContext(), v)
         popupMenu.inflate(R.menu.feed_item_option_menu)
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.optDelete -> {
-                    Toast.makeText(
-                        requireContext(),
-                        "Delete ${feed.title}",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    feedViewModel.deleteFeed(feed)
 
                     return@setOnMenuItemClickListener true
                 }
 
                 R.id.optMarkAllAsRead -> {
-                    Toast.makeText(
-                        requireContext(),
-                        "Mark all ${feed.title} as read",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    feedViewModel.markAllEntriesAsRead()
 
                     return@setOnMenuItemClickListener true
                 }

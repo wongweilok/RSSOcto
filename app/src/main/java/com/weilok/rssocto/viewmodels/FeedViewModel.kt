@@ -43,6 +43,18 @@ class FeedViewModel @Inject constructor(
         }
     }
 
+    fun deleteFeed(feed: Feed) {
+        viewModelScope.launch {
+            repo.deleteFeed(feed)
+
+            feedEventChannel.send(FeedEvent.ShowFeedDeletedMessage("Feed Deleted Successfully."))
+        }
+    }
+
+    fun markAllEntriesAsRead() {
+        // TODO
+    }
+
     fun onAddFeedResult(result: Int) {
         when (result) {
             ADD_FEED_RESULT_OK -> showFeedAddedMessage("Feed Added Successfully.")
@@ -61,6 +73,7 @@ class FeedViewModel @Inject constructor(
 
     sealed class FeedEvent {
         data class ShowFeedAddedMessage(val message: String) : FeedEvent()
+        data class ShowFeedDeletedMessage(val message: String) : FeedEvent()
         data class NavigateToEntryFragment(val feed: Feed) : FeedEvent()
     }
 }
