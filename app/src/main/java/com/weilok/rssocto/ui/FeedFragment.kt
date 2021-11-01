@@ -22,7 +22,6 @@ package com.weilok.rssocto.ui
 import android.os.Bundle
 import android.view.View
 import android.widget.PopupMenu
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -66,22 +65,21 @@ class FeedFragment : Fragment(R.layout.fragment_feed),
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             feedViewModel.feedEvent.collect { event ->
                 when (event) {
-                    is FeedViewModel.FeedEvent.ShowFeedAddedMessage -> {
+                    is FeedViewModel.FeedEvent.ShowFeedChangedMessage -> {
                         Snackbar.make(requireView(), event.message, Snackbar.LENGTH_SHORT).show()
-                        if (binding.tvNoFeed.visibility == View.VISIBLE) {
-                            binding.apply {
-                                rvFeedList.visibility = View.VISIBLE
-                                tvNoFeed.visibility = View.GONE
-                            }
-                        }
                     }
                     is FeedViewModel.FeedEvent.NavigateToEntryFragment -> {
                         val action = FeedFragmentDirections
                             .actionFeedFragmentToEntryFragment(event.feed, event.feed.title)
                         findNavController().navigate(action)
                     }
-                    is FeedViewModel.FeedEvent.ShowFeedDeletedMessage -> {
-                        Snackbar.make(requireView(), event.message, Snackbar.LENGTH_SHORT).show()
+                    is FeedViewModel.FeedEvent.ShowRecyclerView -> {
+                        if (binding.tvNoFeed.visibility == View.VISIBLE) {
+                            binding.apply {
+                                rvFeedList.visibility = View.VISIBLE
+                                tvNoFeed.visibility = View.GONE
+                            }
+                        }
                     }
                 }
             }
