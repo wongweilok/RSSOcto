@@ -30,6 +30,7 @@ import java.io.StringReader
 class Validator {
     fun validate(
         url: String,
+        feedName: MutableLiveData<String>,
         client: OkHttpClient,
         urlValid: MutableLiveData<String>,
         feedType: MutableLiveData<String>,
@@ -62,10 +63,11 @@ class Validator {
                     response.close()
 
                     // Parse the raw XML content and get feed type
-                    val fType: String? = Parser().getFeedType(parser)
-                    if (fType != null) {
+                    val feedPreview: Parser.FeedPreview = Parser().getFeedType(parser)
+                    if (feedPreview.feedType != null) {
                         feedType.postValue("")
-                        feedType.postValue(fType)
+                        feedType.postValue(feedPreview.feedType)
+                        feedName.postValue(feedPreview.feedName)
                         urlValid.postValue("")
                         isUrlValid.set(true)
                     } else {

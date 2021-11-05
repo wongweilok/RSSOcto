@@ -51,6 +51,8 @@ class AddFeedViewModel @Inject constructor(
     @Bindable
     val inputUrl = MutableLiveData<String>()
     @Bindable
+    val feedName = MutableLiveData<String>()
+    @Bindable
     val urlValidation = MutableLiveData<String>()
     @Bindable
     val feedType = MutableLiveData<String>()
@@ -76,12 +78,15 @@ class AddFeedViewModel @Inject constructor(
             // Date format
             val dtFormatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.ENGLISH)
 
+            // Default or custom feed title
+            val feedTitle = feedName.value ?: response.title
+
             // Add Feed and Entry data into local database
             feedRepo.insertFeed(
                 Feed(
                     url,
                     response.url!!,
-                    response.title!!,
+                    feedTitle!!,
                     feedType.value!!
                 )
             )
@@ -125,12 +130,15 @@ class AddFeedViewModel @Inject constructor(
             // Get source URL from list
             val sourceUrl = response.urlList?.get(0)!!.url ?: response.urlList?.get(0)!!.href
 
+            // Default or custom feed title
+            val feedTitle = feedName.value ?: response.title
+
             // Add Feed and Entry data into local database
             feedRepo.insertFeed(
                 Feed(
                     url,
                     sourceUrl!!,
-                    response.title!!,
+                    feedTitle!!,
                     feedType.value!!
                 )
             )
@@ -189,6 +197,7 @@ class AddFeedViewModel @Inject constructor(
                 viewModelScope.launch(Dispatchers.IO) {
                     feedRepo.fetchFeedType(
                         inputUrl.value!!,
+                        feedName,
                         client,
                         urlValidation,
                         feedType,

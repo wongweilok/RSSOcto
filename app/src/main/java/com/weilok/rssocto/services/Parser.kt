@@ -23,16 +23,25 @@ import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 
 class Parser {
-    fun getFeedType(parser: XmlPullParser): String? {
+    fun getFeedType(parser: XmlPullParser): FeedPreview {
         var eventType = parser.eventType
         var feedType: String? = null
+        var feedName: String? = null
 
         try {
             // Loop whole XML content
             while (eventType != XmlPullParser.END_DOCUMENT) {
                 val tag: String
 
+                // Continue here need to get feed name as well for preview
                 when (eventType) {
+                    XmlPullParser.START_TAG -> {
+                        tag = parser.name
+
+                        if (feedName == null && tag == "title") {
+                            feedName = parser.nextText()
+                        }
+                    }
                     XmlPullParser.END_TAG -> {
                         tag = parser.name
 
@@ -51,6 +60,12 @@ class Parser {
             e.printStackTrace()
         }
 
-        return feedType
+        //return feedType
+        return FeedPreview(feedType, feedName)
     }
+
+    data class FeedPreview(
+        val feedType: String? = null,
+        val feedName: String? = null
+    )
 }
