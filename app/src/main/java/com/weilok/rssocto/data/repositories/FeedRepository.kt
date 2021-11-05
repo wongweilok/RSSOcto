@@ -64,6 +64,7 @@ class FeedRepository @Inject constructor(
     // Validate URL and get feed type
     suspend fun fetchFeedType(
         url: String,
+        feedName: MutableLiveData<String>,
         client: OkHttpClient,
         urlValid: MutableLiveData<String>,
         feedType: MutableLiveData<String>,
@@ -74,6 +75,7 @@ class FeedRepository @Inject constructor(
             isFeedExist.set(false)
             Validator().validate(
                 url,
+                feedName,
                 client,
                 urlValid,
                 feedType,

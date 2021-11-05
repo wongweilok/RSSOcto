@@ -10,6 +10,7 @@
 
     <!-- EditText -->
     <string name="et_feed_url_hint">Feed URL</string>
+    <string name="et_feed_name_hint">Feed Name</string>
 
     <!-- Fragment Label -->
     <string name="lbl_feed_fragment">Feeds</string>
