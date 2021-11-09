@@ -15,68 +15,63 @@
         android:layout_height="match_parent"
         tools:context=".ui.AddFeedFragment">
 
-        <EditText
-            android:id="@+id/etFeedUrl"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilFeedUrl"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="24dp"
-            android:afterTextChanged="@{()->addFeedVM.afterTextChanged()}"
-            android:ems="10"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
             android:hint="@string/et_feed_url_hint"
-            android:inputType="textPersonName"
-            android:minHeight="48dp"
-            android:onTextChanged="@{()->addFeedVM.onTextChanged()}"
-            android:text="@={addFeedVM.inputUrl}"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/etFeedName"
+            app:helperText="@{addFeedVM.urlValidation}"
+            app:layout_constraintBottom_toTopOf="@+id/tilFeedName"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed" />
+            app:layout_constraintVertical_chainStyle="packed">
 
-        <EditText
-            android:id="@+id/etFeedName"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etFeedUrl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:afterTextChanged="@{()->addFeedVM.afterTextChanged()}"
+                android:onTextChanged="@{()->addFeedVM.onTextChanged()}"
+                android:text="@={addFeedVM.inputUrl}" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilFeedName"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:ems="10"
+            android:layout_marginBottom="32dp"
             android:hint="@string/et_feed_name_hint"
-            android:inputType="textPersonName"
-            android:minHeight="48dp"
-            android:text="@={addFeedVM.feedName}"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/tvUrlValidation"
-            app:layout_constraintEnd_toEndOf="@+id/etFeedUrl"
-            app:layout_constraintStart_toStartOf="@+id/etFeedUrl"
-            app:layout_constraintTop_toBottomOf="@+id/etFeedUrl" />
-
-        <TextView
-            android:id="@+id/tvUrlValidation"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@={addFeedVM.urlValidation}"
-            android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@+id/btnAdd"
-            app:layout_constraintEnd_toEndOf="@+id/etFeedName"
-            app:layout_constraintStart_toStartOf="@+id/etFeedName"
-            app:layout_constraintTop_toBottomOf="@+id/etFeedName" />
+            app:layout_constraintEnd_toEndOf="@+id/tilFeedUrl"
+            app:layout_constraintStart_toStartOf="@+id/tilFeedUrl"
+            app:layout_constraintTop_toBottomOf="@+id/tilFeedUrl">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etFeedName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@={addFeedVM.feedName}" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/btnAdd"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="32dp"
+            android:layout_marginStart="48dp"
+            android:layout_marginEnd="48dp"
             android:layout_marginBottom="64dp"
             android:enabled="@{addFeedVM.isUrlValid() &amp;&amp; !addFeedVM.isFeedExist()}"
             android:text="@string/btn_add"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/tvUrlValidation"
-            app:layout_constraintStart_toStartOf="@+id/tvUrlValidation"
-            app:layout_constraintTop_toBottomOf="@+id/tvUrlValidation" />
+            app:layout_constraintEnd_toEndOf="@+id/tilFeedName"
+            app:layout_constraintStart_toStartOf="@+id/tilFeedName"
+            app:layout_constraintTop_toBottomOf="@+id/tilFeedName" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
