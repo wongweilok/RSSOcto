@@ -37,6 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:afterTextChanged="@{()->addFeedVM.afterTextChanged()}"
+                android:inputType="textUri"
                 android:onTextChanged="@{()->addFeedVM.onTextChanged()}"
                 android:text="@={addFeedVM.inputUrl}" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -66,7 +67,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="48dp"
             android:layout_marginEnd="48dp"
-            android:layout_marginBottom="64dp"
             android:enabled="@{addFeedVM.isUrlValid() &amp;&amp; !addFeedVM.isFeedExist()}"
             android:text="@string/btn_add"
             app:layout_constraintBottom_toBottomOf="parent"
