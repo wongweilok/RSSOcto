@@ -20,13 +20,16 @@
 package com.weilok.rssocto.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
@@ -49,6 +52,16 @@ class AddFeedFragment : Fragment(R.layout.fragment_add_feed) {
         binding.apply {
             addFeedVM = addFeedViewModel
             lifecycleOwner = activity
+        }
+
+        // Observe whether the given URL is valid or not
+        addFeedViewModel.urlValidation.observe(viewLifecycleOwner) {
+            Log.i("URLValid", it)
+            if (it != "") {
+                binding.tilFeedUrl.error = it
+            } else {
+                binding.tilFeedUrl.error = null
+            }
         }
 
         initButtons()

@@ -195,15 +195,19 @@ class AddFeedViewModel @Inject constructor(
         timer.schedule(object : TimerTask() {
             override fun run() {
                 viewModelScope.launch(Dispatchers.IO) {
-                    feedRepo.fetchFeedType(
-                        inputUrl.value!!,
-                        feedName,
-                        client,
-                        urlValidation,
-                        feedType,
-                        isUrlValid,
-                        isFeedExist
-                    )
+                    if (inputUrl.value != "") {
+                        feedRepo.fetchFeedType(
+                            inputUrl.value!!,
+                            feedName,
+                            client,
+                            urlValidation,
+                            feedType,
+                            isUrlValid,
+                            isFeedExist
+                        )
+                    } else {
+                        urlValidation.postValue("")
+                    }
                 }
             }
         }, delay)
