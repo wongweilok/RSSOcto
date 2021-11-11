@@ -51,8 +51,10 @@ class Validator {
                 override fun onResponse(call: Call, response: Response) {
                     if (!response.isSuccessful) {
                         feedType.postValue("")
-                        urlValid.postValue("")
-                        urlValid.postValue("Invalid URL.")
+                        urlValid.apply {
+                            postValue("")
+                            postValue("Invalid URL.")
+                        }
                         isUrlValid.set(false)
                         response.close()
                         throw IOException("Unexpected code $response")
@@ -65,30 +67,41 @@ class Validator {
                     // Parse the raw XML content and get feed type
                     val feedPreview: Parser.FeedPreview = Parser().getFeedType(parser)
                     if (feedPreview.feedType != null) {
-                        feedType.postValue("")
-                        feedType.postValue(feedPreview.feedType)
+                        feedType.apply {
+                            postValue("")
+                            postValue(feedPreview.feedType)
+                        }
                         feedName.postValue(feedPreview.feedName)
                         urlValid.postValue("")
                         isUrlValid.set(true)
                     } else {
                         feedType.postValue("")
-                        urlValid.postValue("")
-                        urlValid.postValue("Invalid feed format.")
+                        feedName.postValue("")
+                        urlValid.apply {
+                            postValue("")
+                            postValue("Invalid feed format.")
+                        }
                         isUrlValid.set(false)
                     }
                 }
 
                 override fun onFailure(call: Call, e: IOException) {
                     feedType.postValue("")
-                    urlValid.postValue("")
-                    urlValid.postValue("Invalid URL.")
+                    feedName.postValue("")
+                    urlValid.apply {
+                        postValue("")
+                        postValue("Invalid URL.")
+                    }
                     isUrlValid.set(false)
                 }
             })
         } catch (e: IllegalArgumentException) {
             feedType.postValue("")
-            urlValid.postValue("")
-            urlValid.postValue("Invalid URL.")
+            feedName.postValue("")
+            urlValid.apply {
+                postValue("")
+                postValue("Invalid URL.")
+            }
             isUrlValid.set(false)
         }
     }
