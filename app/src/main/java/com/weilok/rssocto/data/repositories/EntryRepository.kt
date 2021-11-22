@@ -32,6 +32,14 @@ class EntryRepository @Inject constructor(
         entryDao.insertEntry(entry)
     }
 
+    suspend fun markEntriesAsRead(id: String) {
+        entryDao.markEntriesAsRead(id)
+    }
+
+    suspend fun checkEntryExist(id: String): Boolean {
+        return entryDao.checkEntryExist(id)
+    }
+
     // Entries with feed ID
     suspend fun getEntriesWithFeedId(id: String): List<Entry> {
         return entryDao.getEntryWithFeedId(id)

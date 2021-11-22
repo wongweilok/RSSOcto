@@ -49,6 +49,7 @@ class EntryViewModel @Inject constructor(
 
     fun onEntryClicked(entry: Entry) {
         viewModelScope.launch {
+            entryRepo.markEntriesAsRead(entry.url)
             entryEventChannel.send(EntryEvent.NavigateToContentFragment(entry))
         }
     }
@@ -97,17 +98,19 @@ class EntryViewModel @Inject constructor(
                     .replace(Regex("\\.[0-9]+"), "")
                 val parsedDate: Date? = dtFormatter.parse(date)
 
-                entryRepo.insertEntry(
-                    Entry(
-                        entryList[i].url!!,
-                        entryList[i].title!!,
-                        parsedDate!!,
-                        entryList[i].author!!,
-                        entryList[i].content!!,
-                        false,
-                        url
+                if (!entryRepo.checkEntryExist(entryList[i].url!!)) {
+                    entryRepo.insertEntry(
+                        Entry(
+                            entryList[i].url!!,
+                            entryList[i].title!!,
+                            parsedDate!!,
+                            entryList[i].author!!,
+                            entryList[i].content!!,
+                            false,
+                            url
+                        )
                     )
-                )
+                }
             }
 
             entryEventChannel.send(EntryEvent.ShowRefreshMessage("Refreshing feed entries..."))
@@ -132,21 +135,23 @@ class EntryViewModel @Inject constructor(
                 val date = entryList[i].date!!.trim()
                 val parsedDate: Date? = dtFormatter.parse(date)
 
-                var content = entryList[i].description!!
-                if (entryList[i].content != null) {
-                    content = entryList[i].content!!
-                }
-                entryRepo.insertEntry(
-                    Entry(
-                        entryList[i].url!!,
-                        entryList[i].title!!,
-                        parsedDate!!,
-                        entryList[i].author!!,
-                        content,
-                        false,
-                        url
+                if (!entryRepo.checkEntryExist(entryList[i].url!!)) {
+                    var content = entryList[i].description!!
+                    if (entryList[i].content != null) {
+                        content = entryList[i].content!!
+                    }
+                    entryRepo.insertEntry(
+                        Entry(
+                            entryList[i].url!!,
+                            entryList[i].title!!,
+                            parsedDate!!,
+                            entryList[i].author!!,
+                            content,
+                            false,
+                            url
+                        )
                     )
-                )
+                }
             }
 
             entryEventChannel.send(EntryEvent.ShowRefreshMessage("Refreshing feed entries..."))
