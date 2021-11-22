@@ -20,4 +20,6 @@
     <!-- Option Menu -->
     <string name="opt_delete">Delete</string>
     <string name="opt_mark_all_as_read">Mark all as read</string>
+    <string name="opt_all">All</string>
+    <string name="opt_unread">Unread</string>
 </resources>

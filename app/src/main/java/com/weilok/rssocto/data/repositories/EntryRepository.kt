@@ -33,7 +33,12 @@ class EntryRepository @Inject constructor(
     }
 
     // Entries with feed ID
-    suspend fun getEntriesWithFeedId(id: String) : List<Entry> {
+    suspend fun getEntriesWithFeedId(id: String): List<Entry> {
         return entryDao.getEntryWithFeedId(id)
+    }
+
+    // Unread entries
+    suspend fun getUnreadEntries(id: String): List<Entry> {
+        return entryDao.getUnreadEntries(id)
     }
 }

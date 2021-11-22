@@ -20,6 +20,9 @@
 package com.weilok.rssocto.ui
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -68,8 +71,10 @@ class EntryFragment : Fragment(R.layout.fragment_entry), EntryAdapter.OnEntryIte
             }
         }
 
+        setHasOptionsMenu(true)
+
         // Get entries with corresponding feed
-        entryViewModel.getFeedWithEntries(entryViewModel.feedId!!)
+        entryViewModel.getEntriesWithFeedId(entryViewModel.feedId!!)
 
         // Collect Signal from Event Channel
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
@@ -84,7 +89,7 @@ class EntryFragment : Fragment(R.layout.fragment_entry), EntryAdapter.OnEntryIte
                     }
                     is EntryViewModel.EntryEvent.ShowRefreshMessage -> {
                         Snackbar.make(requireView(), event.message, Snackbar.LENGTH_SHORT).show()
-                        entryViewModel.getFeedWithEntries(entryViewModel.feedId!!)
+                        entryViewModel.getEntriesWithFeedId(entryViewModel.feedId!!)
                     }
                 }
             }
@@ -93,5 +98,25 @@ class EntryFragment : Fragment(R.layout.fragment_entry), EntryAdapter.OnEntryIte
 
     override fun onEntryItemClick(entry: Entry) {
         entryViewModel.onEntryClicked(entry)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.entry_item_list_option_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.optAll -> {
+                item.isChecked = true
+                entryViewModel.getEntriesWithFeedId(entryViewModel.feedId!!)
+                true
+            }
+            R.id.optUnread -> {
+                item.isChecked = true
+                entryViewModel.getUnreadEntries(entryViewModel.feedId!!)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }

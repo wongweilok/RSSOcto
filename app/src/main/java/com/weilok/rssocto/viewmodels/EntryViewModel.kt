@@ -54,9 +54,16 @@ class EntryViewModel @Inject constructor(
     }
 
     // Feed with entries
-    fun getFeedWithEntries(id: String) {
+    fun getEntriesWithFeedId(id: String) {
         viewModelScope.launch {
             val response = entryRepo.getEntriesWithFeedId(id)
+            entryEventChannel.send(EntryEvent.ListOfEntries(response))
+        }
+    }
+
+    fun getUnreadEntries(id: String) {
+        viewModelScope.launch {
+            val response = entryRepo.getUnreadEntries(id)
             entryEventChannel.send(EntryEvent.ListOfEntries(response))
         }
     }
