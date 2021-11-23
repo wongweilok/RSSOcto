@@ -23,6 +23,8 @@ import javax.inject.Inject
 
 import com.weilok.rssocto.data.local.dao.EntryDao
 import com.weilok.rssocto.data.local.entities.Entry
+import com.weilok.rssocto.viewmodels.EntriesView
+import kotlinx.coroutines.flow.Flow
 
 class EntryRepository @Inject constructor(
     private val entryDao: EntryDao
@@ -41,12 +43,10 @@ class EntryRepository @Inject constructor(
     }
 
     // Entries with feed ID
-    suspend fun getEntriesWithFeedId(id: String): List<Entry> {
-        return entryDao.getEntryWithFeedId(id)
-    }
-
-    // Unread entries
-    suspend fun getUnreadEntries(id: String): List<Entry> {
-        return entryDao.getUnreadEntries(id)
+    fun getEntries(
+        id: String,
+        entriesView: EntriesView
+    ): Flow<List<Entry>> {
+        return entryDao.getEntries(id, entriesView)
     }
 }
