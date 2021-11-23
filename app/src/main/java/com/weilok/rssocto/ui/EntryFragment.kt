@@ -38,6 +38,7 @@ import com.weilok.rssocto.R
 import com.weilok.rssocto.adapter.EntryAdapter
 import com.weilok.rssocto.data.local.entities.Entry
 import com.weilok.rssocto.databinding.FragmentEntryBinding
+import com.weilok.rssocto.viewmodels.EntriesView
 import com.weilok.rssocto.viewmodels.EntryViewModel
 
 @AndroidEntryPoint
@@ -73,23 +74,21 @@ class EntryFragment : Fragment(R.layout.fragment_entry), EntryAdapter.OnEntryIte
 
         setHasOptionsMenu(true)
 
-        // Get entries with corresponding feed
-        entryViewModel.getEntriesWithFeedId(entryViewModel.feedId!!)
+        // Observe and display entries
+        entryViewModel.entries.observe(viewLifecycleOwner) { list ->
+            entryAdapter.submitList(list)
+        }
 
         // Collect Signal from Event Channel
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             entryViewModel.entryEvent.collect { event ->
                 when (event) {
-                    is EntryViewModel.EntryEvent.ListOfEntries -> {
-                        entryAdapter.submitList(event.list)
-                    }
                     is EntryViewModel.EntryEvent.NavigateToContentFragment -> {
                         val action = EntryFragmentDirections.actionEntryFragmentToEntryContentFragment(event.entry)
                         findNavController().navigate(action)
                     }
                     is EntryViewModel.EntryEvent.ShowRefreshMessage -> {
                         Snackbar.make(requireView(), event.message, Snackbar.LENGTH_SHORT).show()
-                        entryViewModel.getEntriesWithFeedId(entryViewModel.feedId!!)
                     }
                 }
             }
@@ -108,12 +107,12 @@ class EntryFragment : Fragment(R.layout.fragment_entry), EntryAdapter.OnEntryIte
         return when (item.itemId) {
             R.id.optAll -> {
                 item.isChecked = true
-                entryViewModel.getEntriesWithFeedId(entryViewModel.feedId!!)
+                entryViewModel.entriesView.value = EntriesView.BY_ALL
                 true
             }
             R.id.optUnread -> {
                 item.isChecked = true
-                entryViewModel.getUnreadEntries(entryViewModel.feedId!!)
+                entryViewModel.entriesView.value = EntriesView.BY_UNREAD
                 true
             }
             else -> super.onOptionsItemSelected(item)

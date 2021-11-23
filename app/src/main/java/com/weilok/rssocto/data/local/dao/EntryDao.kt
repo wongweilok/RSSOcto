@@ -23,6 +23,7 @@ import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 
 import com.weilok.rssocto.data.local.entities.Entry
+import com.weilok.rssocto.viewmodels.EntriesView
 
 @Dao
 interface EntryDao {
@@ -44,11 +45,18 @@ interface EntryDao {
     @Query("SELECT EXISTS(SELECT * FROM entry_table WHERE entry_url = :id)")
     suspend fun checkEntryExist(id: String): Boolean
 
+    fun getEntries(feedId: String, entriesView: EntriesView): Flow<List<Entry>> {
+        return when (entriesView) {
+            EntriesView.BY_ALL -> getAllEntries(feedId)
+            EntriesView.BY_UNREAD -> getUnreadEntries(feedId)
+        }
+    }
+
     @Query("SELECT * FROM entry_table WHERE feed_id = :feedId ORDER BY entry_pub_date DESC")
-    suspend fun getEntryWithFeedId(feedId: String): List<Entry>
+    fun getAllEntries(feedId: String): Flow<List<Entry>>
 
     @Query("SELECT * FROM entry_table WHERE feed_id = :feedId AND read_status = 0 ORDER BY entry_pub_date DESC")
-    suspend fun getUnreadEntries(feedId: String): List<Entry>
+    fun getUnreadEntries(feedId: String): Flow<List<Entry>>
 
     @Query("SELECT * FROM entry_table ORDER BY entry_pub_date")
     fun getAllEntry(): Flow<List<Entry>>

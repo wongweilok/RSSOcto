@@ -21,6 +21,7 @@ package com.weilok.rssocto.viewmodels
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.text.SimpleDateFormat
@@ -28,6 +29,8 @@ import java.util.*
 import javax.inject.Inject
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 
 import com.weilok.rssocto.data.local.entities.Entry
@@ -47,25 +50,19 @@ class EntryViewModel @Inject constructor(
     val feedId = feed?.url
     val feedType = feed?.feedType
 
+    val entriesView = MutableStateFlow(EntriesView.BY_ALL)
+
+    // Get entries with given feed ID
+    private val getEntriesWithFeedId = entriesView.flatMapLatest {
+        entryRepo.getEntries(feedId!!, it)
+    }
+    val entries = getEntriesWithFeedId.asLiveData()
+
+
     fun onEntryClicked(entry: Entry) {
         viewModelScope.launch {
             entryRepo.markEntriesAsRead(entry.url)
             entryEventChannel.send(EntryEvent.NavigateToContentFragment(entry))
-        }
-    }
-
-    // Feed with entries
-    fun getEntriesWithFeedId(id: String) {
-        viewModelScope.launch {
-            val response = entryRepo.getEntriesWithFeedId(id)
-            entryEventChannel.send(EntryEvent.ListOfEntries(response))
-        }
-    }
-
-    fun getUnreadEntries(id: String) {
-        viewModelScope.launch {
-            val response = entryRepo.getUnreadEntries(id)
-            entryEventChannel.send(EntryEvent.ListOfEntries(response))
         }
     }
 
@@ -163,8 +160,9 @@ class EntryViewModel @Inject constructor(
     val entryEvent = entryEventChannel.receiveAsFlow()
 
     sealed class EntryEvent {
-        data class ListOfEntries(val list: List<Entry>) : EntryEvent()
         data class NavigateToContentFragment(val entry: Entry) : EntryEvent()
         data class ShowRefreshMessage(val message: String) : EntryEvent()
     }
 }
+
+enum class EntriesView { BY_ALL, BY_UNREAD }
