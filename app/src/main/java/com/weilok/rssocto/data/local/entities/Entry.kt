@@ -20,11 +20,8 @@
 package com.weilok.rssocto.data.local.entities
 
 import android.os.Parcelable
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
+import androidx.room.*
 import androidx.room.ForeignKey.CASCADE
-import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 import java.text.SimpleDateFormat
 import java.util.*
@@ -32,6 +29,7 @@ import java.util.*
 @Parcelize
 @Entity(
     tableName = "entry_table",
+    indices = [(Index(value = ["feed_id"]))],
     foreignKeys = [ForeignKey(
         entity = Feed::class,
         parentColumns = ["feed_url"],

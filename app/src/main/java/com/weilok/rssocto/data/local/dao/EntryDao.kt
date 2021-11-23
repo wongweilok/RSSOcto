@@ -23,7 +23,7 @@ import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 
 import com.weilok.rssocto.data.local.entities.Entry
-import com.weilok.rssocto.viewmodels.EntriesView
+import com.weilok.rssocto.data.EntriesView
 
 @Dao
 interface EntryDao {

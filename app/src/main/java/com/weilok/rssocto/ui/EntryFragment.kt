@@ -33,6 +33,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 import com.weilok.rssocto.R
 import com.weilok.rssocto.adapter.EntryAdapter
@@ -40,8 +42,6 @@ import com.weilok.rssocto.data.EntriesView
 import com.weilok.rssocto.data.local.entities.Entry
 import com.weilok.rssocto.databinding.FragmentEntryBinding
 import com.weilok.rssocto.viewmodels.EntryViewModel
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class EntryFragment : Fragment(R.layout.fragment_entry), EntryAdapter.OnEntryItemClickListener {
@@ -114,6 +114,7 @@ class EntryFragment : Fragment(R.layout.fragment_entry), EntryAdapter.OnEntryIte
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Choose to show all entries or unread entries
         return when (item.itemId) {
             R.id.optAll -> {
                 item.isChecked = true
