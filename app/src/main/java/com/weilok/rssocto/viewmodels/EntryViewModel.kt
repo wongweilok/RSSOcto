@@ -29,7 +29,6 @@ import java.util.*
 import javax.inject.Inject
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 
@@ -50,15 +49,15 @@ class EntryViewModel @Inject constructor(
     state: SavedStateHandle
 ) : ViewModel() {
     val feed = state.get<Feed>("feed")
-    val feedId = feed?.url
     val feedType = feed?.feedType
+    private val feedId = feed?.url
 
     //val entriesView = MutableStateFlow(EntriesView.BY_ALL)
     val prefFlow = prefHandler.preferencesFlow
 
     // Get entries with given feed ID
     private val getEntriesWithFeedId = prefFlow.flatMapLatest { pref ->
-        entryRepo.getEntries(feedId!!, pref)
+        entryRepo.getEntries(feedId!!, pref.entriesView)
     }
     val entries = getEntriesWithFeedId.asLiveData()
 
@@ -67,7 +66,6 @@ class EntryViewModel @Inject constructor(
             prefHandler.updateEntriesView(entriesView)
         }
     }
-
 
     fun onEntryClicked(entry: Entry) {
         viewModelScope.launch {

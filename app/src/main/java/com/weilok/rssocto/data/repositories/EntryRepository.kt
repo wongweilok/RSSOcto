@@ -20,11 +20,11 @@
 package com.weilok.rssocto.data.repositories
 
 import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
 
 import com.weilok.rssocto.data.local.dao.EntryDao
 import com.weilok.rssocto.data.local.entities.Entry
-import com.weilok.rssocto.viewmodels.EntriesView
-import kotlinx.coroutines.flow.Flow
+import com.weilok.rssocto.data.EntriesView
 
 class EntryRepository @Inject constructor(
     private val entryDao: EntryDao

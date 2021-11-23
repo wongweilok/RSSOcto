@@ -22,11 +22,15 @@ package com.weilok.rssocto.data.local.entities
 import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-@Entity(tableName = "feed_table")
+@Entity(
+    tableName = "feed_table",
+    indices = [(Index(value = ["feed_url"], unique = true))]
+)
 data class Feed(
     @PrimaryKey
     @ColumnInfo(name = "feed_url")
