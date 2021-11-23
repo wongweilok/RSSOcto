@@ -33,6 +33,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 
+import com.weilok.rssocto.data.EntriesView
+import com.weilok.rssocto.data.PreferenceHandler
 import com.weilok.rssocto.data.local.entities.Entry
 import com.weilok.rssocto.data.local.entities.Feed
 import com.weilok.rssocto.data.remote.AtomFeed
@@ -44,19 +46,27 @@ import com.weilok.rssocto.data.repositories.FeedRepository
 class EntryViewModel @Inject constructor(
     private val entryRepo: EntryRepository,
     private val feedRepo: FeedRepository,
+    private val prefHandler: PreferenceHandler,
     state: SavedStateHandle
 ) : ViewModel() {
     val feed = state.get<Feed>("feed")
     val feedId = feed?.url
     val feedType = feed?.feedType
 
-    val entriesView = MutableStateFlow(EntriesView.BY_ALL)
+    //val entriesView = MutableStateFlow(EntriesView.BY_ALL)
+    val prefFlow = prefHandler.preferencesFlow
 
     // Get entries with given feed ID
-    private val getEntriesWithFeedId = entriesView.flatMapLatest {
-        entryRepo.getEntries(feedId!!, it)
+    private val getEntriesWithFeedId = prefFlow.flatMapLatest { pref ->
+        entryRepo.getEntries(feedId!!, pref)
     }
     val entries = getEntriesWithFeedId.asLiveData()
+
+    fun onEntriesViewSelected(entriesView: EntriesView) {
+        viewModelScope.launch {
+            prefHandler.updateEntriesView(entriesView)
+        }
+    }
 
 
     fun onEntryClicked(entry: Entry) {
@@ -164,5 +174,3 @@ class EntryViewModel @Inject constructor(
         data class ShowRefreshMessage(val message: String) : EntryEvent()
     }
 }
-
-enum class EntriesView { BY_ALL, BY_UNREAD }

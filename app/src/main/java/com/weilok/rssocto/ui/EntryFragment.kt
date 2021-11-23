@@ -36,10 +36,12 @@ import kotlinx.coroutines.flow.collect
 
 import com.weilok.rssocto.R
 import com.weilok.rssocto.adapter.EntryAdapter
+import com.weilok.rssocto.data.EntriesView
 import com.weilok.rssocto.data.local.entities.Entry
 import com.weilok.rssocto.databinding.FragmentEntryBinding
-import com.weilok.rssocto.viewmodels.EntriesView
 import com.weilok.rssocto.viewmodels.EntryViewModel
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class EntryFragment : Fragment(R.layout.fragment_entry), EntryAdapter.OnEntryItemClickListener {
@@ -101,18 +103,26 @@ class EntryFragment : Fragment(R.layout.fragment_entry), EntryAdapter.OnEntryIte
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.entry_item_list_option_menu, menu)
+
+        viewLifecycleOwner.lifecycleScope.launch {
+                if (entryViewModel.prefFlow.first().entriesView == EntriesView.BY_ALL) {
+                    menu.findItem(R.id.optAll).isChecked = true
+                } else if (entryViewModel.prefFlow.first().entriesView == EntriesView.BY_UNREAD) {
+                    menu.findItem(R.id.optUnread).isChecked = true
+                }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.optAll -> {
                 item.isChecked = true
-                entryViewModel.entriesView.value = EntriesView.BY_ALL
+                entryViewModel.onEntriesViewSelected(EntriesView.BY_ALL)
                 true
             }
             R.id.optUnread -> {
                 item.isChecked = true
-                entryViewModel.entriesView.value = EntriesView.BY_UNREAD
+                entryViewModel.onEntriesViewSelected(EntriesView.BY_UNREAD)
                 true
             }
             else -> super.onOptionsItemSelected(item)
