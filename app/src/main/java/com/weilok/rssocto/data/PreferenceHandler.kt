@@ -20,15 +20,21 @@
 package com.weilok.rssocto.data
 
 import android.content.Context
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
+import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
+
+private const val TAG = "PreferenceHandler"
 
 enum class EntriesView { BY_ALL, BY_UNREAD }
 
@@ -45,7 +51,16 @@ class PreferenceHandler @Inject constructor(
     private object PreferencesKey {
         val ENTRIES_VIEW = stringPreferencesKey("entries_view")
     }
+
     val preferencesFlow = context.dataStore.data
+        .catch { e ->
+            if (e is IOException) {
+                Log.e(TAG, "Error loading user preferences", e)
+                emit(emptyPreferences())
+            } else {
+                throw e
+            }
+        }
         .map { pref ->
             val entriesView = EntriesView.valueOf(
                 pref[PreferencesKey.ENTRIES_VIEW] ?: EntriesView.BY_ALL.name
@@ -53,6 +68,7 @@ class PreferenceHandler @Inject constructor(
             FilterPref(entriesView)
         }
 
+    // Set and update preferences in datastore
     suspend fun updateEntriesView(entriesView: EntriesView) {
         context.dataStore.edit { pref ->
             pref[PreferencesKey.ENTRIES_VIEW] = entriesView.name
