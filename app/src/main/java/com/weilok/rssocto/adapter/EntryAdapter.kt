@@ -59,8 +59,15 @@ class EntryAdapter(
 
         fun bind(entry: Entry) {
             binding.apply {
-                tvEntryTitle.text = entry.title
-                tvPubDate.text = DateUtils.getRelativeTimeSpanString(entry.date.time)
+                tvEntryTitle.apply {
+                    isEnabled = !entry.read
+                    text = entry.title
+                }
+
+                tvPubDate.apply {
+                    isEnabled = !entry.read
+                    text = DateUtils.getRelativeTimeSpanString(entry.date.time)
+                }
             }
         }
     }
