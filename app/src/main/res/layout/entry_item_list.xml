@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clickable="true"
@@ -24,10 +25,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:layout_toEndOf="@id/ivEntryImage"
-            android:text="Title"
-            android:textColor="@color/black"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:text="Title" />
 
         <TextView
             android:id="@+id/tvPubDate"
@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvEntryTitle"
             android:layout_toEndOf="@id/ivEntryImage"
-            android:text="Published date" />
+            tools:text="Published date" />
 
     </RelativeLayout>
 
