@@ -44,7 +44,7 @@ class FeedFragment : Fragment(R.layout.fragment_feed),
     FeedAdapter.OnFeedItemLongClickListener {
     private lateinit var binding: FragmentFeedBinding
 
-    private val feedViewModel: FeedViewModel by viewModels()
+    private val viewModel: FeedViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -58,12 +58,12 @@ class FeedFragment : Fragment(R.layout.fragment_feed),
         // Receive request from other fragment
         setFragmentResultListener("add_feed_request") { _, bundle ->
             val result = bundle.getInt("add_feed_result")
-            feedViewModel.onAddFeedResult(result)
+            viewModel.onAddFeedResult(result)
         }
 
         // Collect Signal from Event Channel
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            feedViewModel.feedEvent.collect { event ->
+            viewModel.feedEvent.collect { event ->
                 when (event) {
                     is FeedViewModel.FeedEvent.ShowFeedChangedMessage -> {
                         Snackbar.make(requireView(), event.message, Snackbar.LENGTH_SHORT).show()
@@ -104,7 +104,7 @@ class FeedFragment : Fragment(R.layout.fragment_feed),
             }
         }
 
-        feedViewModel.feeds.observe(viewLifecycleOwner) { list ->
+        viewModel.feeds.observe(viewLifecycleOwner) { list ->
             // Display different layout when data is empty
             if (list.isEmpty()) {
                 binding.apply {
@@ -118,7 +118,7 @@ class FeedFragment : Fragment(R.layout.fragment_feed),
     }
 
     override fun onFeedItemClick(feed: Feed) {
-        feedViewModel.onFeedClicked(feed)
+        viewModel.onFeedClicked(feed)
     }
 
     override fun onFeedItemLongClick(feed: Feed, v: View) {
@@ -132,13 +132,13 @@ class FeedFragment : Fragment(R.layout.fragment_feed),
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.optDelete -> {
-                    feedViewModel.deleteFeed(feed)
+                    viewModel.deleteFeed(feed)
 
                     return@setOnMenuItemClickListener true
                 }
 
                 R.id.optMarkAllAsRead -> {
-                    feedViewModel.markAllEntriesAsRead()
+                    viewModel.markAllEntriesAsRead()
 
                     return@setOnMenuItemClickListener true
                 }

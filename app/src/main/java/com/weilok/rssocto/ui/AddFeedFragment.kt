@@ -22,14 +22,12 @@ package com.weilok.rssocto.ui
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
@@ -41,7 +39,7 @@ import com.weilok.rssocto.viewmodels.AddFeedViewModel
 class AddFeedFragment : Fragment(R.layout.fragment_add_feed) {
     private lateinit var binding: FragmentAddFeedBinding
 
-    private val addFeedViewModel: AddFeedViewModel by viewModels()
+    private val viewModel: AddFeedViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -50,12 +48,12 @@ class AddFeedFragment : Fragment(R.layout.fragment_add_feed) {
         binding = FragmentAddFeedBinding.bind(view)
 
         binding.apply {
-            addFeedVM = addFeedViewModel
+            addFeedVM = viewModel
             lifecycleOwner = activity
         }
 
         // Observe whether the given URL is valid or not
-        addFeedViewModel.urlValidation.observe(viewLifecycleOwner) {
+        viewModel.urlValidation.observe(viewLifecycleOwner) {
             Log.i("URLValid", it)
             if (it != "") {
                 binding.tilFeedUrl.error = it
@@ -68,7 +66,7 @@ class AddFeedFragment : Fragment(R.layout.fragment_add_feed) {
 
         // Collect Signal from Event Channel
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            addFeedViewModel.addFeedEvent.collect { event ->
+            viewModel.addFeedEvent.collect { event ->
                 when (event) {
                     is AddFeedViewModel.AddFeedEvent.AddAndNavigateBack -> {
                         binding.etFeedUrl.clearFocus()
@@ -86,7 +84,7 @@ class AddFeedFragment : Fragment(R.layout.fragment_add_feed) {
 
     private fun initButtons() {
         binding.btnAdd.setOnClickListener {
-            addFeedViewModel.getFeed()
+            viewModel.getFeed()
         }
     }
 }

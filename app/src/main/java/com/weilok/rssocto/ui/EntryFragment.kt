@@ -47,7 +47,7 @@ import com.weilok.rssocto.viewmodels.EntryViewModel
 class EntryFragment : Fragment(R.layout.fragment_entry), EntryAdapter.OnEntryItemClickListener {
     private lateinit var binding: FragmentEntryBinding
 
-    private val entryViewModel: EntryViewModel by viewModels()
+    private val viewModel: EntryViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -69,7 +69,7 @@ class EntryFragment : Fragment(R.layout.fragment_entry), EntryAdapter.OnEntryIte
             // Initialize SwipeRefreshLayout action
             swipeRefresh.setOnRefreshListener {
                 // Refresh RecyclerView
-                entryViewModel.refreshFeedEntries()
+                viewModel.refreshFeedEntries()
                 swipeRefresh.isRefreshing = false
             }
         }
@@ -77,13 +77,13 @@ class EntryFragment : Fragment(R.layout.fragment_entry), EntryAdapter.OnEntryIte
         setHasOptionsMenu(true)
 
         // Observe and display entries
-        entryViewModel.entries.observe(viewLifecycleOwner) { list ->
+        viewModel.entries.observe(viewLifecycleOwner) { list ->
             entryAdapter.submitList(list)
         }
 
         // Collect Signal from Event Channel
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            entryViewModel.entryEvent.collect { event ->
+            viewModel.entryEvent.collect { event ->
                 when (event) {
                     is EntryViewModel.EntryEvent.NavigateToContentFragment -> {
                         val action = EntryFragmentDirections.actionEntryFragmentToEntryContentActivity(event.entry)
@@ -98,16 +98,16 @@ class EntryFragment : Fragment(R.layout.fragment_entry), EntryAdapter.OnEntryIte
     }
 
     override fun onEntryItemClick(entry: Entry) {
-        entryViewModel.onEntryClicked(entry)
+        viewModel.onEntryClicked(entry)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.entry_item_list_option_menu, menu)
 
         viewLifecycleOwner.lifecycleScope.launch {
-                if (entryViewModel.prefFlow.first().entriesView == EntriesView.BY_ALL) {
+                if (viewModel.prefFlow.first().entriesView == EntriesView.BY_ALL) {
                     menu.findItem(R.id.optAll).isChecked = true
-                } else if (entryViewModel.prefFlow.first().entriesView == EntriesView.BY_UNREAD) {
+                } else if (viewModel.prefFlow.first().entriesView == EntriesView.BY_UNREAD) {
                     menu.findItem(R.id.optUnread).isChecked = true
                 }
         }
@@ -118,12 +118,12 @@ class EntryFragment : Fragment(R.layout.fragment_entry), EntryAdapter.OnEntryIte
         return when (item.itemId) {
             R.id.optAll -> {
                 item.isChecked = true
-                entryViewModel.onEntriesViewSelected(EntriesView.BY_ALL)
+                viewModel.onEntriesViewSelected(EntriesView.BY_ALL)
                 true
             }
             R.id.optUnread -> {
                 item.isChecked = true
-                entryViewModel.onEntriesViewSelected(EntriesView.BY_UNREAD)
+                viewModel.onEntriesViewSelected(EntriesView.BY_UNREAD)
                 true
             }
             else -> super.onOptionsItemSelected(item)
