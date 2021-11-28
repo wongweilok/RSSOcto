@@ -4,7 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable/ic_check.xml" value="0.22447916666666667" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.13903985507246377" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.17" />
         <entry key="app/src/main/res/layout/entry_item_list.xml" value="0.25" />
         <entry key="app/src/main/res/layout/feed_item_empty.xml" value="0.12907608695652173" />
         <entry key="app/src/main/res/layout/feed_item_list.xml" value="0.25" />
@@ -14,6 +14,9 @@
         <entry key="app/src/main/res/layout/fragment_feed.xml" value="0.2" />
         <entry key="app/src/main/res/layout/fragment_feed_list.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_search.xml" value="0.10597826086956522" />
+        <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.18" />
+        <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.20833333333333334" />
         <entry key="app/src/main/res/menu/entry_item_list_option_menu.xml" value="0.20833333333333334" />
         <entry key="app/src/main/res/menu/feed_item_option_menu.xml" value="0.20833333333333334" />
       </map>
