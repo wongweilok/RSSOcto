@@ -30,21 +30,12 @@
         <argument
             android:name="feed"
             app:argType="com.weilok.rssocto.data.local.entities.Feed" />
-        <action
-            android:id="@+id/action_entryFragment_to_entryContentFragment"
-            app:destination="@id/entryContentFragment" />
         <argument
             android:name="title"
             app:argType="string" />
-    </fragment>
-    <fragment
-        android:id="@+id/entryContentFragment"
-        android:name="com.weilok.rssocto.ui.EntryContentFragment"
-        android:label="@string/lbl_entry_content_fragment"
-        tools:layout="@layout/fragment_entry_content">
-        <argument
-            android:name="entry"
-            app:argType="com.weilok.rssocto.data.local.entities.Entry" />
+        <action
+            android:id="@+id/action_entryFragment_to_entryContentActivity"
+            app:destination="@id/entryContentActivity" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -54,6 +45,14 @@
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.weilok.rssocto.ui.SearchFragment"
-        android:label="fragment_search"
+        android:label="@string/lbl_search_fragment"
         tools:layout="@layout/fragment_search" />
+    <activity
+        android:id="@+id/entryContentActivity"
+        android:name="com.weilok.rssocto.ui.EntryContentActivity"
+        tools:layout="@layout/activity_entry_content" >
+        <argument
+            android:name="entry"
+            app:argType="com.weilok.rssocto.data.local.entities.Entry" />
+    </activity>
 </navigation>

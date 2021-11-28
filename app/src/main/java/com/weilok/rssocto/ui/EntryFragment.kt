@@ -86,7 +86,7 @@ class EntryFragment : Fragment(R.layout.fragment_entry), EntryAdapter.OnEntryIte
             entryViewModel.entryEvent.collect { event ->
                 when (event) {
                     is EntryViewModel.EntryEvent.NavigateToContentFragment -> {
-                        val action = EntryFragmentDirections.actionEntryFragmentToEntryContentFragment(event.entry)
+                        val action = EntryFragmentDirections.actionEntryFragmentToEntryContentActivity(event.entry)
                         findNavController().navigate(action)
                     }
                     is EntryViewModel.EntryEvent.ShowRefreshMessage -> {
