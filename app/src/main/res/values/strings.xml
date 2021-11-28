@@ -15,8 +15,8 @@
     <!-- Fragment Label -->
     <string name="lbl_feed_fragment">Feeds</string>
     <string name="lbl_add_feed_fragment">New Feed</string>
-    <string name="lbl_entry_content_fragment">Content</string>
     <string name="lbl_settings_fragment">Settings</string>
+    <string name="lbl_search_fragment">Search</string>
 
     <!-- Option Menu -->
     <string name="opt_delete">Delete</string>
