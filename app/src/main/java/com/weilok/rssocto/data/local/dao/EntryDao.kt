@@ -58,6 +58,9 @@ interface EntryDao {
     @Query("SELECT * FROM entry_table WHERE feed_id = :feedId AND read_status = 0 ORDER BY entry_pub_date DESC")
     fun getUnreadEntries(feedId: String): Flow<List<Entry>>
 
+    @Query("SELECT * FROM entry_table WHERE entry_title LIKE '%' || :searchQuery || '%' ORDER BY entry_pub_date DESC")
+    fun getEntriesWithQuery(searchQuery: String): Flow<List<Entry>>
+
     @Query("SELECT * FROM entry_table ORDER BY entry_pub_date")
     fun getAllEntry(): Flow<List<Entry>>
 }

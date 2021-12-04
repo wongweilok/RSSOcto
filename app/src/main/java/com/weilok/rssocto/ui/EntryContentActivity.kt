@@ -23,10 +23,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.viewModels
+import dagger.hilt.android.AndroidEntryPoint
 
 import com.weilok.rssocto.databinding.ActivityEntryContentBinding
 import com.weilok.rssocto.viewmodels.EntryContentViewModel
 
+@AndroidEntryPoint
 class EntryContentActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEntryContentBinding
 

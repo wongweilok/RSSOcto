@@ -52,9 +52,13 @@ class EntryFragment : Fragment(R.layout.fragment_entry), EntryAdapter.OnEntryIte
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Initialize binding for current view
         binding = FragmentEntryBinding.bind(view)
 
-        // Initialize binding for current view
+        /*
+         * Initialize adapter and restore list item position when
+         * returning to this fragment.
+         */
         val entryAdapter = EntryAdapter(this)
         entryAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
 
@@ -85,7 +89,7 @@ class EntryFragment : Fragment(R.layout.fragment_entry), EntryAdapter.OnEntryIte
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.entryEvent.collect { event ->
                 when (event) {
-                    is EntryViewModel.EntryEvent.NavigateToContentFragment -> {
+                    is EntryViewModel.EntryEvent.NavigateToContentView -> {
                         val action = EntryFragmentDirections.actionEntryFragmentToEntryContentActivity(event.entry)
                         findNavController().navigate(action)
                     }
