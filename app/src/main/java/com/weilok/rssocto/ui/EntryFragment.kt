@@ -82,6 +82,16 @@ class EntryFragment : Fragment(R.layout.fragment_entry), EntryAdapter.OnEntryIte
 
         // Observe and display entries
         viewModel.entries.observe(viewLifecycleOwner) { list ->
+            if (list.isEmpty()) {
+                binding.apply {
+                    tvNoEntry.visibility = View.VISIBLE
+                }
+            } else {
+                binding.apply {
+                    tvNoEntry.visibility = View.GONE
+                }
+            }
+
             entryAdapter.submitList(list)
         }
 

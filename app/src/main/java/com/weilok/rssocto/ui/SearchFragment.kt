@@ -79,6 +79,16 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchView.OnQueryTex
         }
 
         viewModel.entries.observe(viewLifecycleOwner) { list ->
+            if (list.isEmpty()) {
+                binding.apply {
+                    tvSearchNoResult.visibility = View.VISIBLE
+                }
+            } else {
+                binding.apply {
+                    tvSearchNoResult.visibility = View.GONE
+                }
+            }
+
             entryAdapter.submitList(list)
         }
     }
