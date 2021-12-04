@@ -52,7 +52,6 @@ class EntryViewModel @Inject constructor(
     val feedType = feed?.feedType
     private val feedId = feed?.url
 
-    //val entriesView = MutableStateFlow(EntriesView.BY_ALL)
     val prefFlow = prefHandler.preferencesFlow
 
     // Get entries with given feed ID
@@ -168,7 +167,7 @@ class EntryViewModel @Inject constructor(
     val entryEvent = entryEventChannel.receiveAsFlow()
 
     sealed class EntryEvent {
-        data class NavigateToContentFragment(val entry: Entry) : EntryEvent()
+        data class NavigateToContentView(val entry: Entry) : EntryEvent()
         data class ShowRefreshMessage(val message: String) : EntryEvent()
     }
 }

@@ -23,6 +23,7 @@
     <string name="opt_mark_all_as_read">Mark all as read</string>
     <string name="opt_all">All</string>
     <string name="opt_unread">Unread</string>
+    <string name="opt_search">Search</string>
 
     <!-- Bottom Navigation Menu -->
     <string name="nav_item_feeds">Feeds</string>

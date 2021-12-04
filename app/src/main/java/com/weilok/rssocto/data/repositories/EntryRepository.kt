@@ -19,6 +19,7 @@
 
 package com.weilok.rssocto.data.repositories
 
+import androidx.lifecycle.asLiveData
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 
@@ -29,6 +30,8 @@ import com.weilok.rssocto.data.EntriesView
 class EntryRepository @Inject constructor(
     private val entryDao: EntryDao
 ) {
+    val allEntry = entryDao.getAllEntry().asLiveData()
+
     // Entry
     suspend fun insertEntry(entry: Entry) {
         entryDao.insertEntry(entry)
@@ -48,5 +51,10 @@ class EntryRepository @Inject constructor(
         entriesView: EntriesView
     ): Flow<List<Entry>> {
         return entryDao.getEntries(id, entriesView)
+    }
+
+    // Get entries with search query
+    fun getEntriesWithQuery(query: String): Flow<List<Entry>> {
+        return entryDao.getEntriesWithQuery(query)
     }
 }
