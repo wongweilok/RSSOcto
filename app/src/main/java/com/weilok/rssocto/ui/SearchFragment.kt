@@ -22,6 +22,7 @@ package com.weilok.rssocto.ui
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
@@ -29,6 +30,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
@@ -99,6 +101,25 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchView.OnQueryTex
         val searchItem = menu.findItem(R.id.optSearch)
         val searchView = searchItem.actionView as SearchView
 
+        // Get bottom navigation bar from activity
+        val botNavBar = activity!!.findViewById<BottomNavigationView>(R.id.bottom_nav)
+
+        searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
+            override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
+                botNavBar.visibility = View.GONE
+                binding.tvSearch.visibility = View.GONE
+
+                return true
+            }
+
+            override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
+                botNavBar.visibility = View.VISIBLE
+                binding.tvSearch.visibility = View.VISIBLE
+
+                return true
+            }
+        })
+
         searchView.setOnQueryTextListener(this)
     }
 
@@ -112,12 +133,10 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchView.OnQueryTex
         if (query.isNullOrEmpty()) {
             binding.apply {
                 rvQueryFeedList.visibility = View.GONE
-                tvSearch.visibility = View.VISIBLE
             }
         } else {
             binding.apply {
                 rvQueryFeedList.visibility = View.VISIBLE
-                tvSearch.visibility = View.GONE
             }
         }
 
