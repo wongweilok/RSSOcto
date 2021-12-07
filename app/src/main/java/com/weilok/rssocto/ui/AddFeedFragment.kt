@@ -28,6 +28,7 @@ import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
@@ -38,6 +39,7 @@ import com.weilok.rssocto.viewmodels.AddFeedViewModel
 @AndroidEntryPoint
 class AddFeedFragment : Fragment(R.layout.fragment_add_feed) {
     private lateinit var binding: FragmentAddFeedBinding
+    private lateinit var botNavBar: BottomNavigationView
 
     private val viewModel: AddFeedViewModel by viewModels()
 
@@ -51,6 +53,13 @@ class AddFeedFragment : Fragment(R.layout.fragment_add_feed) {
             addFeedVM = viewModel
             lifecycleOwner = activity
         }
+
+        /*
+         * Get bottom navigation bar from activity.
+         * Hide the bar when this fragment created.
+         */
+        botNavBar = activity!!.findViewById(R.id.bottom_nav)
+        botNavBar.visibility = View.GONE
 
         // Observe whether the given URL is valid or not
         viewModel.urlValidation.observe(viewLifecycleOwner) {
@@ -86,5 +95,12 @@ class AddFeedFragment : Fragment(R.layout.fragment_add_feed) {
         binding.btnAdd.setOnClickListener {
             viewModel.getFeed()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        // Enable bottom navigation bar when this fragment destroy.
+        botNavBar.visibility = View.VISIBLE
     }
 }
