@@ -32,6 +32,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import com.weilok.rssocto.R
 import com.weilok.rssocto.databinding.ActivityMainBinding
 
+const val ADD_FEED_RESULT_OK = Activity.RESULT_FIRST_USER
+
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -66,5 +68,3 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
 }
-
-const val ADD_FEED_RESULT_OK = Activity.RESULT_FIRST_USER

@@ -19,11 +19,14 @@
 
 package com.weilok.rssocto.ui
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.PopupMenu
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -43,6 +46,7 @@ class FeedFragment : Fragment(R.layout.fragment_feed),
     FeedAdapter.OnFeedItemClickListener,
     FeedAdapter.OnFeedItemLongClickListener {
     private lateinit var binding: FragmentFeedBinding
+    private lateinit var resultLauncher: ActivityResultLauncher<Intent>
 
     private val viewModel: FeedViewModel by viewModels()
 
@@ -52,14 +56,20 @@ class FeedFragment : Fragment(R.layout.fragment_feed),
         // Initialize binding for current view
         binding = FragmentFeedBinding.bind(view)
 
+        // Receive result from other AddFeedActivity
+        resultLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == RESULT_CODE) {
+                val intent = result.data
+
+                val addResult = intent!!.getIntExtra("add_feed_request", 0)
+                viewModel.onAddFeedResult(addResult)
+            }
+        }
+
         initButton()
         initRecyclerView()
-
-        // Receive request from other fragment
-        setFragmentResultListener("add_feed_request") { _, bundle ->
-            val result = bundle.getInt("add_feed_result")
-            viewModel.onAddFeedResult(result)
-        }
 
         // Collect Signal from Event Channel
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
@@ -88,8 +98,8 @@ class FeedFragment : Fragment(R.layout.fragment_feed),
 
     private fun initButton() {
         binding.fabAddFeed.setOnClickListener {
-            val action = FeedFragmentDirections.actionFeedFragmentToAddFeedFragment()
-            findNavController().navigate(action)
+            val intent = Intent(activity, AddFeedActivity::class.java)
+            resultLauncher.launch(intent)
         }
     }
 

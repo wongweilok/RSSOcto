@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RSSOcto">
         <activity
+            android:name=".ui.AddFeedActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.EntryContentActivity"
             android:exported="false" />
         <activity
