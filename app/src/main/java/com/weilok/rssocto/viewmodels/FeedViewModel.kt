@@ -34,6 +34,7 @@ import com.weilok.rssocto.ui.ADD_FEED_RESULT_OK
 // Messages to show when feeds changed
 private const val FEED_ADDED_MSG = "Feed Added Successfully."
 private const val FEED_DELETED_MSG = "Feed Deleted Successfully."
+private const val ERROR_MSG = "Adding feed failed."
 
 @HiltViewModel
 class FeedViewModel @Inject constructor(
@@ -65,6 +66,14 @@ class FeedViewModel @Inject constructor(
                 viewModelScope.launch {
                     feedEventChannel.apply {
                         send(FeedEvent.ShowFeedChangedMessage(FEED_ADDED_MSG))
+                        send(FeedEvent.ShowRecyclerView)
+                    }
+                }
+            }
+            else -> {
+                viewModelScope.launch {
+                    feedEventChannel.apply {
+                        send(FeedEvent.ShowFeedChangedMessage(ERROR_MSG))
                         send(FeedEvent.ShowRecyclerView)
                     }
                 }
