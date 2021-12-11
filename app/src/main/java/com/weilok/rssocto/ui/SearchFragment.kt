@@ -52,9 +52,8 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchView.OnQueryTex
         // Initialize binding for current view
         binding = FragmentSearchBinding.bind(view)
 
+        // Enable option menu
         setHasOptionsMenu(true)
-
-        initRecyclerView()
 
         // Collect Signal from Event Channel
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
@@ -82,13 +81,9 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchView.OnQueryTex
 
         viewModel.entries.observe(viewLifecycleOwner) { list ->
             if (list.isEmpty()) {
-                binding.apply {
-                    tvSearchNoResult.visibility = View.VISIBLE
-                }
+                binding.tvSearchNoResult.visibility = View.VISIBLE
             } else {
-                binding.apply {
-                    tvSearchNoResult.visibility = View.GONE
-                }
+                binding.tvSearchNoResult.visibility = View.GONE
             }
 
             entryAdapter.submitList(list)
@@ -107,14 +102,23 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchView.OnQueryTex
         searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
             override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
                 botNavBar.visibility = View.GONE
-                binding.tvSearch.visibility = View.GONE
+                binding.apply {
+                    tvSearch.visibility = View.GONE
+                    rvQueryFeedList.visibility = View.VISIBLE
+                }
+
+                initRecyclerView()
 
                 return true
             }
 
             override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
                 botNavBar.visibility = View.VISIBLE
-                binding.tvSearch.visibility = View.VISIBLE
+                binding.apply {
+                    tvSearch.visibility = View.VISIBLE
+                    rvQueryFeedList.visibility = View.GONE
+                    tvSearchNoResult.visibility = View.GONE
+                }
 
                 return true
             }
@@ -127,18 +131,9 @@ class SearchFragment : Fragment(R.layout.fragment_search), SearchView.OnQueryTex
         return true
     }
 
+    // Search article in real time with given query
     override fun onQueryTextChange(query: String?): Boolean {
         viewModel.searchQuery.value = query.orEmpty()
-
-        if (query.isNullOrEmpty()) {
-            binding.apply {
-                rvQueryFeedList.visibility = View.GONE
-            }
-        } else {
-            binding.apply {
-                rvQueryFeedList.visibility = View.VISIBLE
-            }
-        }
 
         return true
     }

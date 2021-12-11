@@ -3,6 +3,7 @@
 
     <!-- TextView -->
     <string name="no_feed_message">Your feed subscription is empty.</string>
+    <string name="no_article_message">No article found.</string>
 
     <!-- Button -->
     <string name="btn_add_feed">Add Feed</string>
