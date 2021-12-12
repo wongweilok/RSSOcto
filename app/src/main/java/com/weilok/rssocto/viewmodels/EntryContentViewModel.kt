@@ -21,15 +21,26 @@ package com.weilok.rssocto.viewmodels
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 import com.weilok.rssocto.data.local.entities.Entry
+import com.weilok.rssocto.data.repositories.EntryRepository
 
 @HiltViewModel
 class EntryContentViewModel @Inject constructor(
+    private val entryRepo: EntryRepository,
     state: SavedStateHandle
 ) : ViewModel() {
     val entry = state.get<Entry>("entry")
+    val entryId = entry?.url
     val entryContent = entry?.content
+
+    fun markEntryAsRead(id: String) {
+        viewModelScope.launch {
+            entryRepo.markEntriesAsRead(id)
+        }
+    }
 }

@@ -54,6 +54,9 @@ class EntryContentActivity : AppCompatActivity() {
         setContentView(binding.root)
         title = "Content"
 
+        // Mark this entry as read
+        viewModel.markEntryAsRead(viewModel.entryId!!)
+
         // Enable up button
         val actionBar = supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)

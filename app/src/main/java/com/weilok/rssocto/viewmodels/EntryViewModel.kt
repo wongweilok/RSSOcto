@@ -68,7 +68,6 @@ class EntryViewModel @Inject constructor(
 
     fun onEntryClicked(entry: Entry) {
         viewModelScope.launch {
-            entryRepo.markEntriesAsRead(entry.url)
             entryEventChannel.send(EntryEvent.NavigateToContentView(entry))
         }
     }

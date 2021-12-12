@@ -47,7 +47,6 @@ class SearchViewModel @Inject constructor(
 
     fun onEntryClicked(entry: Entry) {
         viewModelScope.launch {
-            entryRepo.markEntriesAsRead(entry.url)
             searchEventChannel.send(SearchEvent.NavigateToContentView(entry))
         }
     }
