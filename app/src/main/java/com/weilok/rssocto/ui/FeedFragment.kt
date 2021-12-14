@@ -148,7 +148,7 @@ class FeedFragment : Fragment(R.layout.fragment_feed),
                 }
 
                 R.id.optMarkAllAsRead -> {
-                    viewModel.markAllEntriesAsRead()
+                    viewModel.markAllEntriesAsRead(feed.url)
 
                     return@setOnMenuItemClickListener true
                 }
