@@ -42,6 +42,9 @@ interface EntryDao {
     @Query("UPDATE entry_table SET read_status = 1 WHERE entry_url = :id")
     suspend fun markEntriesAsRead(id: String)
 
+    @Query("UPDATE entry_table SET read_status = 1 WHERE feed_id = :feedId")
+    suspend fun markAllEntriesAsRead(feedId: String)
+
     @Query("SELECT EXISTS(SELECT * FROM entry_table WHERE entry_url = :id)")
     suspend fun checkEntryExist(id: String): Boolean
 

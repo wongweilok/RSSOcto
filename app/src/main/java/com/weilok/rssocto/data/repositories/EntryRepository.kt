@@ -30,8 +30,6 @@ import com.weilok.rssocto.data.EntriesView
 class EntryRepository @Inject constructor(
     private val entryDao: EntryDao
 ) {
-    val allEntry = entryDao.getAllEntry().asLiveData()
-
     // Entry
     suspend fun insertEntry(entry: Entry) {
         entryDao.insertEntry(entry)
@@ -39,6 +37,10 @@ class EntryRepository @Inject constructor(
 
     suspend fun markEntriesAsRead(id: String) {
         entryDao.markEntriesAsRead(id)
+    }
+
+    suspend fun markAllEntriesAsRead(feedId: String) {
+        entryDao.markAllEntriesAsRead(feedId)
     }
 
     suspend fun checkEntryExist(id: String): Boolean {

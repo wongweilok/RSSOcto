@@ -28,6 +28,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import javax.inject.Inject
 
 import com.weilok.rssocto.data.local.entities.Feed
+import com.weilok.rssocto.data.repositories.EntryRepository
 import com.weilok.rssocto.data.repositories.FeedRepository
 import com.weilok.rssocto.ui.ADD_FEED_RESULT_OK
 
@@ -38,9 +39,10 @@ private const val ERROR_MSG = "Adding feed failed."
 
 @HiltViewModel
 class FeedViewModel @Inject constructor(
-    private val repo: FeedRepository
+    private val feedRepo: FeedRepository,
+    private val entryRepo: EntryRepository
 ) : ViewModel() {
-    val feeds = repo.localFeeds
+    val feeds = feedRepo.localFeeds
 
     fun onFeedClicked(feed: Feed) {
         viewModelScope.launch {
@@ -50,14 +52,16 @@ class FeedViewModel @Inject constructor(
 
     fun deleteFeed(feed: Feed) {
         viewModelScope.launch {
-            repo.deleteFeed(feed)
+            feedRepo.deleteFeed(feed)
 
             feedEventChannel.send(FeedEvent.ShowFeedChangedMessage(FEED_DELETED_MSG))
         }
     }
 
-    fun markAllEntriesAsRead() {
-        // TODO
+    fun markAllEntriesAsRead(feedId: String) {
+        viewModelScope.launch {
+            entryRepo.markAllEntriesAsRead(feedId)
+        }
     }
 
     fun onAddFeedResult(result: Int) {
