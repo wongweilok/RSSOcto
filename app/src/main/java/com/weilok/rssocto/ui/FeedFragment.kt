@@ -152,6 +152,11 @@ class FeedFragment : Fragment(R.layout.fragment_feed),
 
                     return@setOnMenuItemClickListener true
                 }
+                R.id.optMarkAllAsUnread -> {
+                    viewModel.markAllEntriesAsUnread(feed.url)
+
+                    return@setOnMenuItemClickListener true
+                }
                 else -> true
             }
         }

@@ -9,4 +9,8 @@
         android:id="@+id/optMarkAllAsRead"
         android:title="@string/opt_mark_all_as_read" />
 
+    <item
+        android:id="@+id/optMarkAllAsUnread"
+        android:title="@string/opt_mark_all_as_unread" />
+
 </menu>

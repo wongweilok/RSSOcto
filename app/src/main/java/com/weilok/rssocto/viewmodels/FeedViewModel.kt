@@ -64,6 +64,12 @@ class FeedViewModel @Inject constructor(
         }
     }
 
+    fun markAllEntriesAsUnread(feedId: String) {
+        viewModelScope.launch {
+            entryRepo.markAllEntriesAsUnread(feedId)
+        }
+    }
+
     fun onAddFeedResult(result: Int) {
         when (result) {
             ADD_FEED_RESULT_OK -> {

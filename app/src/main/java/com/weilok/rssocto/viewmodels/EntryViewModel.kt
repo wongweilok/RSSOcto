@@ -72,6 +72,16 @@ class EntryViewModel @Inject constructor(
         }
     }
 
+    fun markEntryAs(entry: Entry) {
+        viewModelScope.launch {
+            if (entry.read) {
+                entryRepo.markEntryAsUnread(entry.url)
+            } else {
+                entryRepo.markEntryAsRead(entry.url)
+            }
+        }
+    }
+
     // Refresh feed entries fetching feed again
     fun refreshFeedEntries() {
         when (feedType) {

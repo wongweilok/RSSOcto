@@ -22,9 +22,12 @@
     <!-- Option Menu -->
     <string name="opt_delete">Delete</string>
     <string name="opt_mark_all_as_read">Mark all as read</string>
+    <string name="opt_mark_all_as_unread">Mark all as unread</string>
     <string name="opt_all">All</string>
     <string name="opt_unread">Unread</string>
     <string name="opt_search">Search</string>
+    <string name="opt_mark_as_read">Mark as read</string>
+    <string name="opt_mark_as_unread">Mark as unread</string>
 
     <!-- Bottom Navigation Menu -->
     <string name="nav_item_feeds">Feeds</string>

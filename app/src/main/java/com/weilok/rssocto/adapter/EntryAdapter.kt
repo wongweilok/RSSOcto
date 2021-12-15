@@ -21,6 +21,7 @@ package com.weilok.rssocto.adapter
 
 import android.text.format.DateUtils
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -30,7 +31,8 @@ import com.weilok.rssocto.data.local.entities.Entry
 import com.weilok.rssocto.databinding.EntryItemListBinding
 
 class EntryAdapter(
-    private val listener: OnEntryItemClickListener
+    private val listener: OnEntryItemClickListener,
+    private val longClickListener: OnEntryItemLongClickListener
 ) : ListAdapter<Entry, EntryAdapter.EntryViewHolder>(DiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EntryViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -47,11 +49,23 @@ class EntryAdapter(
     inner class EntryViewHolder(private val binding: EntryItemListBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.apply {
-                root.setOnClickListener {
-                    val position = bindingAdapterPosition
-                    if (position != RecyclerView.NO_POSITION) {
-                        val entry = getItem(position)
-                        listener.onEntryItemClick(entry)
+                root.apply {
+                    setOnClickListener {
+                        val position = bindingAdapterPosition
+                        if (position != RecyclerView.NO_POSITION) {
+                            val entry = getItem(position)
+                            listener.onEntryItemClick(entry)
+                        }
+                    }
+
+                    setOnLongClickListener { view ->
+                        val position = bindingAdapterPosition
+                        if (position != RecyclerView.NO_POSITION) {
+                            val entry = getItem(position)
+                            longClickListener.onEntryItemLongClick(entry, view)
+                        }
+
+                        return@setOnLongClickListener true
                     }
                 }
             }
@@ -74,6 +88,10 @@ class EntryAdapter(
 
     interface OnEntryItemClickListener {
         fun onEntryItemClick(entry: Entry)
+    }
+
+    interface OnEntryItemLongClickListener {
+        fun onEntryItemLongClick(entry: Entry, v: View)
     }
 
     class DiffCallback : DiffUtil.ItemCallback<Entry>() {
