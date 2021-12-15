@@ -40,7 +40,7 @@ class EntryContentViewModel @Inject constructor(
 
     fun markEntryAsRead(id: String) {
         viewModelScope.launch {
-            entryRepo.markEntriesAsRead(id)
+            entryRepo.markEntryAsRead(id)
         }
     }
 }

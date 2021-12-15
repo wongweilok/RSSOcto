@@ -40,10 +40,16 @@ interface EntryDao {
     suspend fun deleteAllEntry()
 
     @Query("UPDATE entry_table SET read_status = 1 WHERE entry_url = :id")
-    suspend fun markEntriesAsRead(id: String)
+    suspend fun markEntryAsRead(id: String)
+
+    @Query("UPDATE entry_table SET read_status = 0 WHERE entry_url = :id")
+    suspend fun markEntryAsUnread(id: String)
 
     @Query("UPDATE entry_table SET read_status = 1 WHERE feed_id = :feedId")
     suspend fun markAllEntriesAsRead(feedId: String)
+
+    @Query("UPDATE entry_table SET read_status = 0 WHERE feed_id = :feedId")
+    suspend fun markAllEntriesAsUnread(feedId: String)
 
     @Query("SELECT EXISTS(SELECT * FROM entry_table WHERE entry_url = :id)")
     suspend fun checkEntryExist(id: String): Boolean

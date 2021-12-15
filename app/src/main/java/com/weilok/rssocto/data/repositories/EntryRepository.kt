@@ -19,7 +19,6 @@
 
 package com.weilok.rssocto.data.repositories
 
-import androidx.lifecycle.asLiveData
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 
@@ -35,12 +34,20 @@ class EntryRepository @Inject constructor(
         entryDao.insertEntry(entry)
     }
 
-    suspend fun markEntriesAsRead(id: String) {
-        entryDao.markEntriesAsRead(id)
+    suspend fun markEntryAsRead(id: String) {
+        entryDao.markEntryAsRead(id)
+    }
+
+    suspend fun markEntryAsUnread(id: String) {
+        entryDao.markEntryAsUnread(id)
     }
 
     suspend fun markAllEntriesAsRead(feedId: String) {
         entryDao.markAllEntriesAsRead(feedId)
+    }
+
+    suspend fun markAllEntriesAsUnread(feedId: String) {
+        entryDao.markAllEntriesAsUnread(feedId)
     }
 
     suspend fun checkEntryExist(id: String): Boolean {

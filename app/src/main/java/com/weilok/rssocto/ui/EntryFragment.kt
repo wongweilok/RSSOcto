@@ -24,6 +24,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -44,7 +45,9 @@ import com.weilok.rssocto.databinding.FragmentEntryBinding
 import com.weilok.rssocto.viewmodels.EntryViewModel
 
 @AndroidEntryPoint
-class EntryFragment : Fragment(R.layout.fragment_entry), EntryAdapter.OnEntryItemClickListener {
+class EntryFragment : Fragment(R.layout.fragment_entry),
+    EntryAdapter.OnEntryItemClickListener,
+    EntryAdapter.OnEntryItemLongClickListener {
     private lateinit var binding: FragmentEntryBinding
 
     private val viewModel: EntryViewModel by viewModels()
@@ -59,7 +62,7 @@ class EntryFragment : Fragment(R.layout.fragment_entry), EntryAdapter.OnEntryIte
          * Initialize adapter and restore list item position when
          * returning to this fragment.
          */
-        val entryAdapter = EntryAdapter(this)
+        val entryAdapter = EntryAdapter(this, this)
         entryAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
 
         binding.apply {
@@ -113,6 +116,32 @@ class EntryFragment : Fragment(R.layout.fragment_entry), EntryAdapter.OnEntryIte
 
     override fun onEntryItemClick(entry: Entry) {
         viewModel.onEntryClicked(entry)
+    }
+
+    override fun onEntryItemLongClick(entry: Entry, v: View) {
+        showPopup(v, entry)
+    }
+
+    private fun showPopup(v: View, entry: Entry) {
+        // Create popup menu
+        val popMenu = PopupMenu(requireContext(), v)
+        popMenu.inflate(R.menu.entry_item_option_menu)
+        if (entry.read) {
+            popMenu.menu.getItem(0).setTitle(R.string.opt_mark_as_unread)
+        } else {
+            popMenu.menu.getItem(0).setTitle(R.string.opt_mark_as_read)
+        }
+        popMenu.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.optMarkAsRead -> {
+                    viewModel.markEntryAs(entry)
+
+                    return@setOnMenuItemClickListener true
+                }
+                else -> true
+            }
+        }
+        popMenu.show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
