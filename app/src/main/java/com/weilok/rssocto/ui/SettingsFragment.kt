@@ -2,6 +2,7 @@ package com.weilok.rssocto.ui
 
 import android.os.Bundle
 import androidx.preference.PreferenceFragmentCompat
+
 import com.weilok.rssocto.R
 
 class SettingsFragment : PreferenceFragmentCompat() {
