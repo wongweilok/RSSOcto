@@ -30,11 +30,6 @@
             app:destination="@id/entryContentActivity" />
     </fragment>
     <fragment
-        android:id="@+id/settingsFragment"
-        android:name="com.weilok.rssocto.ui.SettingsFragment"
-        android:label="@string/lbl_settings_fragment"
-        tools:layout="@layout/fragment_settings" />
-    <fragment
         android:id="@+id/searchFragment"
         android:name="com.weilok.rssocto.ui.SearchFragment"
         android:label="@string/lbl_search_fragment"
@@ -51,4 +46,8 @@
             android:name="entry"
             app:argType="com.weilok.rssocto.data.local.entities.Entry" />
     </activity>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.weilok.rssocto.ui.SettingsFragment"
+        android:label="@string/lbl_settings_fragment" />
 </navigation>
