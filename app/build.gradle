@@ -50,7 +50,7 @@ dependencies {
     def recycler_version = "1.2.1"
     def lifecycle_version = "2.4.0"
     def nav_version = "2.3.5"
-    def room_version = "2.3.0"
+    def room_version = "2.4.0"
     def retrofit_version = "2.9.0"
     def simplexml_version = "2.7.1"
     def hilt_version = "2.39.1"
