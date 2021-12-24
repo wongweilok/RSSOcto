@@ -22,11 +22,15 @@ package com.weilok.rssocto.ui
 import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.preference.PreferenceManager
 import dagger.hilt.android.AndroidEntryPoint
 
 import com.weilok.rssocto.R
@@ -62,9 +66,22 @@ class MainActivity : AppCompatActivity() {
 
         // Setup bottom navigation bar
         binding.bottomNav.setupWithNavController(navController)
+
+        loadSettingsPref()
     }
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
+    }
+
+    private fun loadSettingsPref() {
+        val sp = PreferenceManager.getDefaultSharedPreferences(this)
+        val theme = sp.getString("theme", "dark")
+
+        if (theme!!.equals("dark", ignoreCase = true)) {
+            AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES)
+        } else {
+            AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_NO)
+        }
     }
 }
