@@ -33,4 +33,21 @@
     <string name="nav_item_feeds">Feeds</string>
     <string name="nav_item_search">Search</string>
     <string name="nav_item_settings">Settings</string>
+
+    <!-- Preference Titles -->
+    <string name="general_header">General</string>
+    <string name="appearance_header">Appearance</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- General Preferences -->
+    <string name="entry_filter_title">Entry default filter</string>
+
+    <!-- Appearance Preferences -->
+    <string name="theme_title">Theme</string>
+
+    <!-- Sync Preferences -->
+    <string name="refresh_auto_title">Refresh feeds automatically</string>
+    <string name="refresh_interval_title">Refresh interval</string>
+    <string name="refresh_startup_title">Refresh on startup</string>
+    <string name="refresh_startup_summary">Refresh feeds when launching app</string>
 </resources>
