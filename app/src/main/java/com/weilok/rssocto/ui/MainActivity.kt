@@ -66,22 +66,9 @@ class MainActivity : AppCompatActivity() {
 
         // Setup bottom navigation bar
         binding.bottomNav.setupWithNavController(navController)
-
-        loadSettingsPref()
     }
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
-    }
-
-    private fun loadSettingsPref() {
-        val sp = PreferenceManager.getDefaultSharedPreferences(this)
-        val theme = sp.getString("theme", "dark")
-
-        if (theme!!.equals("dark", ignoreCase = true)) {
-            AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES)
-        } else {
-            AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_NO)
-        }
     }
 }
