@@ -36,8 +36,6 @@ import javax.inject.Singleton
 
 private const val TAG = "PreferenceHandler"
 
-enum class EntriesView { BY_ALL, BY_UNREAD }
-
 data class FilterPref(val entriesView: EntriesView)
 
 @Singleton

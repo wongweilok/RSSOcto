@@ -34,12 +34,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
 
 import com.weilok.rssocto.R
 import com.weilok.rssocto.adapter.EntryAdapter
 import com.weilok.rssocto.data.EntriesView
+import com.weilok.rssocto.data.PrefHandler
 import com.weilok.rssocto.data.local.entities.Entry
 import com.weilok.rssocto.databinding.FragmentEntryBinding
 import com.weilok.rssocto.viewmodels.EntryViewModel
@@ -147,12 +146,12 @@ class EntryFragment : Fragment(R.layout.fragment_entry),
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.entry_item_list_option_menu, menu)
 
-        viewLifecycleOwner.lifecycleScope.launch {
-                if (viewModel.prefFlow.first().entriesView == EntriesView.BY_ALL) {
-                    menu.findItem(R.id.optAll).isChecked = true
-                } else if (viewModel.prefFlow.first().entriesView == EntriesView.BY_UNREAD) {
-                    menu.findItem(R.id.optUnread).isChecked = true
-                }
+        val entryFilterPref = PrefHandler(requireContext()).getEntryFilterPref()
+
+        if (entryFilterPref == EntriesView.BY_ALL) {
+            menu.findItem(R.id.optAll).isChecked = true
+        } else if (entryFilterPref == EntriesView.BY_UNREAD) {
+            menu.findItem(R.id.optUnread).isChecked = true
         }
     }
 
@@ -161,12 +160,14 @@ class EntryFragment : Fragment(R.layout.fragment_entry),
         return when (item.itemId) {
             R.id.optAll -> {
                 item.isChecked = true
-                viewModel.onEntriesViewSelected(EntriesView.BY_ALL)
+                //viewModel.onEntriesViewSelected(EntriesView.BY_ALL)
+                viewModel.entryFilter.value = EntriesView.BY_ALL
                 true
             }
             R.id.optUnread -> {
                 item.isChecked = true
-                viewModel.onEntriesViewSelected(EntriesView.BY_UNREAD)
+                //viewModel.onEntriesViewSelected(EntriesView.BY_UNREAD)
+                viewModel.entryFilter.value = EntriesView.BY_UNREAD
                 true
             }
             else -> super.onOptionsItemSelected(item)

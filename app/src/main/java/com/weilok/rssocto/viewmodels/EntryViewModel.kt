@@ -19,6 +19,7 @@
 
 package com.weilok.rssocto.viewmodels
 
+import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -32,39 +33,36 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 
-import com.weilok.rssocto.data.EntriesView
-import com.weilok.rssocto.data.PreferenceHandler
+import com.weilok.rssocto.data.PrefHandler
 import com.weilok.rssocto.data.local.entities.Entry
 import com.weilok.rssocto.data.local.entities.Feed
 import com.weilok.rssocto.data.remote.AtomFeed
 import com.weilok.rssocto.data.remote.RssFeed
 import com.weilok.rssocto.data.repositories.EntryRepository
 import com.weilok.rssocto.data.repositories.FeedRepository
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.MutableStateFlow
 
 @HiltViewModel
 class EntryViewModel @Inject constructor(
     private val entryRepo: EntryRepository,
     private val feedRepo: FeedRepository,
-    private val prefHandler: PreferenceHandler,
+    @ApplicationContext context: Context,
     state: SavedStateHandle
 ) : ViewModel() {
     val feed = state.get<Feed>("feed")
     val feedType = feed?.feedType
     private val feedId = feed?.url
 
-    val prefFlow = prefHandler.preferencesFlow
+    private val entryFilterPref = PrefHandler(context).getEntryFilterPref()
 
-    // Get entries with given feed ID
-    private val getEntriesWithFeedId = prefFlow.flatMapLatest { pref ->
-        entryRepo.getEntries(feedId!!, pref.entriesView)
+    val entryFilter = MutableStateFlow(entryFilterPref)
+
+    private val getEntriesWithFeedId = entryFilter.flatMapLatest { filter ->
+        entryRepo.getEntries(feedId!!, filter)
     }
+
     val entries = getEntriesWithFeedId.asLiveData()
-
-    fun onEntriesViewSelected(entriesView: EntriesView) {
-        viewModelScope.launch {
-            prefHandler.updateEntriesView(entriesView)
-        }
-    }
 
     fun onEntryClicked(entry: Entry) {
         viewModelScope.launch {
