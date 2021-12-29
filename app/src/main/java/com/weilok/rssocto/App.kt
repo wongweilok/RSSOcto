@@ -50,7 +50,7 @@ class App : Application(), SharedPreferences.OnSharedPreferenceChangeListener {
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         // Change theme when theme preference change
         if (key == "theme") {
-            val themePref = sharedPreferences?.getString(key, "system")
+            val themePref = sharedPreferences?.getString(key, "")
             val theme = prefHandler.getTheme(themePref!!)
 
             AppCompatDelegate.setDefaultNightMode(theme)
