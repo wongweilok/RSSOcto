@@ -24,22 +24,21 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 import dagger.hilt.android.HiltAndroidApp
+import javax.inject.Inject
 
-import com.weilok.rssocto.data.PrefHandler
+import com.weilok.rssocto.data.PreferenceHandler
 
 @HiltAndroidApp
 class App : Application(), SharedPreferences.OnSharedPreferenceChangeListener {
-    private lateinit var prefHandler: PrefHandler
+    @Inject
+    lateinit var prefHandler: PreferenceHandler
 
     override fun onCreate() {
         super.onCreate()
 
-        // Initialize preference handler
-        prefHandler = PrefHandler(this)
-
         // Set theme based on preference
-        val theme = prefHandler.getThemePref()
-        AppCompatDelegate.setDefaultNightMode(theme)
+        val themePref = prefHandler.getThemePref()
+        AppCompatDelegate.setDefaultNightMode(themePref)
 
         // Initialize preference change listener
         PreferenceManager
@@ -50,10 +49,10 @@ class App : Application(), SharedPreferences.OnSharedPreferenceChangeListener {
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         // Change theme when theme preference change
         if (key == "theme") {
-            val themePref = sharedPreferences?.getString(key, "")
-            val theme = prefHandler.getTheme(themePref!!)
+            val value = sharedPreferences?.getString(key, "")
+            val themePref = prefHandler.getThemePrefWithValue(value!!)
 
-            AppCompatDelegate.setDefaultNightMode(theme)
+            AppCompatDelegate.setDefaultNightMode(themePref)
         }
     }
 }

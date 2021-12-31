@@ -19,7 +19,6 @@
 
 package com.weilok.rssocto.viewmodels
 
-import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -32,29 +31,28 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.MutableStateFlow
 
-import com.weilok.rssocto.data.PrefHandler
+import com.weilok.rssocto.data.PreferenceHandler
 import com.weilok.rssocto.data.local.entities.Entry
 import com.weilok.rssocto.data.local.entities.Feed
 import com.weilok.rssocto.data.remote.AtomFeed
 import com.weilok.rssocto.data.remote.RssFeed
 import com.weilok.rssocto.data.repositories.EntryRepository
 import com.weilok.rssocto.data.repositories.FeedRepository
-import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.flow.MutableStateFlow
 
 @HiltViewModel
 class EntryViewModel @Inject constructor(
     private val entryRepo: EntryRepository,
     private val feedRepo: FeedRepository,
-    @ApplicationContext context: Context,
+    prefHandler: PreferenceHandler,
     state: SavedStateHandle
 ) : ViewModel() {
     val feed = state.get<Feed>("feed")
     val feedType = feed?.feedType
     private val feedId = feed?.url
 
-    private val entryFilterPref = PrefHandler(context).getEntryFilterPref()
+    private val entryFilterPref = prefHandler.getFilterPref()
 
     val entryFilter = MutableStateFlow(entryFilterPref)
 
