@@ -21,7 +21,6 @@ package com.weilok.rssocto.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.PopupMenu
 import androidx.activity.result.ActivityResultLauncher
@@ -31,6 +30,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -71,12 +71,17 @@ class FeedFragment : Fragment(R.layout.fragment_feed),
         initButton()
         initRecyclerView()
 
+        // Get bottom navigation bar from activity
+        val botNavBar = activity!!.findViewById<BottomNavigationView>(R.id.bottom_nav)
+
         // Collect Signal from Event Channel
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.feedEvent.collect { event ->
                 when (event) {
                     is FeedViewModel.FeedEvent.ShowFeedChangedMessage -> {
-                        Snackbar.make(requireView(), event.message, Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(requireView(), event.message, Snackbar.LENGTH_SHORT)
+                            .setAnchorView(botNavBar)
+                            .show()
                     }
                     is FeedViewModel.FeedEvent.NavigateToEntryFragment -> {
                         val action = FeedFragmentDirections
