@@ -31,6 +31,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -100,6 +101,9 @@ class EntryFragment : Fragment(R.layout.fragment_entry),
             entryAdapter.submitList(list)
         }
 
+        // Get bottom navigation bar from activity
+        val botNavBar = activity!!.findViewById<BottomNavigationView>(R.id.bottom_nav)
+
         // Collect Signal from Event Channel
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.entryEvent.collect { event ->
@@ -109,7 +113,9 @@ class EntryFragment : Fragment(R.layout.fragment_entry),
                         findNavController().navigate(action)
                     }
                     is EntryViewModel.EntryEvent.ShowRefreshMessage -> {
-                        Snackbar.make(requireView(), event.message, Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(requireView(), event.message, Snackbar.LENGTH_SHORT)
+                            .setAnchorView(botNavBar)
+                            .show()
                     }
                 }
             }
