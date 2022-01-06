@@ -56,6 +56,7 @@ dependencies {
     def simplexml_version = "2.7.1"
     def hilt_version = "2.39.1"
     def coroutine_version = "1.5.2"
+    def work_version = "2.7.1"
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.0'
@@ -102,6 +103,9 @@ dependencies {
     // Kotlin Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
+
+    // WorkManager
+    implementation "androidx.work:work-runtime-ktx:$work_version"
 }
 
 kapt {
