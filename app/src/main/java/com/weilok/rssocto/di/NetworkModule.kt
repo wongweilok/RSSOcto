@@ -25,14 +25,25 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+import com.weilok.rssocto.data.repositories.EntryRepository
+import com.weilok.rssocto.data.repositories.FeedRepository
 import com.weilok.rssocto.services.Fetcher
+import com.weilok.rssocto.services.Refresher
 
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
     @Singleton
     @Provides
-    fun provideFetcher() : Fetcher {
+    fun provideFetcher(): Fetcher {
         return Fetcher.getInstance()
+    }
+
+    @Provides
+    fun provideRefresher(
+        feedRepo: FeedRepository,
+        entryRepo: EntryRepository
+    ): Refresher {
+        return Refresher(feedRepo, entryRepo)
     }
 }

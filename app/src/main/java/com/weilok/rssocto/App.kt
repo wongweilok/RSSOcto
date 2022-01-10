@@ -22,16 +22,25 @@ package com.weilok.rssocto
 import android.app.Application
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.hilt.work.HiltWorkerFactory
 import androidx.preference.PreferenceManager
+import androidx.work.*
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
+import java.util.concurrent.TimeUnit
 
 import com.weilok.rssocto.data.PreferenceHandler
+import com.weilok.rssocto.workers.AutoRefreshWorker
 
 @HiltAndroidApp
-class App : Application(), SharedPreferences.OnSharedPreferenceChangeListener {
+class App : Application(),
+    SharedPreferences.OnSharedPreferenceChangeListener,
+    Configuration.Provider {
     @Inject
     lateinit var prefHandler: PreferenceHandler
+    @Inject
+    lateinit var workerFactory: HiltWorkerFactory
+    private lateinit var periodicWork: PeriodicWorkRequest
 
     override fun onCreate() {
         super.onCreate()
@@ -44,6 +53,8 @@ class App : Application(), SharedPreferences.OnSharedPreferenceChangeListener {
         PreferenceManager
             .getDefaultSharedPreferences(this)
             .registerOnSharedPreferenceChangeListener(this)
+
+        setPeriodicWork()
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
@@ -53,6 +64,37 @@ class App : Application(), SharedPreferences.OnSharedPreferenceChangeListener {
             val themePref = prefHandler.getThemePrefWithValue(value!!)
 
             AppCompatDelegate.setDefaultNightMode(themePref)
+        } else if (key == "refreshAuto") {
+            val value = sharedPreferences?.getBoolean(key, false)
+
+            if (value!!) {
+                WorkManager.getInstance(applicationContext)
+                    .enqueueUniquePeriodicWork(
+                        "refreshFeedsWork",
+                        ExistingPeriodicWorkPolicy.KEEP,
+                        periodicWork
+                    )
+            } else {
+                WorkManager.getInstance(applicationContext)
+                    .cancelUniqueWork("refreshFeedsWork")
+            }
         }
+    }
+
+    override fun getWorkManagerConfiguration(): Configuration {
+        return Configuration.Builder()
+            .setWorkerFactory(workerFactory)
+            .build()
+    }
+
+    private fun setPeriodicWork() {
+        val constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.UNMETERED)
+            .build()
+
+        periodicWork = PeriodicWorkRequest
+            .Builder(AutoRefreshWorker::class.java, 15, TimeUnit.MINUTES)
+            .setConstraints(constraints)
+            .build()
     }
 }
