@@ -48,7 +48,15 @@ class FeedRepository @Inject constructor(
         feedDao.deleteFeed(feed)
     }
 
-    suspend fun checkFeedExist(id: String): Boolean {
+    suspend fun getAllAtomFeed(): List<Feed> {
+        return feedDao.getAllAtomFeeds()
+    }
+
+    suspend fun getAllRssFeed(): List<Feed> {
+        return feedDao.getAllRssFeeds()
+    }
+
+    private suspend fun checkFeedExist(id: String): Boolean {
         return feedDao.checkFeedExist(id)
     }
 

@@ -41,6 +41,12 @@ interface FeedDao {
     @Query("SELECT EXISTS(SELECT * FROM feed_table WHERE feed_url = :id)")
     suspend fun checkFeedExist(id: String): Boolean
 
+    @Query("SELECT * FROM feed_table WHERE feed_type = 'ATOM'")
+    suspend fun getAllAtomFeeds(): List<Feed>
+
+    @Query("SELECT * FROM feed_table WHERE feed_type = 'RSS'")
+    suspend fun getAllRssFeeds(): List<Feed>
+
     @Query("SELECT * FROM feed_table ORDER BY feed_title ASC")
     fun getAllFeed(): Flow<List<Feed>>
 }

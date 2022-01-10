@@ -24,8 +24,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.text.SimpleDateFormat
-import java.util.*
 import javax.inject.Inject
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -36,15 +34,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import com.weilok.rssocto.data.PreferenceHandler
 import com.weilok.rssocto.data.local.entities.Entry
 import com.weilok.rssocto.data.local.entities.Feed
-import com.weilok.rssocto.data.remote.AtomFeed
-import com.weilok.rssocto.data.remote.RssFeed
 import com.weilok.rssocto.data.repositories.EntryRepository
-import com.weilok.rssocto.data.repositories.FeedRepository
+import com.weilok.rssocto.services.Refresher
 
 @HiltViewModel
 class EntryViewModel @Inject constructor(
     private val entryRepo: EntryRepository,
-    private val feedRepo: FeedRepository,
+    private val refresher: Refresher,
     prefHandler: PreferenceHandler,
     state: SavedStateHandle
 ) : ViewModel() {
@@ -88,39 +84,7 @@ class EntryViewModel @Inject constructor(
 
     private fun fetchAtomFeed(url: String) {
         viewModelScope.launch {
-            // Fetch Atom Feed from web
-            val response = feedRepo.fetchAtomFeed(url)
-            val entryList: List<AtomFeed.AtomEntry> = response.entryList!!
-
-            // Date format
-            val dtFormatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.ENGLISH)
-
-            // Add Entry data into local database
-            for (i in entryList.indices) {
-                /*
-                 * Trim trailing white spaces from string date.
-                 * Remove milli-seconds from string date using Regex.
-                 * Parse date into date type.
-                 */
-                val date = entryList[i].date!!
-                    .trim()
-                    .replace(Regex("\\.[0-9]+"), "")
-                val parsedDate: Date? = dtFormatter.parse(date)
-
-                if (!entryRepo.checkEntryExist(entryList[i].url!!)) {
-                    entryRepo.insertEntry(
-                        Entry(
-                            entryList[i].url!!,
-                            entryList[i].title!!,
-                            parsedDate!!,
-                            entryList[i].author!!,
-                            entryList[i].content!!,
-                            false,
-                            url
-                        )
-                    )
-                }
-            }
+            refresher.refreshAtomFeed(url)
 
             entryEventChannel.send(EntryEvent.ShowRefreshMessage("Refreshing feed entries..."))
         }
@@ -128,40 +92,7 @@ class EntryViewModel @Inject constructor(
 
     private fun fetchRssFeed(url: String) {
         viewModelScope.launch {
-            // Fetch RSS Feed from web
-            val response = feedRepo.fetchRssFeed(url)
-            val entryList: List<RssFeed.RssEntry> = response.entryList!!
-
-            // Date format
-            val dtFormatter = SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH)
-
-            // Add Entry data into local database
-            for (i in entryList.indices) {
-                /*
-                 * Trim trailing white spaces from string date
-                 * before parsing to date type
-                 */
-                val date = entryList[i].date!!.trim()
-                val parsedDate: Date? = dtFormatter.parse(date)
-
-                if (!entryRepo.checkEntryExist(entryList[i].url!!)) {
-                    var content = entryList[i].description!!
-                    if (entryList[i].content != null) {
-                        content = entryList[i].content!!
-                    }
-                    entryRepo.insertEntry(
-                        Entry(
-                            entryList[i].url!!,
-                            entryList[i].title!!,
-                            parsedDate!!,
-                            entryList[i].author!!,
-                            content,
-                            false,
-                            url
-                        )
-                    )
-                }
-            }
+            refresher.refreshRssFeed(url)
 
             entryEventChannel.send(EntryEvent.ShowRefreshMessage("Refreshing feed entries..."))
         }
