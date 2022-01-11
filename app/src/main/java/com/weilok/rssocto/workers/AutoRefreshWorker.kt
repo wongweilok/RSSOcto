@@ -28,6 +28,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 
 import com.weilok.rssocto.services.Refresher
+import com.weilok.rssocto.utilities.createNotification
 
 @HiltWorker
 class AutoRefreshWorker @AssistedInject constructor(
@@ -38,9 +39,11 @@ class AutoRefreshWorker @AssistedInject constructor(
     override suspend fun doWork(): Result {
         return try {
             refresher.refreshFeeds()
+            createNotification(applicationContext, "All feeds refreshed successfully.")
             Log.i("WTest", "All Feeds Refreshed")
             Result.success()
         } catch (e: Exception) {
+            createNotification(applicationContext, "Refresh Failed")
             Log.i("WTest", "Refresh failed")
             e.printStackTrace()
             Result.failure()
