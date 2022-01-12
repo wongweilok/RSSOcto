@@ -30,7 +30,7 @@ import javax.inject.Inject
 import com.weilok.rssocto.data.local.entities.Feed
 import com.weilok.rssocto.data.repositories.EntryRepository
 import com.weilok.rssocto.data.repositories.FeedRepository
-import com.weilok.rssocto.ui.ADD_FEED_RESULT_OK
+import com.weilok.rssocto.utilities.ADD_FEED_RESULT_OK
 
 // Messages to show when feeds changed
 private const val FEED_ADDED_MSG = "Feed Added Successfully."

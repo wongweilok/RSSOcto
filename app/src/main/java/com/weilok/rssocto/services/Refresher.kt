@@ -29,12 +29,13 @@ import com.weilok.rssocto.data.remote.AtomFeed
 import com.weilok.rssocto.data.remote.RssFeed
 import com.weilok.rssocto.data.repositories.EntryRepository
 import com.weilok.rssocto.data.repositories.FeedRepository
+import com.weilok.rssocto.utilities.ATOM_DATE_FMT
+import com.weilok.rssocto.utilities.RSS_DATE_FMT
 
 class Refresher @Inject constructor(
     private val feedRepo: FeedRepository,
     private val entryRepo: EntryRepository
 ) {
-
     suspend fun refreshFeeds() {
         val atomFeedList = feedRepo.getAllAtomFeed()
         val rssFeedList = feedRepo.getAllRssFeed()
@@ -56,7 +57,7 @@ class Refresher @Inject constructor(
         val entryList: List<AtomFeed.AtomEntry> = response.entryList!!
 
         // Date format
-        val dtFormatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.ENGLISH)
+        val dtFormatter = SimpleDateFormat(ATOM_DATE_FMT, Locale.ENGLISH)
 
         // Add Entry data into local database
         for (i in entryList.indices) {
@@ -92,7 +93,7 @@ class Refresher @Inject constructor(
         val entryList: List<RssFeed.RssEntry> = response.entryList!!
 
         // Date format
-        val dtFormatter = SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH)
+        val dtFormatter = SimpleDateFormat(RSS_DATE_FMT, Locale.ENGLISH)
 
         // Add Entry data into local database
         for (i in entryList.indices) {
