@@ -19,7 +19,6 @@
 
 package com.weilok.rssocto.ui
 
-import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.NavController
@@ -31,8 +30,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 import com.weilok.rssocto.R
 import com.weilok.rssocto.databinding.ActivityMainBinding
-
-const val ADD_FEED_RESULT_OK = Activity.RESULT_FIRST_USER
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {

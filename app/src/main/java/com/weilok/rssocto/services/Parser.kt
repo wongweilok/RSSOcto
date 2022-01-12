@@ -22,6 +22,9 @@ package com.weilok.rssocto.services
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 
+import com.weilok.rssocto.utilities.TYPE_ATOM
+import com.weilok.rssocto.utilities.TYPE_RSS
+
 class Parser {
     fun getFeedType(parser: XmlPullParser): FeedPreview {
         var eventType = parser.eventType
@@ -47,9 +50,9 @@ class Parser {
 
                         // Identify feed type based on root tag
                         if (tag.equals("rss", ignoreCase = true)) {
-                            feedType = "RSS"
+                            feedType = TYPE_RSS
                         } else if (tag.equals("feed", ignoreCase = true)) {
-                            feedType = "ATOM"
+                            feedType = TYPE_ATOM
                         }
                     }
                 }

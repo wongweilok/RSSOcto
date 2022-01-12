@@ -19,7 +19,6 @@
 
 package com.weilok.rssocto.ui
 
-import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -31,9 +30,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
 import com.weilok.rssocto.databinding.ActivityAddFeedBinding
+import com.weilok.rssocto.utilities.RESULT_CODE
 import com.weilok.rssocto.viewmodels.AddFeedViewModel
-
-const val RESULT_CODE = Activity.RESULT_FIRST_USER + 7
 
 @AndroidEntryPoint
 class AddFeedActivity : AppCompatActivity() {

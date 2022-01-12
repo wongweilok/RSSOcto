@@ -28,11 +28,11 @@ import androidx.core.app.NotificationManagerCompat
 
 import com.weilok.rssocto.R
 
-const val CHANNEL_NAME = "Feeds Refresh Notification"
-const val CHANNEL_DESC = "Show feed(s) refresh status"
-const val CHANNEL_ID = "FEED_REFRESH_NOTIFICATION"
-const val NOTIFICATION_TITLE = "Feeds updated"
-const val NOTIFICATION_ID = 21
+private const val CHANNEL_NAME = "Feeds Refresh Notification"
+private const val CHANNEL_DESC = "Show feed(s) refresh status"
+private const val CHANNEL_ID = "FEED_REFRESH_NOTIFICATION"
+private const val NOTIFICATION_TITLE = "Feeds updated"
+private const val NOTIFICATION_ID = 21
 
 fun createNotification(context: Context, message: String) {
     // Create notification channel (Android API 26 and above)

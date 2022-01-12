@@ -39,6 +39,7 @@ import com.weilok.rssocto.R
 import com.weilok.rssocto.adapter.FeedAdapter
 import com.weilok.rssocto.data.local.entities.Feed
 import com.weilok.rssocto.databinding.FragmentFeedBinding
+import com.weilok.rssocto.utilities.RESULT_CODE
 import com.weilok.rssocto.viewmodels.FeedViewModel
 
 @AndroidEntryPoint

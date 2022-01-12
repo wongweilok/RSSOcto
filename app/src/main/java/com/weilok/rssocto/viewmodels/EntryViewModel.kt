@@ -36,6 +36,8 @@ import com.weilok.rssocto.data.local.entities.Entry
 import com.weilok.rssocto.data.local.entities.Feed
 import com.weilok.rssocto.data.repositories.EntryRepository
 import com.weilok.rssocto.services.Refresher
+import com.weilok.rssocto.utilities.TYPE_ATOM
+import com.weilok.rssocto.utilities.TYPE_RSS
 
 @HiltViewModel
 class EntryViewModel @Inject constructor(
@@ -77,8 +79,8 @@ class EntryViewModel @Inject constructor(
     // Refresh feed entries fetching feed again
     fun refreshFeedEntries() {
         when (feedType) {
-            "RSS" -> fetchRssFeed(feedId!!)
-            "ATOM" -> fetchAtomFeed(feedId!!)
+            TYPE_RSS -> fetchRssFeed(feedId!!)
+            TYPE_ATOM -> fetchAtomFeed(feedId!!)
         }
     }
 

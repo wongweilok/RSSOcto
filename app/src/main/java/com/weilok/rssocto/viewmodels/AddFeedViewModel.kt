@@ -41,7 +41,7 @@ import com.weilok.rssocto.data.local.entities.Feed
 import com.weilok.rssocto.data.remote.AtomFeed
 import com.weilok.rssocto.data.remote.RssFeed
 import com.weilok.rssocto.data.repositories.EntryRepository
-import com.weilok.rssocto.ui.ADD_FEED_RESULT_OK
+import com.weilok.rssocto.utilities.*
 
 @HiltViewModel
 class AddFeedViewModel @Inject constructor(
@@ -62,8 +62,8 @@ class AddFeedViewModel @Inject constructor(
         val url = inputUrl.value!!
 
         when (feedType.value!!) {
-            "RSS" -> fetchRssFeed(url)
-            "ATOM" -> fetchAtomFeed(url)
+            TYPE_RSS -> fetchRssFeed(url)
+            TYPE_ATOM -> fetchAtomFeed(url)
         }
 
         isFeedExist.set(true)
@@ -76,7 +76,7 @@ class AddFeedViewModel @Inject constructor(
             val entryList: List<AtomFeed.AtomEntry> = response.entryList!!
 
             // Date format
-            val dtFormatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.ENGLISH)
+            val dtFormatter = SimpleDateFormat(ATOM_DATE_FMT, Locale.ENGLISH)
 
             // Default or custom feed title
             val feedTitle = feedName.value ?: response.title
@@ -125,7 +125,7 @@ class AddFeedViewModel @Inject constructor(
             val entryList: List<RssFeed.RssEntry> = response.entryList!!
 
             // Date format
-            val dtFormatter = SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH)
+            val dtFormatter = SimpleDateFormat(RSS_DATE_FMT, Locale.ENGLISH)
 
             // Get source URL from list
             val sourceUrl = response.urlList?.get(0)!!.url ?: response.urlList?.get(0)!!.href
