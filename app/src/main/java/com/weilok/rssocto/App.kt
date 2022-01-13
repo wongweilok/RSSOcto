@@ -32,6 +32,8 @@ import java.util.concurrent.TimeUnit
 import com.weilok.rssocto.data.PreferenceHandler
 import com.weilok.rssocto.workers.AutoRefreshWorker
 
+private const val WORK_NAME = "refreshFeedsWork"
+
 @HiltAndroidApp
 class App : Application(),
     SharedPreferences.OnSharedPreferenceChangeListener,
@@ -59,24 +61,24 @@ class App : Application(),
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         // Change theme when theme preference change
-        if (key == "theme") {
-            val value = sharedPreferences?.getString(key, "")
+        if (key == getString(R.string.theme_key)) {
+            val value = sharedPreferences?.getString(key, getString(R.string.system_theme))
             val themePref = prefHandler.getThemePrefWithValue(value!!)
 
             AppCompatDelegate.setDefaultNightMode(themePref)
-        } else if (key == "refreshAuto") {
+        } else if (key == getString(R.string.refresh_auto_key)) {
             val value = sharedPreferences?.getBoolean(key, false)
 
             if (value!!) {
                 WorkManager.getInstance(applicationContext)
                     .enqueueUniquePeriodicWork(
-                        "refreshFeedsWork",
+                        WORK_NAME,
                         ExistingPeriodicWorkPolicy.KEEP,
                         periodicWork
                     )
             } else {
                 WorkManager.getInstance(applicationContext)
-                    .cancelUniqueWork("refreshFeedsWork")
+                    .cancelUniqueWork(WORK_NAME)
             }
         }
     }

@@ -3,10 +3,10 @@
     <PreferenceCategory app:title="@string/general_header">
 
         <ListPreference
-            app:defaultValue="all"
+            app:defaultValue="@string/filter_all"
             app:entries="@array/default_filter_entries"
             app:entryValues="@array/default_filter_value"
-            app:key="filter"
+            app:key="@string/entry_filter_key"
             app:title="@string/entry_filter_title"
             app:useSimpleSummaryProvider="true" />
 
@@ -15,10 +15,10 @@
     <PreferenceCategory app:title="@string/appearance_header">
 
         <ListPreference
-            app:defaultValue="system"
+            app:defaultValue="@string/system_theme"
             app:entries="@array/theme_entries"
             app:entryValues="@array/theme_values"
-            app:key="theme"
+            app:key="@string/theme_key"
             app:title="@string/theme_title"
             app:useSimpleSummaryProvider="true" />
 
@@ -28,23 +28,23 @@
 
         <SwitchPreferenceCompat
             app:defaultValue="false"
-            app:key="refreshAuto"
+            app:key="@string/refresh_auto_key"
             app:title="@string/refresh_auto_title" />
 
         <ListPreference
-            app:defaultValue="30 minutes"
+            app:defaultValue="@string/duration_30m"
             app:dependency="refreshAuto"
             app:entries="@array/refresh_interval_entries"
             app:entryValues="@array/refresh_interval_value"
-            app:key="refreshInterval"
+            app:key="@string/refresh_interval_key"
             app:title="@string/refresh_interval_title"
             app:useSimpleSummaryProvider="true" />
 
         <SwitchPreferenceCompat
             app:defaultValue="false"
-            app:title="@string/refresh_startup_title"
+            app:key="@string/refresh_startup_key"
             app:summary="@string/refresh_startup_summary"
-            app:key="refreshStartup" />
+            app:title="@string/refresh_startup_title" />
 
     </PreferenceCategory>
 
