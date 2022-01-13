@@ -22,6 +22,7 @@ package com.weilok.rssocto.data
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
+import com.weilok.rssocto.R
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.security.InvalidParameterException
 import javax.inject.Inject
@@ -35,7 +36,7 @@ class PreferenceHandler @Inject constructor(
 ) {
     fun getThemePref(): Int {
         val sp = PreferenceManager.getDefaultSharedPreferences(context)
-        val themePrefValue = sp.getString("theme", "")
+        val themePrefValue = sp.getString(context.getString(R.string.theme_key), "")
 
         return themePrefValue?.let {
             getThemePrefWithValue(it)
@@ -44,15 +45,18 @@ class PreferenceHandler @Inject constructor(
 
     fun getThemePrefWithValue(value: String): Int {
         return when (value) {
-            "dark" -> AppCompatDelegate.MODE_NIGHT_YES
-            "light" -> AppCompatDelegate.MODE_NIGHT_NO
+            context.getString(R.string.dark_theme) -> AppCompatDelegate.MODE_NIGHT_YES
+            context.getString(R.string.light_theme) -> AppCompatDelegate.MODE_NIGHT_NO
             else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
         }
     }
 
     fun getFilterPref(): EntriesView {
         val sp = PreferenceManager.getDefaultSharedPreferences(context)
-        val filterPrefValue = sp.getString("filter", "all")
+        val filterPrefValue = sp.getString(
+            context.getString(R.string.entry_filter_key),
+            context.getString(R.string.filter_all)
+        )
 
         return filterPrefValue?.let {
             getFilterPrefWithValue(it)
@@ -61,8 +65,8 @@ class PreferenceHandler @Inject constructor(
 
     private fun getFilterPrefWithValue(value: String): EntriesView {
         return when (value) {
-            "all" -> EntriesView.BY_ALL
-            "unread" -> EntriesView.BY_UNREAD
+            context.getString(R.string.filter_all) -> EntriesView.BY_ALL
+            context.getString(R.string.filter_unread) -> EntriesView.BY_UNREAD
             else -> throw InvalidParameterException("Error loading filter for $value")
         }
     }
