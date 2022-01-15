@@ -51,34 +51,52 @@ class App : Application(),
         val themePref = prefHandler.getThemePref()
         AppCompatDelegate.setDefaultNightMode(themePref)
 
+        // Set periodic work interval
+        val refreshIntervalPref = prefHandler.getRefreshIntervalPref()
+        setPeriodicWork(refreshIntervalPref)
+
         // Initialize preference change listener
         PreferenceManager
             .getDefaultSharedPreferences(this)
             .registerOnSharedPreferenceChangeListener(this)
-
-        setPeriodicWork()
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        // Change theme when theme preference change
-        if (key == getString(R.string.theme_key)) {
-            val value = sharedPreferences?.getString(key, getString(R.string.system_theme))
-            val themePref = prefHandler.getThemePrefWithValue(value!!)
+        val workManager = WorkManager.getInstance(applicationContext)
+        when (key) {
+            getString(R.string.theme_key) -> {
+                // Change theme when theme preference change
+                val value = sharedPreferences?.getString(key, getString(R.string.system_theme))
+                val themePref = prefHandler.getThemePrefWithValue(value!!)
 
-            AppCompatDelegate.setDefaultNightMode(themePref)
-        } else if (key == getString(R.string.refresh_auto_key)) {
-            val value = sharedPreferences?.getBoolean(key, false)
+                AppCompatDelegate.setDefaultNightMode(themePref)
+            }
+            getString(R.string.refresh_auto_key) -> {
+                // Enable or disable auto feed refresh
+                val value = sharedPreferences?.getBoolean(key, false)
 
-            if (value!!) {
-                WorkManager.getInstance(applicationContext)
-                    .enqueueUniquePeriodicWork(
+                if (value!!) {
+                    workManager.enqueueUniquePeriodicWork(
                         WORK_NAME,
                         ExistingPeriodicWorkPolicy.KEEP,
                         periodicWork
                     )
-            } else {
-                WorkManager.getInstance(applicationContext)
-                    .cancelUniqueWork(WORK_NAME)
+                } else {
+                    workManager.cancelUniqueWork(WORK_NAME)
+                }
+            }
+            getString(R.string.refresh_interval_key) -> {
+                // Set refresh interval based on preferences
+                val value = sharedPreferences?.getString(key, getString(R.string.duration_30m))
+                val refreshIntervalPref = prefHandler.getRefreshIntervalPrefWithValue(value!!)
+
+                workManager.cancelUniqueWork(WORK_NAME)
+                setPeriodicWork(refreshIntervalPref)
+                workManager.enqueueUniquePeriodicWork(
+                    WORK_NAME,
+                    ExistingPeriodicWorkPolicy.KEEP,
+                    periodicWork
+                )
             }
         }
     }
@@ -89,14 +107,15 @@ class App : Application(),
             .build()
     }
 
-    private fun setPeriodicWork() {
+    private fun setPeriodicWork(interval: Long) {
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.UNMETERED)
             .build()
 
         periodicWork = PeriodicWorkRequest
-            .Builder(AutoRefreshWorker::class.java, 15, TimeUnit.MINUTES)
+            .Builder(AutoRefreshWorker::class.java, interval, TimeUnit.MINUTES)
             .setConstraints(constraints)
+            .setInitialDelay(interval, TimeUnit.MINUTES)
             .build()
     }
 }

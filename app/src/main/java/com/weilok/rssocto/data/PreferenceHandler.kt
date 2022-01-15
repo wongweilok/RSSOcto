@@ -70,4 +70,29 @@ class PreferenceHandler @Inject constructor(
             else -> throw InvalidParameterException("Error loading filter for $value")
         }
     }
+
+    fun getRefreshIntervalPref(): Long {
+        val sp = PreferenceManager.getDefaultSharedPreferences(context)
+        val value = sp.getString(
+            context.getString(R.string.refresh_interval_key),
+            context.getString(R.string.duration_30m)
+        )
+
+        return value?.let {
+            getRefreshIntervalPrefWithValue(value)
+        } ?: 30L
+    }
+
+    fun getRefreshIntervalPrefWithValue(value: String): Long {
+        return when (value) {
+            context.getString(R.string.duration_15m) -> 15L
+            context.getString(R.string.duration_30m) -> 30L
+            context.getString(R.string.duration_1h) -> 60L
+            context.getString(R.string.duration_2h) -> 120L
+            context.getString(R.string.duration_6h) -> 360L
+            context.getString(R.string.duration_12h) -> 720L
+            context.getString(R.string.duration_1d) -> 1440L
+            else -> throw InvalidParameterException("Error selecting duration for $value")
+        }
+    }
 }

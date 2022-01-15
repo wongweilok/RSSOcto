@@ -33,7 +33,7 @@
 
         <ListPreference
             app:defaultValue="@string/duration_30m"
-            app:dependency="refreshAuto"
+            app:dependency="@string/refresh_auto_key"
             app:entries="@array/refresh_interval_entries"
             app:entryValues="@array/refresh_interval_value"
             app:key="@string/refresh_interval_key"
