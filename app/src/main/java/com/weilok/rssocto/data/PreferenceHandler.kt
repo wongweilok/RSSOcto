@@ -95,4 +95,13 @@ class PreferenceHandler @Inject constructor(
             else -> throw InvalidParameterException("Error selecting duration for $value")
         }
     }
+
+    fun getRefreshOnStartPref(): Boolean {
+        val sp = PreferenceManager.getDefaultSharedPreferences(context)
+
+        return sp.getBoolean(
+            context.getString(R.string.refresh_startup_key),
+            false
+        )
+    }
 }

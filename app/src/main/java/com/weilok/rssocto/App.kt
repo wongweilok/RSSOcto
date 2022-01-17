@@ -21,10 +21,12 @@ package com.weilok.rssocto
 
 import android.app.Application
 import android.content.SharedPreferences
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.preference.PreferenceManager
 import androidx.work.*
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 import java.util.concurrent.TimeUnit
@@ -43,6 +45,7 @@ class App : Application(),
     @Inject
     lateinit var workerFactory: HiltWorkerFactory
     private lateinit var periodicWork: PeriodicWorkRequest
+    private lateinit var oneTimeWork: OneTimeWorkRequest
 
     override fun onCreate() {
         super.onCreate()
@@ -54,6 +57,10 @@ class App : Application(),
         // Set periodic work interval
         val refreshIntervalPref = prefHandler.getRefreshIntervalPref()
         setPeriodicWork(refreshIntervalPref)
+
+        // Set one time work refresh on startup
+        val refreshOnStartPref = prefHandler.getRefreshOnStartPref()
+        setOneTimeWork(refreshOnStartPref)
 
         // Initialize preference change listener
         PreferenceManager
@@ -117,5 +124,23 @@ class App : Application(),
             .setConstraints(constraints)
             .setInitialDelay(interval, TimeUnit.MINUTES)
             .build()
+    }
+
+    private fun setOneTimeWork(start: Boolean) {
+        if (start) {
+            val constraints = Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.UNMETERED)
+                .build()
+
+            oneTimeWork = OneTimeWorkRequest
+                .Builder(AutoRefreshWorker::class.java)
+                .setConstraints(constraints)
+                .build()
+
+            WorkManager.getInstance(applicationContext)
+                .enqueue(oneTimeWork)
+
+            Toast.makeText(applicationContext, "Refreshing feeds...", Toast.LENGTH_LONG).show()
+        }
     }
 }
