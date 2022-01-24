@@ -24,6 +24,7 @@ import kotlinx.coroutines.flow.Flow
 
 import com.weilok.rssocto.data.local.entities.Entry
 import com.weilok.rssocto.data.EntriesView
+import com.weilok.rssocto.data.local.entities.EntryWithFeed
 
 @Dao
 interface EntryDao {
@@ -54,22 +55,25 @@ interface EntryDao {
     @Query("SELECT EXISTS(SELECT * FROM entry_table WHERE entry_url = :id)")
     suspend fun checkEntryExist(id: String): Boolean
 
-    fun getEntries(feedId: String, entriesView: EntriesView): Flow<List<Entry>> {
+    fun getEntries(feedId: String, entriesView: EntriesView): Flow<List<EntryWithFeed>> {
         return when (entriesView) {
             EntriesView.BY_ALL -> getAllEntries(feedId)
             EntriesView.BY_UNREAD -> getUnreadEntries(feedId)
         }
     }
 
-    @Query("SELECT * FROM entry_table WHERE feed_id = :feedId ORDER BY entry_pub_date DESC")
-    fun getAllEntries(feedId: String): Flow<List<Entry>>
+    @Query("SELECT * FROM entry_table INNER JOIN feed_table ON feed_url = feed_id WHERE feed_id = :feedId ORDER BY entry_pub_date DESC")
+    fun getAllEntries(feedId: String): Flow<List<EntryWithFeed>>
 
-    @Query("SELECT * FROM entry_table WHERE feed_id = :feedId AND read_status = 0 ORDER BY entry_pub_date DESC")
-    fun getUnreadEntries(feedId: String): Flow<List<Entry>>
+    @Query("SELECT * FROM entry_table INNER JOIN feed_table ON feed_url = feed_id WHERE feed_id = :feedId AND read_status = 0 ORDER BY entry_pub_date DESC")
+    fun getUnreadEntries(feedId: String): Flow<List<EntryWithFeed>>
 
-    @Query("SELECT * FROM entry_table WHERE entry_title LIKE '%' || :searchQuery || '%' ORDER BY entry_pub_date DESC")
-    fun getEntriesWithQuery(searchQuery: String): Flow<List<Entry>>
+    @Query("SELECT * FROM entry_table INNER JOIN feed_table ON feed_url = feed_id WHERE entry_title LIKE '%' || :searchQuery || '%' ORDER BY entry_pub_date DESC")
+    fun getEntriesWithQuery(searchQuery: String): Flow<List<EntryWithFeed>>
 
     @Query("SELECT * FROM entry_table ORDER BY entry_pub_date")
     fun getAllEntry(): Flow<List<Entry>>
+
+    @Query("SELECT * FROM entry_table INNER JOIN feed_table ON feed_url = feed_id WHERE feed_id = :feedId")
+    fun getEntriesWithFeed(feedId: String): Flow<List<EntryWithFeed>>
 }
