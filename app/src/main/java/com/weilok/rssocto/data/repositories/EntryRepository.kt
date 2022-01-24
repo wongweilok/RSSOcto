@@ -25,6 +25,7 @@ import kotlinx.coroutines.flow.Flow
 import com.weilok.rssocto.data.local.dao.EntryDao
 import com.weilok.rssocto.data.local.entities.Entry
 import com.weilok.rssocto.data.EntriesView
+import com.weilok.rssocto.data.local.entities.EntryWithFeed
 
 class EntryRepository @Inject constructor(
     private val entryDao: EntryDao
@@ -58,12 +59,12 @@ class EntryRepository @Inject constructor(
     fun getEntries(
         id: String,
         entriesView: EntriesView
-    ): Flow<List<Entry>> {
+    ): Flow<List<EntryWithFeed>> {
         return entryDao.getEntries(id, entriesView)
     }
 
     // Get entries with search query
-    fun getEntriesWithQuery(query: String): Flow<List<Entry>> {
+    fun getEntriesWithQuery(query: String): Flow<List<EntryWithFeed>> {
         return entryDao.getEntriesWithQuery(query)
     }
 }

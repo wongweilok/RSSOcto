@@ -28,12 +28,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
 import com.weilok.rssocto.data.local.entities.Entry
+import com.weilok.rssocto.data.local.entities.EntryWithFeed
 import com.weilok.rssocto.databinding.EntryItemListBinding
 
 class EntryAdapter(
     private val listener: OnEntryItemClickListener,
     private val longClickListener: OnEntryItemLongClickListener
-) : ListAdapter<Entry, EntryAdapter.EntryViewHolder>(DiffCallback()) {
+) : ListAdapter<EntryWithFeed, EntryAdapter.EntryViewHolder>(DiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EntryViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = EntryItemListBinding
@@ -53,16 +54,16 @@ class EntryAdapter(
                     setOnClickListener {
                         val position = bindingAdapterPosition
                         if (position != RecyclerView.NO_POSITION) {
-                            val entry = getItem(position)
-                            listener.onEntryItemClick(entry)
+                            val entryWithFeed = getItem(position)
+                            listener.onEntryItemClick(entryWithFeed.entry)
                         }
                     }
 
                     setOnLongClickListener { view ->
                         val position = bindingAdapterPosition
                         if (position != RecyclerView.NO_POSITION) {
-                            val entry = getItem(position)
-                            longClickListener.onEntryItemLongClick(entry, view)
+                            val entryWithFeed = getItem(position)
+                            longClickListener.onEntryItemLongClick(entryWithFeed.entry, view)
                         }
 
                         return@setOnLongClickListener true
@@ -71,16 +72,20 @@ class EntryAdapter(
             }
         }
 
-        fun bind(entry: Entry) {
+        fun bind(entryWihFeed: EntryWithFeed) {
             binding.apply {
                 tvEntryTitle.apply {
-                    isEnabled = !entry.read
-                    text = entry.title
+                    isEnabled = !entryWihFeed.entry.read
+                    text = entryWihFeed.entry.title
                 }
 
                 tvPubDate.apply {
-                    isEnabled = !entry.read
-                    text = DateUtils.getRelativeTimeSpanString(entry.date.time)
+                    isEnabled = !entryWihFeed.entry.read
+                    text = DateUtils.getRelativeTimeSpanString(entryWihFeed.entry.date.time)
+                }
+
+                tvImageFallback.apply {
+                    text = entryWihFeed.feed.title[0].toString()
                 }
             }
         }
@@ -94,12 +99,23 @@ class EntryAdapter(
         fun onEntryItemLongClick(entry: Entry, v: View)
     }
 
+    /*
     class DiffCallback : DiffUtil.ItemCallback<Entry>() {
         override fun areItemsTheSame(oldItem: Entry, newItem: Entry): Boolean {
             return oldItem.url == newItem.url
         }
 
         override fun areContentsTheSame(oldItem: Entry, newItem: Entry): Boolean {
+            return oldItem == newItem
+        }
+    }
+    */
+    class DiffCallback : DiffUtil.ItemCallback<EntryWithFeed>() {
+        override fun areItemsTheSame(oldItem: EntryWithFeed, newItem: EntryWithFeed): Boolean {
+            return oldItem.entry.url == newItem.entry.url
+        }
+
+        override fun areContentsTheSame(oldItem: EntryWithFeed, newItem: EntryWithFeed): Boolean {
             return oldItem == newItem
         }
     }

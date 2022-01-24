@@ -16,8 +16,15 @@
             android:id="@+id/ivEntryImage"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_marginEnd="8dp"
-            android:src="@android:drawable/ic_menu_gallery" />
+            android:background="@drawable/circle"
+            android:layout_marginEnd="8dp" />
+
+        <TextView
+            android:id="@+id/tvImageFallback"
+            android:layout_width="60dp"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:layout_height="60dp" />
 
         <TextView
             android:id="@+id/tvEntryTitle"
