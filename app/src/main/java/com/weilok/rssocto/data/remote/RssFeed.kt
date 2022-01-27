@@ -35,6 +35,12 @@ data class RssFeed @JvmOverloads constructor(
     @param:Path("channel")
     var title: String? = null,
 
+    @field:Element(name = "url", required = false)
+    @param:Element(name = "url", required = false)
+    @field:Path("channel/image")
+    @param:Path("channel/image")
+    var imageUrl: String? = "",
+
     @field:ElementList(name = "item", inline = true, required = false)
     @param:ElementList(name = "item", inline = true, required = false)
     @field:Path("channel")
