@@ -26,6 +26,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 
 import com.weilok.rssocto.data.local.entities.Entry
 import com.weilok.rssocto.data.local.entities.EntryWithFeed
@@ -84,8 +85,16 @@ class EntryAdapter(
                     text = DateUtils.getRelativeTimeSpanString(entryWihFeed.entry.date.time)
                 }
 
-                tvImageFallback.apply {
-                    text = entryWihFeed.feed.title[0].toString()
+                if (entryWihFeed.feed.imageUrl.isEmpty()) {
+                    tvImageFallback.apply {
+                        text = entryWihFeed.feed.title[0].toString()
+                    }
+                } else {
+                    Glide.with(itemView)
+                        .load(entryWihFeed.feed.imageUrl)
+                        .centerCrop()
+                        .circleCrop()
+                        .into(ivEntryImage)
                 }
             }
         }
@@ -99,17 +108,6 @@ class EntryAdapter(
         fun onEntryItemLongClick(entry: Entry, v: View)
     }
 
-    /*
-    class DiffCallback : DiffUtil.ItemCallback<Entry>() {
-        override fun areItemsTheSame(oldItem: Entry, newItem: Entry): Boolean {
-            return oldItem.url == newItem.url
-        }
-
-        override fun areContentsTheSame(oldItem: Entry, newItem: Entry): Boolean {
-            return oldItem == newItem
-        }
-    }
-    */
     class DiffCallback : DiffUtil.ItemCallback<EntryWithFeed>() {
         override fun areItemsTheSame(oldItem: EntryWithFeed, newItem: EntryWithFeed): Boolean {
             return oldItem.entry.url == newItem.entry.url

@@ -19,6 +19,7 @@
 
 package com.weilok.rssocto.viewmodels
 
+import android.util.Log
 import androidx.databinding.Bindable
 import androidx.databinding.Observable
 import androidx.databinding.ObservableBoolean
@@ -86,6 +87,7 @@ class AddFeedViewModel @Inject constructor(
                 Feed(
                     url,
                     response.url!!,
+                    "",
                     feedTitle!!,
                     feedType.value!!
                 )
@@ -133,11 +135,13 @@ class AddFeedViewModel @Inject constructor(
             // Default or custom feed title
             val feedTitle = feedName.value ?: response.title
 
+            Log.i("feedTagTest", response.toString())
             // Add Feed and Entry data into local database
             feedRepo.insertFeed(
                 Feed(
                     url,
                     sourceUrl!!,
+                    response.imageUrl!!,
                     feedTitle!!,
                     feedType.value!!
                 )

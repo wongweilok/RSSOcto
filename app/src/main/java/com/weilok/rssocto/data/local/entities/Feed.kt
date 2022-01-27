@@ -37,6 +37,8 @@ data class Feed(
     val url: String,
     @ColumnInfo(name = "feed_source_url")
     val sourceUrl: String,
+    @ColumnInfo(name = "feed_image_url")
+    val imageUrl: String,
     @ColumnInfo(name = "feed_title")
     val title: String,
     @ColumnInfo(name = "feed_type")
