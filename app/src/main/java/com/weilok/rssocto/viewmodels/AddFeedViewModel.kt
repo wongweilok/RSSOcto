@@ -82,6 +82,9 @@ class AddFeedViewModel @Inject constructor(
             // Default or custom feed title
             val feedTitle = feedName.value ?: response.title
 
+            // Regex pattern for image URL
+            val imgPattern = "(https|http)\\S+\\.(jpg|png|jpeg|gif)".toRegex()
+
             // Add Feed and Entry data into local database
             feedRepo.insertFeed(
                 Feed(
@@ -103,9 +106,15 @@ class AddFeedViewModel @Inject constructor(
                     .replace(Regex("\\.[0-9]+"), "")
                 val parsedDate: Date? = dtFormatter.parse(date)
 
+                // Get image URL from entry content with regex
+                val content = entryList[i].content!!
+                val result = imgPattern.find(content, 0)
+                val imgUrl = result?.value ?: ""
+
                 entryRepo.insertEntry(
                     Entry(
                         entryList[i].url!!,
+                        imgUrl,
                         entryList[i].title!!,
                         parsedDate!!,
                         entryList[i].author!!,
@@ -135,7 +144,9 @@ class AddFeedViewModel @Inject constructor(
             // Default or custom feed title
             val feedTitle = feedName.value ?: response.title
 
-            Log.i("feedTagTest", response.toString())
+            // Regex pattern for image URL
+            val imgPattern = "(https|http)\\S+\\.(jpg|png|jpeg|gif)".toRegex()
+
             // Add Feed and Entry data into local database
             feedRepo.insertFeed(
                 Feed(
@@ -158,9 +169,15 @@ class AddFeedViewModel @Inject constructor(
                 if (entryList[i].content != null) {
                     content = entryList[i].content!!
                 }
+
+                // Get image URL from entry content with regex
+                val result = imgPattern.find(content, 0)
+                val imgUrl = result?.value ?: ""
+
                 entryRepo.insertEntry(
                     Entry(
                         entryList[i].url!!,
+                        imgUrl,
                         entryList[i].title!!,
                         parsedDate!!,
                         entryList[i].author!!,

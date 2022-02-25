@@ -59,6 +59,9 @@ class Refresher @Inject constructor(
         // Date format
         val dtFormatter = SimpleDateFormat(ATOM_DATE_FMT, Locale.ENGLISH)
 
+        // Regex pattern for image URL
+        val imgPattern = "(https|http)\\S+\\.(jpg|png|jpeg|gif)".toRegex()
+
         // Add Entry data into local database
         for (i in entryList.indices) {
             /*
@@ -72,9 +75,15 @@ class Refresher @Inject constructor(
             val parsedDate: Date? = dtFormatter.parse(date)
 
             if (!entryRepo.checkEntryExist(entryList[i].url!!)) {
+                // Get image URL from entry content with regex
+                val content = entryList[i].content!!
+                val result = imgPattern.find(content, 0)
+                val imgUrl = result?.value ?: ""
+
                 entryRepo.insertEntry(
                     Entry(
                         entryList[i].url!!,
+                        imgUrl,
                         entryList[i].title!!,
                         parsedDate!!,
                         entryList[i].author!!,
@@ -95,6 +104,9 @@ class Refresher @Inject constructor(
         // Date format
         val dtFormatter = SimpleDateFormat(RSS_DATE_FMT, Locale.ENGLISH)
 
+        // Regex pattern for image URL
+        val imgPattern = "(https|http)\\S+\\.(jpg|png|jpeg|gif)".toRegex()
+
         // Add Entry data into local database
         for (i in entryList.indices) {
             /*
@@ -109,9 +121,15 @@ class Refresher @Inject constructor(
                 if (entryList[i].content != null) {
                     content = entryList[i].content!!
                 }
+
+                // Get image URL from entry content with regex
+                val result = imgPattern.find(content, 0)
+                val imgUrl = result?.value ?: ""
+
                 entryRepo.insertEntry(
                     Entry(
                         entryList[i].url!!,
+                        imgUrl,
                         entryList[i].title!!,
                         parsedDate!!,
                         entryList[i].author!!,
