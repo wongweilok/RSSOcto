@@ -85,13 +85,21 @@ class EntryAdapter(
                     text = DateUtils.getRelativeTimeSpanString(entryWihFeed.entry.date.time)
                 }
 
-                if (entryWihFeed.feed.imageUrl.isEmpty()) {
-                    tvImageFallback.apply {
-                        text = entryWihFeed.feed.title[0].toString()
+                if (entryWihFeed.entry.imageUrl.isEmpty()) {
+                    if (entryWihFeed.feed.imageUrl.isEmpty()) {
+                        tvImageFallback.apply {
+                            text = entryWihFeed.feed.title[0].toString()
+                        }
+                    } else {
+                        Glide.with(itemView)
+                            .load(entryWihFeed.feed.imageUrl)
+                            .centerCrop()
+                            .circleCrop()
+                            .into(ivEntryImage)
                     }
                 } else {
                     Glide.with(itemView)
-                        .load(entryWihFeed.feed.imageUrl)
+                        .load(entryWihFeed.entry.imageUrl)
                         .centerCrop()
                         .circleCrop()
                         .into(ivEntryImage)
