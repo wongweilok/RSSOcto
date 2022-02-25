@@ -41,6 +41,8 @@ data class Entry(
     @PrimaryKey
     @ColumnInfo(name = "entry_url")
     val url: String,
+    @ColumnInfo(name = "entry_image_url")
+    val imageUrl: String,
     @ColumnInfo(name = "entry_title")
     val title: String,
     @ColumnInfo(name = "entry_pub_date")
