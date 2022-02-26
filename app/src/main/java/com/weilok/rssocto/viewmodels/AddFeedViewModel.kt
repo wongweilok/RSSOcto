@@ -83,7 +83,7 @@ class AddFeedViewModel @Inject constructor(
             val feedTitle = feedName.value ?: response.title
 
             // Regex pattern for image URL
-            val imgPattern = "(https|http)\\S+\\.(jpg|png|jpeg|gif)".toRegex()
+            val imgPattern = "(https|http)\\S+\\.(jpg|JPG|png|PNG|jpeg|JPEG|gif|GIF)".toRegex()
 
             // Add Feed and Entry data into local database
             feedRepo.insertFeed(
@@ -145,7 +145,7 @@ class AddFeedViewModel @Inject constructor(
             val feedTitle = feedName.value ?: response.title
 
             // Regex pattern for image URL
-            val imgPattern = "(https|http)\\S+\\.(jpg|png|jpeg|gif)".toRegex()
+            val imgPattern = "(https|http)\\S+\\.(jpg|JPG|png|PNG|jpeg|JPEG|gif|GIF)".toRegex()
 
             // Add Feed and Entry data into local database
             feedRepo.insertFeed(

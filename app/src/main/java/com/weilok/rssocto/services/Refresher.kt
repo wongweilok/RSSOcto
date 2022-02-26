@@ -60,7 +60,7 @@ class Refresher @Inject constructor(
         val dtFormatter = SimpleDateFormat(ATOM_DATE_FMT, Locale.ENGLISH)
 
         // Regex pattern for image URL
-        val imgPattern = "(https|http)\\S+\\.(jpg|png|jpeg|gif)".toRegex()
+        val imgPattern = "(https|http)\\S+\\.(jpg|JPG|png|PNG|jpeg|JPEG|gif|GIF)".toRegex()
 
         // Add Entry data into local database
         for (i in entryList.indices) {
@@ -105,7 +105,7 @@ class Refresher @Inject constructor(
         val dtFormatter = SimpleDateFormat(RSS_DATE_FMT, Locale.ENGLISH)
 
         // Regex pattern for image URL
-        val imgPattern = "(https|http)\\S+\\.(jpg|png|jpeg|gif)".toRegex()
+        val imgPattern = "(https|http)\\S+\\.(jpg|JPG|png|PNG|jpeg|JPEG|gif|GIF)".toRegex()
 
         // Add Entry data into local database
         for (i in entryList.indices) {
