@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2021 Wong Wei Lok <wongweilok@disroot.org>
+    Copyright (C) 2021-2022 Wong Wei Lok <wongweilok@disroot.org>
 
     This file is part of RSSOcto
 
