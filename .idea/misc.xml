@@ -4,10 +4,11 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable/circle.xml" value="0.22447916666666667" />
+        <entry key="app/src/main/res/drawable/entry_text_color.xml" value="0.1985" />
         <entry key="app/src/main/res/drawable/ic_check.xml" value="0.22447916666666667" />
-        <entry key="app/src/main/res/layout/activity_add_feed.xml" value="0.12590579710144928" />
-        <entry key="app/src/main/res/layout/activity_entry_content.xml" value="0.10131712259371833" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.17" />
+        <entry key="app/src/main/res/layout/activity_add_feed.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/activity_entry_content.xml" value="0.16" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.18" />
         <entry key="app/src/main/res/layout/entry_item_list.xml" value="0.33" />
         <entry key="app/src/main/res/layout/feed_item_empty.xml" value="0.12907608695652173" />
         <entry key="app/src/main/res/layout/feed_item_list.xml" value="0.25" />
