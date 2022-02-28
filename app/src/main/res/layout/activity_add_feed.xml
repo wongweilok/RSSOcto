@@ -5,6 +5,7 @@
     tools:context=".ui.AddFeedActivity">
 
     <data>
+
         <variable
             name="addFeedVM"
             type="com.weilok.rssocto.viewmodels.AddFeedViewModel" />
@@ -13,6 +14,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        style="@style/layoutBackground"
         android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout

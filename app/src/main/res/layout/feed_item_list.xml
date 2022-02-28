@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/cardTheme"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginTop="3dp"
+    android:layout_marginBottom="3dp"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:selectableItemBackground">
@@ -23,12 +26,12 @@
             android:id="@+id/tvFeedTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/cardText"
             android:layout_marginTop="12dp"
             android:layout_toEndOf="@+id/ivFeedImage"
-            tools:text="Title"
-            android:textColor="@color/black"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:text="Title" />
 
     </RelativeLayout>
 
