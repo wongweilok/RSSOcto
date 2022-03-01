@@ -3,32 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_map"
-    app:startDestination="@id/feedFragment">
+    app:startDestination="@id/feedEntryMap">
 
-    <fragment
-        android:id="@+id/feedFragment"
-        android:name="com.weilok.rssocto.ui.FeedFragment"
-        android:label="@string/lbl_feed_fragment"
-        tools:layout="@layout/fragment_feed">
-        <action
-            android:id="@+id/action_feedFragment_to_entryFragment"
-            app:destination="@id/entryFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/entryFragment"
-        android:name="com.weilok.rssocto.ui.EntryFragment"
-        android:label="{title}"
-        tools:layout="@layout/fragment_entry" >
-        <argument
-            android:name="feed"
-            app:argType="com.weilok.rssocto.data.local.entities.Feed" />
-        <argument
-            android:name="title"
-            app:argType="string" />
-        <action
-            android:id="@+id/action_entryFragment_to_entryContentActivity"
-            app:destination="@id/entryContentActivity" />
-    </fragment>
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.weilok.rssocto.ui.SearchFragment"
@@ -50,4 +26,31 @@
         android:id="@+id/settingsFragment"
         android:name="com.weilok.rssocto.ui.SettingsFragment"
         android:label="@string/lbl_settings_fragment" />
+    <navigation android:id="@+id/feedEntryMap"
+        app:startDestination="@id/feedFragment">
+        <fragment
+            android:id="@+id/feedFragment"
+            android:name="com.weilok.rssocto.ui.FeedFragment"
+            android:label="@string/lbl_feed_fragment"
+            tools:layout="@layout/fragment_feed">
+            <action
+                android:id="@+id/action_feedFragment_to_entryFragment"
+                app:destination="@id/entryFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/entryFragment"
+            android:name="com.weilok.rssocto.ui.EntryFragment"
+            android:label="{title}"
+            tools:layout="@layout/fragment_entry">
+            <argument
+                android:name="feed"
+                app:argType="com.weilok.rssocto.data.local.entities.Feed" />
+            <argument
+                android:name="title"
+                app:argType="string" />
+            <action
+                android:id="@+id/action_entryFragment_to_entryContentActivity"
+                app:destination="@id/entryContentActivity" />
+        </fragment>
+    </navigation>
 </navigation>
