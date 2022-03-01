@@ -102,7 +102,7 @@ class EntryFragment : Fragment(R.layout.fragment_entry),
         }
 
         // Get bottom navigation bar from activity
-        val botNavBar = activity!!.findViewById<BottomNavigationView>(R.id.bottom_nav)
+        val botNavBar = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav)
 
         // Collect Signal from Event Channel
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
