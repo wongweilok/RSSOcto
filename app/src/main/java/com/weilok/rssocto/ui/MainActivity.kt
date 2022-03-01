@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
         // Declare top level fragments
         appBarConfig = AppBarConfiguration(
             setOf(
-                R.id.feedFragment,
+                R.id.feedEntryMap,
                 R.id.searchFragment,
                 R.id.settingsFragment
             )
