@@ -100,7 +100,7 @@ class SearchFragment : Fragment(R.layout.fragment_search),
         val searchView = searchItem.actionView as SearchView
 
         // Get bottom navigation bar from activity
-        val botNavBar = activity!!.findViewById<BottomNavigationView>(R.id.bottom_nav)
+        val botNavBar = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav)
 
         searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
             override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
