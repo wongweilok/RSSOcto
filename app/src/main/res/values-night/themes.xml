@@ -29,4 +29,8 @@
     <style name="entryImageFallback">
         <item name="android:background">@drawable/circle_dark</item>
     </style>
+
+    <style name="bottomBarTheme">
+        <item name="android:background">@color/black_medium</item>
+    </style>
 </resources>

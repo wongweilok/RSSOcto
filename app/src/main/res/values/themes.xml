@@ -15,7 +15,7 @@
     </style>
 
     <style name="cardTheme">
-        <item name="cardBackgroundColor">@color/white_hard</item>
+        <item name="cardBackgroundColor">@color/white_medium</item>
     </style>
 
     <style name="cardText">
@@ -23,10 +23,14 @@
     </style>
 
     <style name="layoutBackground">
-        <item name="android:background">@color/white_soft</item>
+        <item name="android:background">@color/white_hard</item>
     </style>
 
     <style name="entryImageFallback">
         <item name="android:background">@drawable/circle_light</item>
+    </style>
+
+    <style name="bottomBarTheme">
+        <item name="android:background">@color/white_medium</item>
     </style>
 </resources>
