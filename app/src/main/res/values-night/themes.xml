@@ -19,7 +19,7 @@
     </style>
 
     <style name="cardText">
-        <item name="android:textColor">@drawable/entry_text_color</item>
+        <item name="android:textColor">@drawable/entry_text_color_dark</item>
     </style>
 
     <style name="layoutBackground">
@@ -27,6 +27,6 @@
     </style>
 
     <style name="entryImageFallback">
-        <item name="android:background">@drawable/circle</item>
+        <item name="android:background">@drawable/circle_dark</item>
     </style>
 </resources>
