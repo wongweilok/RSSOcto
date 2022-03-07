@@ -55,6 +55,7 @@ class MainActivity : AppCompatActivity() {
             )
         )
 
+        setSupportActionBar(binding.toolbar)
         setupActionBarWithNavController(navController, appBarConfig)
 
         // Setup bottom navigation bar
