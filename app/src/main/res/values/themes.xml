@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.RSSOcto" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.RSSOcto" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/green_light</item>
         <item name="colorPrimaryVariant">@color/green</item>
@@ -12,6 +12,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="android:actionOverflowButtonStyle">@style/overflowButton</item>
     </style>
 
     <style name="cardTheme">
@@ -28,6 +29,15 @@
 
     <style name="entryImageFallback">
         <item name="android:background">@drawable/circle_light</item>
+    </style>
+
+    <style name="actionBarTheme">
+        <item name="android:background">@color/white_hard</item>
+        <item name="titleTextColor">@color/fg_light</item>
+    </style>
+
+    <style name="overflowButton" parent="android:style/Widget.Holo.ActionButton.Overflow">
+        <item name="android:src">@drawable/ic_more_vert_light</item>
     </style>
 
     <style name="bottomBarTheme">
