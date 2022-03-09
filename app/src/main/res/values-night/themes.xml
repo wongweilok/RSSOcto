@@ -13,6 +13,8 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="android:actionOverflowButtonStyle">@style/overflowButton</item>
+        <item name="preferenceTheme">@style/preferenceTheme</item>
+        <item name="android:textColorSecondary">@drawable/setting_text_color_2_dark</item>
     </style>
 
     <style name="cardTheme">
@@ -42,5 +44,9 @@
 
     <style name="bottomBarTheme">
         <item name="android:background">@color/black_medium</item>
+    </style>
+    
+    <style name="preferenceTheme" parent="PreferenceThemeOverlay">
+        <item name="android:textColor">@drawable/setting_text_color_dark</item>
     </style>
 </resources>
