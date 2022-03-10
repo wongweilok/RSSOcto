@@ -45,6 +45,9 @@ class AddFeedActivity : AppCompatActivity() {
         setContentView(binding.root)
         title = "Add Feed"
 
+        // Set up toolbar
+        setSupportActionBar(binding.toolbar)
+
         // Enable up button
         val actionBar = supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
