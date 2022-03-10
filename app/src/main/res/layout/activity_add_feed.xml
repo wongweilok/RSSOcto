@@ -11,77 +11,98 @@
             type="com.weilok.rssocto.viewmodels.AddFeedViewModel" />
     </data>
 
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        style="@style/layoutBackground"
-        android:fillViewport="true">
+        android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            style="@style/actionBarTheme"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/scrollView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.DayNight" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilFeedUrl"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="16dp"
-                android:hint="@string/et_feed_url_hint"
-                app:errorEnabled="true"
-                app:errorIconDrawable="@drawable/ic_error"
-                app:layout_constraintBottom_toTopOf="@+id/tilFeedName"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_chainStyle="packed">
+        <ScrollView
+            android:id="@+id/scrollView"
+            style="@style/layoutBackground"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etFeedUrl"
-                    android:layout_width="match_parent"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilFeedUrl"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:afterTextChanged="@{()->addFeedVM.afterTextChanged()}"
-                    android:inputType="textUri"
-                    android:onTextChanged="@{()->addFeedVM.onTextChanged()}"
-                    android:text="@={addFeedVM.inputUrl}" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:hint="@string/et_feed_url_hint"
+                    app:errorEnabled="true"
+                    app:errorIconDrawable="@drawable/ic_error"
+                    app:layout_constraintBottom_toTopOf="@+id/tilFeedName"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_chainStyle="packed">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilFeedName"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="32dp"
-                android:hint="@string/et_feed_name_hint"
-                app:layout_constraintBottom_toTopOf="@+id/btnAdd"
-                app:layout_constraintEnd_toEndOf="@+id/tilFeedUrl"
-                app:layout_constraintStart_toStartOf="@+id/tilFeedUrl"
-                app:layout_constraintTop_toBottomOf="@+id/tilFeedUrl">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etFeedUrl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:afterTextChanged="@{()->addFeedVM.afterTextChanged()}"
+                        android:inputType="textUri"
+                        android:onTextChanged="@{()->addFeedVM.onTextChanged()}"
+                        android:text="@={addFeedVM.inputUrl}" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etFeedName"
-                    android:layout_width="match_parent"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilFeedName"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@={addFeedVM.feedName}" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_marginBottom="32dp"
+                    android:hint="@string/et_feed_name_hint"
+                    app:layout_constraintBottom_toTopOf="@+id/btnAdd"
+                    app:layout_constraintEnd_toEndOf="@+id/tilFeedUrl"
+                    app:layout_constraintStart_toStartOf="@+id/tilFeedUrl"
+                    app:layout_constraintTop_toBottomOf="@+id/tilFeedUrl">
 
-            <Button
-                android:id="@+id/btnAdd"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="48dp"
-                android:layout_marginEnd="48dp"
-                android:enabled="@{addFeedVM.isUrlValid() &amp;&amp; !addFeedVM.isFeedExist()}"
-                android:text="@string/btn_add"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/tilFeedName"
-                app:layout_constraintStart_toStartOf="@+id/tilFeedName"
-                app:layout_constraintTop_toBottomOf="@+id/tilFeedName" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etFeedName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@={addFeedVM.feedName}" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <Button
+                    android:id="@+id/btnAdd"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="48dp"
+                    android:layout_marginEnd="48dp"
+                    android:enabled="@{addFeedVM.isUrlValid() &amp;&amp; !addFeedVM.isFeedExist()}"
+                    android:text="@string/btn_add"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/tilFeedName"
+                    app:layout_constraintStart_toStartOf="@+id/tilFeedName"
+                    app:layout_constraintTop_toBottomOf="@+id/tilFeedName" />
 
-    </ScrollView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
