@@ -22,7 +22,7 @@
     </style>
 
     <style name="cardText">
-        <item name="android:textColor">@drawable/entry_text_color_light</item>
+        <item name="android:textColor">@drawable/text_color_light</item>
     </style>
 
     <style name="layoutBackground">
@@ -47,6 +47,6 @@
     </style>
 
     <style name="preferenceTheme" parent="PreferenceThemeOverlay">
-        <item name="android:textColor">@drawable/setting_text_color_light</item>
+        <item name="android:textColor">@drawable/text_color_light</item>
     </style>
 </resources>
