@@ -90,7 +90,12 @@ class EntryAdapter(
                         tvImageFallback.apply {
                             text = entryWihFeed.feed.title[0].toString()
                         }
+
+                        Glide.with(itemView)
+                            .clear(ivEntryImage)
                     } else {
+                        tvImageFallback.text = ""
+
                         Glide.with(itemView)
                             .load(entryWihFeed.feed.imageUrl)
                             .centerCrop()
@@ -98,6 +103,8 @@ class EntryAdapter(
                             .into(ivEntryImage)
                     }
                 } else {
+                    tvImageFallback.text = ""
+
                     Glide.with(itemView)
                         .load(entryWihFeed.entry.imageUrl)
                         .centerCrop()
