@@ -85,28 +85,20 @@ class EntryAdapter(
                     text = DateUtils.getRelativeTimeSpanString(entryWihFeed.entry.date.time)
                 }
 
-                if (entryWihFeed.entry.imageUrl.isEmpty()) {
-                    if (entryWihFeed.feed.imageUrl.isEmpty()) {
-                        tvImageFallback.apply {
-                            text = entryWihFeed.feed.title[0].toString()
-                        }
+                val mainImage = entryWihFeed.entry.imageUrl.ifEmpty {
+                    entryWihFeed.feed.imageUrl
+                }
 
-                        Glide.with(itemView)
-                            .clear(ivEntryImage)
-                    } else {
-                        tvImageFallback.text = ""
+                if (mainImage.isEmpty()) {
+                    tvImageFallback.text = entryWihFeed.feed.title[0].toString()
 
-                        Glide.with(itemView)
-                            .load(entryWihFeed.feed.imageUrl)
-                            .centerCrop()
-                            .circleCrop()
-                            .into(ivEntryImage)
-                    }
+                    Glide.with(itemView)
+                        .clear(ivEntryImage)
                 } else {
                     tvImageFallback.text = ""
 
                     Glide.with(itemView)
-                        .load(entryWihFeed.entry.imageUrl)
+                        .load(mainImage)
                         .centerCrop()
                         .circleCrop()
                         .into(ivEntryImage)
