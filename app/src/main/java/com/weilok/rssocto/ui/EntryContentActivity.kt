@@ -19,13 +19,16 @@
 
 package com.weilok.rssocto.ui
 
+import android.content.res.TypedArray
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.MenuItem
 import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 
 import com.weilok.rssocto.databinding.ActivityEntryContentBinding
+import com.weilok.rssocto.R
 import com.weilok.rssocto.viewmodels.EntryContentViewModel
 
 @AndroidEntryPoint
@@ -34,25 +37,29 @@ class EntryContentActivity : AppCompatActivity() {
 
     private val viewModel: EntryContentViewModel by viewModels()
 
-    // Html settings and CSS
-    private val css = "<head>" +
-            "<style type='text/css'>" +
-            "* {word-break: break-word; max-width: 100%;}" +
-            "pre {white-space: pre-wrap;}" +
-            "figure {width: auto !important;}" +
-            "img {height: auto !important;}" +
-            "</style>" +
-            "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">" +
-            "</head>"
-    private val bodyStart = "<body>"
-    private val bodyEnd = "</body>"
-    private val horizontalRule = "<hr>"
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEntryContentBinding.inflate(layoutInflater)
         setContentView(binding.root)
         title = "Content"
+
+        // Html settings and CSS
+        val cssBackgroundColor = getColorAttrVal(R.attr.cssBackground)
+        val cssTextColor = getColorAttrVal(R.attr.cssTextColor)
+
+        val css = "<head>" +
+                "<style type='text/css'>" +
+                "* {word-break: break-word; max-width: 100%;}" +
+                "body {background: $cssBackgroundColor; color: $cssTextColor}" +
+                "pre {white-space: pre-wrap;}" +
+                "figure {width: auto !important;}" +
+                "img {height: auto !important;}" +
+                "</style>" +
+                "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">" +
+                "</head>"
+        val bodyStart = "<body>"
+        val bodyEnd = "</body>"
+        val horizontalRule = "<hr>"
 
         // Mark this entry as read
         viewModel.markEntryAsRead(viewModel.entryId!!)
@@ -105,5 +112,15 @@ class EntryContentActivity : AppCompatActivity() {
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    // Get color value from XML resources
+    private fun getColorAttrVal(attr: Int): String {
+        val a = intArrayOf(attr)
+        val at: TypedArray = this.theme.obtainStyledAttributes(TypedValue().data, a)
+        val testColor = at.getColor(0, 0)
+
+        return String.format("#%X", testColor)
+            .replaceFirst("FF", "", false)
     }
 }
