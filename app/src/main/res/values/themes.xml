@@ -16,8 +16,10 @@
         <item name="preferenceTheme">@style/preferenceTheme</item>
         <item name="android:textColorSecondary">@drawable/setting_text_color_2_light</item>
         <!-- Color use for CSS -->
-        <item name="cssBackground">@color/white_medium</item>
+        <item name="cssBackground">@color/white_hard</item>
         <item name="cssTextColor">@color/fg_light</item>
+        <item name="cssLinkColor">@color/blue_light</item>
+        <item name="cssCodeBgColor">@color/white_soft</item>
     </style>
 
     <style name="cardTheme">
