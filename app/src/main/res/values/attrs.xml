@@ -2,4 +2,6 @@
 <resources>
     <attr name="cssBackground" format="reference" />
     <attr name="cssTextColor" format="reference" />
+    <attr name="cssLinkColor" format="reference" />
+    <attr name="cssCodeBgColor" format="reference" />
 </resources>

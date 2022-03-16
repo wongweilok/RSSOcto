@@ -46,12 +46,16 @@ class EntryContentActivity : AppCompatActivity() {
         // Html settings and CSS
         val cssBackgroundColor = getColorAttrVal(R.attr.cssBackground)
         val cssTextColor = getColorAttrVal(R.attr.cssTextColor)
+        val cssLinkColor = getColorAttrVal(R.attr.cssLinkColor)
+        val cssCodeBgColor = getColorAttrVal(R.attr.cssCodeBgColor)
 
         val css = "<head>" +
                 "<style type='text/css'>" +
                 "* {word-break: break-word; max-width: 100%;}" +
-                "body {background: $cssBackgroundColor; color: $cssTextColor}" +
-                "pre {white-space: pre-wrap;}" +
+                "body {background: $cssBackgroundColor; color: $cssTextColor;}" +
+                "a {color: $cssLinkColor;}" +
+                "pre {white-space: pre-wrap; background: $cssCodeBgColor;}" +
+                "code {overflow-wrap: break-word;}" +
                 "figure {width: auto !important;}" +
                 "img {height: auto !important;}" +
                 "</style>" +
