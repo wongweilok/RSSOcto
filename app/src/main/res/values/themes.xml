@@ -38,15 +38,23 @@
         <item name="android:background">@drawable/circle_light</item>
     </style>
 
+    <style name="overflowButton" parent="android:style/Widget.Holo.ActionButton.Overflow">
+        <item name="android:src">@drawable/ic_more_vert_light</item>
+    </style>
+
     <style name="actionBarTheme">
         <item name="android:background">@color/white_hard</item>
         <item name="titleTextColor">@color/fg_light</item>
     </style>
 
-    <style name="overflowButton" parent="android:style/Widget.Holo.ActionButton.Overflow">
-        <item name="android:src">@drawable/ic_more_vert_light</item>
+    <style name="bottomAppBarTheme" parent="Widget.MaterialComponents.BottomAppBar.Colored">
+        <item name="materialThemeOverlay">@style/bottomAppBarThemeOverlay</item>
     </style>
 
+    <style name="bottomAppBarThemeOverlay">
+        <item name="colorPrimary">@color/white_medium</item>
+    </style>
+    
     <style name="bottomBarTheme">
         <item name="android:background">@color/white_medium</item>
     </style>
