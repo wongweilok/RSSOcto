@@ -38,13 +38,21 @@
         <item name="android:background">@drawable/circle_dark</item>
     </style>
 
+    <style name="overflowButton" parent="android:style/Widget.Holo.ActionButton.Overflow">
+        <item name="android:src">@drawable/ic_more_vert_dark</item>
+    </style>
+
     <style name="actionBarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:background">@color/black_hard</item>
         <item name="titleTextColor">@color/fg_dark</item>
     </style>
 
-    <style name="overflowButton" parent="android:style/Widget.Holo.ActionButton.Overflow">
-        <item name="android:src">@drawable/ic_more_vert_dark</item>
+    <style name="bottomAppBarTheme" parent="Widget.MaterialComponents.BottomAppBar.Colored">
+        <item name="materialThemeOverlay">@style/bottomAppBarThemeOverlay</item>
+    </style>
+
+    <style name="bottomAppBarThemeOverlay">
+        <item name="colorPrimary">@color/black_medium</item>
     </style>
 
     <style name="bottomBarTheme">
