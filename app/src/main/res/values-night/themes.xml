@@ -53,6 +53,7 @@
 
     <style name="bottomAppBarThemeOverlay">
         <item name="colorPrimary">@color/black_medium</item>
+        <item name="iconTint">@color/green_dark</item>
     </style>
 
     <style name="bottomBarTheme">
