@@ -19,7 +19,9 @@
 
 package com.weilok.rssocto.ui
 
+import android.content.Intent
 import android.content.res.TypedArray
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.TypedValue
@@ -104,6 +106,34 @@ class EntryContentActivity : AppCompatActivity() {
                 null,
                 null
             )
+        }
+
+        binding.fabShare.setOnClickListener {
+            val intent = Intent()
+            intent.apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, viewModel.entryId)
+                type = "text/plain"
+            }
+            startActivity(Intent.createChooser(intent, "Share via"))
+        }
+
+        binding.bottomAppBar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.optFavorite -> {
+                    true
+                }
+                R.id.optMarkAsRead -> {
+                    true
+                }
+                R.id.optOpenInBrowser -> {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(viewModel.entryId))
+                    startActivity(intent)
+
+                    true
+                }
+                else -> false
+            }
         }
     }
 

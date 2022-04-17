@@ -8,6 +8,7 @@
     <!-- Button -->
     <string name="btn_add_feed">Add Feed</string>
     <string name="btn_add">Add</string>
+    <string name="btn_share">Share</string>
 
     <!-- EditText -->
     <string name="et_feed_url_hint">Feed URL</string>
@@ -28,6 +29,8 @@
     <string name="opt_search">Search</string>
     <string name="opt_mark_as_read">Mark as read</string>
     <string name="opt_mark_as_unread">Mark as unread</string>
+    <string name="opt_favourite">Favourite</string>
+    <string name="opt_open_in_browser">Open In Browser</string>
 
     <!-- Bottom Navigation Menu -->
     <string name="nav_item_feeds">Feeds</string>

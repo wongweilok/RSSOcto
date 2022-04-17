@@ -27,16 +27,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        app:menu="@menu/bottom_app_bar_menu"
         app:fabAlignmentMode="end"
         app:hideOnScroll="true" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabOpenInBrowser"
+        android:id="@+id/fabShare"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/btn_share"
         android:clickable="true"
         android:focusable="true"
-        android:src="@drawable/ic_open_in_browser"
+        android:src="@drawable/ic_share"
         app:fabSize="auto"
         app:layout_anchor="@id/bottomAppBar" />
 
