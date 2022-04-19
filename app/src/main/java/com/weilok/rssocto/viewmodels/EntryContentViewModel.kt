@@ -43,4 +43,10 @@ class EntryContentViewModel @Inject constructor(
             entryRepo.markEntryAsRead(id)
         }
     }
+
+    fun markEntryAsUnread(id: String) {
+        viewModelScope.launch {
+            entryRepo.markEntryAsUnread(id)
+        }
+    }
 }
