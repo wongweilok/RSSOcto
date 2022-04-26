@@ -53,6 +53,8 @@ data class Entry(
     val content: String,
     @ColumnInfo(name = "read_status")
     val read: Boolean,
+    @ColumnInfo(name = "favorite_status")
+    val favorite: Boolean,
     @ColumnInfo(name = "feed_id")
     val feedId: String
 ) : Parcelable {

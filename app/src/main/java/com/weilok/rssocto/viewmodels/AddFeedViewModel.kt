@@ -119,8 +119,9 @@ class AddFeedViewModel @Inject constructor(
                         parsedDate!!,
                         entryList[i].author!!,
                         entryList[i].content!!,
-                        false,
-                        url
+                        read = false,
+                        favorite = false,
+                        feedId = url
                     )
                 )
             }
@@ -182,7 +183,8 @@ class AddFeedViewModel @Inject constructor(
                         parsedDate!!,
                         entryList[i].author!!,
                         content,
-                        false,
+                        read = false,
+                        favorite = false,
                         url
                     )
                 )

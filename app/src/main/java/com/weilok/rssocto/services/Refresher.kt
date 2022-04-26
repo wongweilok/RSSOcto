@@ -88,7 +88,8 @@ class Refresher @Inject constructor(
                         parsedDate!!,
                         entryList[i].author!!,
                         entryList[i].content!!,
-                        false,
+                        read = false,
+                        favorite = false,
                         url
                     )
                 )
@@ -134,7 +135,8 @@ class Refresher @Inject constructor(
                         parsedDate!!,
                         entryList[i].author!!,
                         content,
-                        false,
+                        read = false,
+                        favorite = false,
                         url
                     )
                 )

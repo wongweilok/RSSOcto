@@ -52,6 +52,12 @@ interface EntryDao {
     @Query("UPDATE entry_table SET read_status = 0 WHERE feed_id = :feedId")
     suspend fun markAllEntriesAsUnread(feedId: String)
 
+    @Query("UPDATE entry_table SET favorite_status = 1 WHERE entry_url = :id")
+    suspend fun favEntry(id: String)
+
+    @Query("UPDATE entry_table SET favorite_status = 0 WHERE entry_url = :id")
+    suspend fun unfavEntry(id: String)
+
     @Query("SELECT EXISTS(SELECT * FROM entry_table WHERE entry_url = :id)")
     suspend fun checkEntryExist(id: String): Boolean
 

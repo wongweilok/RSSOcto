@@ -118,21 +118,23 @@ class EntryContentActivity : AppCompatActivity() {
             startActivity(Intent.createChooser(intent, "Share via"))
         }
 
-        var isFavourite = false
+        var isFavourite = viewModel.entryFavStat!!
         var isRead = true
 
         binding.bottomAppBar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                R.id.optFavorite -> {
+                R.id.optActionFavorite -> {
                     isFavourite = if (!isFavourite) {
                         item.setIcon(R.drawable.ic_favorite)
                         item.title = "Unfavorite"
 
+                        viewModel.favEntry(viewModel.entryId!!)
                         true
                     } else {
                         item.setIcon(R.drawable.ic_favorite_border)
                         item.title = "Favorite"
 
+                        viewModel.unfavEntry(viewModel.entryId!!)
                         false
                     }
 
@@ -144,20 +146,18 @@ class EntryContentActivity : AppCompatActivity() {
                         item.title = "Mark as unread"
 
                         viewModel.markEntryAsRead(viewModel.entryId!!)
-
                         true
                     } else {
                         item.setIcon(R.drawable.ic_read)
                         item.title = "Mark as read"
 
                         viewModel.markEntryAsUnread(viewModel.entryId!!)
-
                         false
                     }
 
                     true
                 }
-                R.id.optOpenInBrowser -> {
+                R.id.optActionOpenInBrowser -> {
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(viewModel.entryId))
                     startActivity(intent)
 
