@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/optFavorite"
+        android:id="@+id/optActionFavorite"
         android:checkable="true"
         android:checked="false"
         android:icon="@drawable/ic_favorite_border"
@@ -19,7 +19,7 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/optOpenInBrowser"
+        android:id="@+id/optActionOpenInBrowser"
         android:icon="@drawable/ic_open_in_browser"
         android:title="@string/opt_open_in_browser"
         app:showAsAction="always" />

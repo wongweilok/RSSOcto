@@ -51,6 +51,14 @@ class EntryRepository @Inject constructor(
         entryDao.markAllEntriesAsUnread(feedId)
     }
 
+    suspend fun favEntry(id: String) {
+        entryDao.favEntry(id)
+    }
+
+    suspend fun unfavEntry(id: String) {
+        entryDao.unfavEntry(id)
+    }
+
     suspend fun checkEntryExist(id: String): Boolean {
         return entryDao.checkEntryExist(id)
     }

@@ -37,6 +37,7 @@ class EntryContentViewModel @Inject constructor(
     val entry = state.get<Entry>("entry")
     val entryId = entry?.url
     val entryContent = entry?.content
+    val entryFavStat = entry?.favorite
 
     fun markEntryAsRead(id: String) {
         viewModelScope.launch {
@@ -47,6 +48,18 @@ class EntryContentViewModel @Inject constructor(
     fun markEntryAsUnread(id: String) {
         viewModelScope.launch {
             entryRepo.markEntryAsUnread(id)
+        }
+    }
+
+    fun favEntry(id: String) {
+        viewModelScope.launch {
+            entryRepo.favEntry(id)
+        }
+    }
+
+    fun unfavEntry(id: String) {
+        viewModelScope.launch {
+            entryRepo.unfavEntry(id)
         }
     }
 }
