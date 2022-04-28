@@ -48,7 +48,8 @@ import com.weilok.rssocto.viewmodels.EntryViewModel
 @AndroidEntryPoint
 class EntryFragment : Fragment(R.layout.fragment_entry),
     EntryAdapter.OnEntryItemClickListener,
-    EntryAdapter.OnEntryItemLongClickListener {
+    EntryAdapter.OnEntryItemLongClickListener,
+    EntryAdapter.OnFavIconClickListener {
     @Inject
     lateinit var prefHandler: PreferenceHandler
     private lateinit var binding: FragmentEntryBinding
@@ -65,7 +66,7 @@ class EntryFragment : Fragment(R.layout.fragment_entry),
          * Initialize adapter and restore list item position when
          * returning to this fragment.
          */
-        val entryAdapter = EntryAdapter(this, this)
+        val entryAdapter = EntryAdapter(this, this, this)
         entryAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
 
         binding.apply {
@@ -128,6 +129,10 @@ class EntryFragment : Fragment(R.layout.fragment_entry),
 
     override fun onEntryItemLongClick(entry: Entry, v: View) {
         showPopup(v, entry)
+    }
+
+    override fun onFavIconClick(entry: Entry) {
+        viewModel.onFavIconClicked(entry)
     }
 
     private fun showPopup(v: View, entry: Entry) {

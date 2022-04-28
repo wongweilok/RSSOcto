@@ -25,6 +25,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.TypedValue
+import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
@@ -118,8 +119,21 @@ class EntryContentActivity : AppCompatActivity() {
             startActivity(Intent.createChooser(intent, "Share via"))
         }
 
+        val favItemOption = binding.bottomAppBar.menu.findItem(R.id.optActionFavorite)
         var isFavourite = viewModel.entryFavStat!!
         var isRead = true
+
+        if (isFavourite) {
+            favItemOption.apply {
+                setIcon(R.drawable.ic_favorite)
+                title = "Unfavorite"
+            }
+        } else {
+            favItemOption.apply {
+                setIcon(R.drawable.ic_favorite_border)
+                title = "Favorite"
+            }
+        }
 
         binding.bottomAppBar.setOnMenuItemClickListener { item ->
             when (item.itemId) {

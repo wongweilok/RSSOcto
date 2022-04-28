@@ -20,12 +20,14 @@
             style="@style/entryImageFallback"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:layout_centerVertical="true"
             android:layout_marginEnd="8dp" />
 
         <TextView
             android:id="@+id/tvImageFallback"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:layout_centerVertical="true"
             android:gravity="center"
             android:textSize="20sp" />
 
@@ -35,7 +37,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
+            android:layout_toStartOf="@+id/iconFav"
             android:layout_toEndOf="@id/ivEntryImage"
+            android:paddingStart="0dp"
+            android:paddingEnd="20dp"
             android:textSize="20sp"
             android:textStyle="bold"
             tools:text="Title" />
@@ -48,6 +53,17 @@
             android:layout_below="@+id/tvEntryTitle"
             android:layout_toEndOf="@id/ivEntryImage"
             tools:text="Published date" />
+
+        <ImageView
+            android:id="@+id/iconFav"
+            style="@style/favIconColor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:src="@drawable/ic_favorite_border" />
 
     </RelativeLayout>
 

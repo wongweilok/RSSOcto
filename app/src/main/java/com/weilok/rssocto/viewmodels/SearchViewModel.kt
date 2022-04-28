@@ -51,6 +51,16 @@ class SearchViewModel @Inject constructor(
         }
     }
 
+    fun onFavIconClicked(entry: Entry) {
+        viewModelScope.launch {
+            if (entry.favorite) {
+                entryRepo.unfavEntry(entry.url)
+            } else {
+                entryRepo.favEntry(entry.url)
+            }
+        }
+    }
+
     // Channel & Events
     private val searchEventChannel = Channel<SearchEvent>()
     val searchEvent = searchEventChannel.receiveAsFlow()
