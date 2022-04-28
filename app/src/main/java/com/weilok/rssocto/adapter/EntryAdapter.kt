@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.weilok.rssocto.R
 
 import com.weilok.rssocto.data.local.entities.Entry
 import com.weilok.rssocto.data.local.entities.EntryWithFeed
@@ -34,7 +35,8 @@ import com.weilok.rssocto.databinding.EntryItemListBinding
 
 class EntryAdapter(
     private val listener: OnEntryItemClickListener,
-    private val longClickListener: OnEntryItemLongClickListener
+    private val longClickListener: OnEntryItemLongClickListener,
+    private val favIconClickListener: OnFavIconClickListener
 ) : ListAdapter<EntryWithFeed, EntryAdapter.EntryViewHolder>(DiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EntryViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -70,6 +72,20 @@ class EntryAdapter(
                         return@setOnLongClickListener true
                     }
                 }
+
+                iconFav.setOnClickListener {
+                    val position = bindingAdapterPosition
+                    if (position != RecyclerView.NO_POSITION) {
+                        val entryWithFeed = getItem(position)
+                        if (entryWithFeed.entry.favorite) {
+                            iconFav.setImageResource(R.drawable.ic_favorite_border)
+                        } else {
+                            iconFav.setImageResource(R.drawable.ic_favorite)
+                        }
+
+                        favIconClickListener.onFavIconClick(entryWithFeed.entry)
+                    }
+                }
             }
         }
 
@@ -103,6 +119,12 @@ class EntryAdapter(
                         .circleCrop()
                         .into(ivEntryImage)
                 }
+
+                if (entryWihFeed.entry.favorite) {
+                    iconFav.setImageResource(R.drawable.ic_favorite)
+                } else {
+                    iconFav.setImageResource(R.drawable.ic_favorite_border)
+                }
             }
         }
     }
@@ -113,6 +135,10 @@ class EntryAdapter(
 
     interface OnEntryItemLongClickListener {
         fun onEntryItemLongClick(entry: Entry, v: View)
+    }
+
+    interface OnFavIconClickListener {
+        fun onFavIconClick(entry: Entry)
     }
 
     class DiffCallback : DiffUtil.ItemCallback<EntryWithFeed>() {

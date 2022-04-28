@@ -30,6 +30,10 @@
         <item name="android:textColor">@drawable/text_color_light</item>
     </style>
 
+    <style name="favIconColor">
+        <item name="tint">@color/fg_light</item>
+    </style>
+
     <style name="layoutBackground">
         <item name="android:background">@color/white_hard</item>
     </style>

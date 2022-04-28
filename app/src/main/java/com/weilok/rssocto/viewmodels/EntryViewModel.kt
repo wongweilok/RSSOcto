@@ -66,6 +66,16 @@ class EntryViewModel @Inject constructor(
         }
     }
 
+    fun onFavIconClicked(entry: Entry) {
+        viewModelScope.launch {
+            if (entry.favorite) {
+                entryRepo.unfavEntry(entry.url)
+            } else {
+                entryRepo.favEntry(entry.url)
+            }
+        }
+    }
+
     fun markEntryAs(entry: Entry) {
         viewModelScope.launch {
             if (entry.read) {
