@@ -43,9 +43,7 @@ import com.weilok.rssocto.viewmodels.SearchViewModel
 @AndroidEntryPoint
 class SearchFragment : Fragment(R.layout.fragment_search),
     SearchView.OnQueryTextListener,
-    EntryAdapter.OnEntryItemClickListener,
-    EntryAdapter.OnEntryItemLongClickListener,
-    EntryAdapter.OnFavIconClickListener {
+    EntryAdapter.OnEntryClickListener {
     private lateinit var binding: FragmentSearchBinding
 
     private val viewModel: SearchViewModel by viewModels()
@@ -73,7 +71,7 @@ class SearchFragment : Fragment(R.layout.fragment_search),
     }
 
     private fun initRecyclerView() {
-        val entryAdapter = EntryAdapter(this,this, this)
+        val entryAdapter = EntryAdapter(this)
 
         binding.apply {
             rvQueryFeedList.apply {

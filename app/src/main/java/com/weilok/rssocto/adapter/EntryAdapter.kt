@@ -34,9 +34,7 @@ import com.weilok.rssocto.data.local.entities.EntryWithFeed
 import com.weilok.rssocto.databinding.EntryItemListBinding
 
 class EntryAdapter(
-    private val listener: OnEntryItemClickListener,
-    private val longClickListener: OnEntryItemLongClickListener,
-    private val favIconClickListener: OnFavIconClickListener
+    private val listener: OnEntryClickListener
 ) : ListAdapter<EntryWithFeed, EntryAdapter.EntryViewHolder>(DiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EntryViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -66,7 +64,7 @@ class EntryAdapter(
                         val position = bindingAdapterPosition
                         if (position != RecyclerView.NO_POSITION) {
                             val entryWithFeed = getItem(position)
-                            longClickListener.onEntryItemLongClick(entryWithFeed.entry, view)
+                            listener.onEntryItemLongClick(entryWithFeed.entry, view)
                         }
 
                         return@setOnLongClickListener true
@@ -83,7 +81,7 @@ class EntryAdapter(
                             iconFav.setImageResource(R.drawable.ic_favorite)
                         }
 
-                        favIconClickListener.onFavIconClick(entryWithFeed.entry)
+                        listener.onFavIconClick(entryWithFeed.entry)
                     }
                 }
             }
@@ -129,15 +127,9 @@ class EntryAdapter(
         }
     }
 
-    interface OnEntryItemClickListener {
+    interface OnEntryClickListener {
         fun onEntryItemClick(entry: Entry)
-    }
-
-    interface OnEntryItemLongClickListener {
         fun onEntryItemLongClick(entry: Entry, v: View)
-    }
-
-    interface OnFavIconClickListener {
         fun onFavIconClick(entry: Entry)
     }
 
